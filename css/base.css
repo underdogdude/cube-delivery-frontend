@@ -1,0 +1,41 @@
+@font-face {
+    font-family: cubeFont-light;
+    src: url(../fonts/Pero-Light.otf);
+}
+@font-face {
+    font-family: cubeFont-regular;
+    src: url(../fonts/Pero-Regular.otf);
+}
+@font-face {
+    font-family: cubeFont-bold;
+    src: url(../fonts/Pero-Bold.otf);
+}
+
+body {
+    margin: 0;
+    font-family: cubeFont-regular;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Remove scrollbar */
+    -ms-overflow-style: none;
+}
+
+.font-weight-light { 
+    font-family: cubeFont-light;
+}
+.font-weight-bold { 
+    font-family: cubeFont-bold;
+}
+
+.text__primary { 
+    color: #77AC7F; 
+}
+.text__secondary { 
+    color: #707070;
+}
+
+
+::-webkit-scrollbar {
+    display: none;
+}
