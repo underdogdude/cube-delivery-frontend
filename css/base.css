@@ -34,8 +34,17 @@ body {
 .text__secondary { 
     color: #707070;
 }
-
+.text__ellipsis{ 
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
 
 ::-webkit-scrollbar {
     display: none;
 }
+
+.modal .close-left {  
+    margin: -1rem -1rem -1rem -1rem;
+}
+

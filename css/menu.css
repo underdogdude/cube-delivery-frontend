@@ -55,6 +55,9 @@
     font-weight: 300;
     margin-top: 15px;
 }
+.menu__layout-hasimg .menu__layout-hasimg-detail { 
+    width: 100%;
+}
 .menu__layout-hasimg .menu__layout-hasimg-detail .desc,
 .menu__content .menu__layout-noimg .desc{ 
     color:#a9a9a9;
@@ -99,3 +102,54 @@
     font-size: 18px;
     font-weight: 300;
 }
+
+
+/* Modal */
+
+.menu__modal .modal__dialog { 
+    margin: 0;
+    padding-top: 1rem;
+    height: 100%;
+}
+.menu__modal .modal-content { 
+    height: 100%;
+    overflow: hidden;
+}
+.menu__modal .modal-header{
+    height: 55px;
+    position: fixed;
+    background: white;
+    left: 1px;
+    right: 1px;
+    /* for content */
+    justify-content: normal;
+}
+
+.menu__modal  .modal-body {
+    top: 55px;
+    overflow-y: auto;
+    background: white;
+    width: 100%;
+    padding-bottom: 80px;
+    margin-bottom: 60px;
+}
+.menu__modal .modal-footer {
+    border: none;
+    bottom: 10px;
+    padding: .2rem;
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+}
+.menu__modal .modal-footer .btn-tocart{
+    width: 100%;
+    background: #80AA83;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: -5px 10px 20px white;
+    font-family: cubeFont-bold;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* Create State of button */
