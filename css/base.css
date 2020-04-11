@@ -48,3 +48,13 @@ body {
     margin: -1rem -1rem -1rem -1rem;
 }
 
+.btn__primary { 
+    background: #699670;
+    color: white;
+}
+
+.inactive { 
+    color: #cdcdcd;
+    background: #f6f6f6;
+    pointer-events: none;
+}
