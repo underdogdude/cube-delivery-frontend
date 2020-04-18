@@ -17,6 +17,7 @@
     <!-- Global -->
     <link rel="stylesheet" href="./css/base.css">
     <link rel="stylesheet" href="./css/menu.css">
+    <link rel="stylesheet" href="./css/radio.css">
 
 </head>
 
@@ -260,25 +261,110 @@
                         style="background-image: url('https://globalassets.starbucks.com/assets/7fe2123728f844849ae4f9ea01473468.jpg');">
                     </div>
                     <div class="product__order">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec condimentum ipsum nec nibh
-                        venenatis pulvinar. Etiam ac iaculis libero. Phasellus ut erat elit. Maecenas volutpat odio
-                        nulla, sit amet euismod nisi aliquet at. Ut ultrices rhoncus sapien eu fringilla. Cras sit amet
-                        felis ante. Maecenas quis nisl ut magna consectetur venenatis.
+                        <section>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec condimentum ipsum nec nibh
+                            venenatis pulvinar. Etiam ac iaculis libero. Phasellus ut erat elit. Maecenas volutpat odio
+                            nulla, sit amet euismod nisi aliquet at. Ut ultrices rhoncus sapien eu fringilla. Cras sit
+                            amet
+                            felis ante. Maecenas quis nisl ut magna consectetur venenatis.
 
-                        Etiam lacus turpis, bibendum sollicitudin aliquet sit amet, luctus sit amet ex. Fusce in iaculis
-                        metus. Morbi sed enim eros. Integer quis ullamcorper ipsum. Aliquam eget vulputate odio, et
-                        porta enim. Ut ut sem metus. Suspendisse mattis tellus ac mollis congue. Sed pulvinar tempus
-                        volutpat. Mauris consectetur egestas luctus. Proin vestibulum massa vitae tortor bibendum
-                        ultricies. Nulla volutpat lacus nisl, rhoncus venenatis sapien venenatis sit amet.
+                            Etiam lacus turpis, bibendum sollicitudin aliquet sit amet, luctus sit amet ex. Fusce in
+                            iaculis
+                            metus. Morbi sed enim eros. Integer quis ullamcorper ipsum. Aliquam eget vulputate odio, et
+                            porta enim. Ut ut sem metus. Suspendisse mattis tellus ac mollis congue. Sed pulvinar tempus
+                            volutpat. Mauris consectetur egestas luctus. Proin vestibulum massa vitae tortor bibendum
+                            ultricies. Nulla volutpat lacus nisl, rhoncus venenatis sapien venenatis sit amet.
 
-                        Proin euismod sem ut ultricies blandit. Nullam non magna sit amet odio laoreet lacinia. Quisque
-                        mattis auctor nulla, ut eleifend felis. Curabitur iaculis tortor at nisi pretium, ac feugiat
-                        elit mattis. Praesent eget ex est. Donec euismod accumsan massa suscipit iaculis. Sed luctus
-                        egestas dignissim.
+                            Proin euismod sem ut ultricies blandit. Nullam non magna sit amet odio laoreet lacinia.
+                            Quisque
+                            mattis auctor nulla, ut eleifend felis. Curabitur iaculis tortor at nisi pretium, ac feugiat
+                            elit mattis. Praesent eget ex est. Donec euismod accumsan massa suscipit iaculis. Sed luctus
+                            egestas dignissim.
+                        </section>
+                        <section class="prod__option">
+                            <p class="prod__option-title">
+                                title
+                            </p>
+                            <div class="prod__option-radio">
+                                <div class="form-check">
+                                    <label class="pure-material-radio">
+                                        <input type="radio" name="group" class="form-check-input">
+                                        <span class="form-check-label">Radio Option 2</span>
+                                    </label>
+                                    <b class="prod__option-price">
+                                        120 บาท
+                                    </b>
+                                </div>
+                                <div class="form-check">
+                                    <label class="pure-material-radio">
+                                        <input type="radio" name="group" class="form-check-input">
+                                        <span class="form-check-label">Radio Option 2</span>
+                                    </label>
+                                    <b class="prod__option-price">
+                                        120 บาท
+                                    </b>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="prod__option">
+                            <p class="prod__option-title">
+                                <span class="text__primary">
+                                    *
+                                </span>
+                                title2
+                            </p>
+                            <div class="prod__option-radio">
+                                <div class="form-check">
+                                    <label class="pure-material-radio">
+                                        <input type="radio" name="group" class="form-check-input">
+                                        <span class="form-check-label">Radio Option 2</span>
+                                    </label>
+                                    <b class="prod__option-price">
+                                        120 บาท
+                                    </b>
+                                </div>
+                                <div class="form-check">
+                                    <label class="pure-material-radio">
+                                        <input type="radio" name="group" class="form-check-input">
+                                        <span class="form-check-label">Radio Option 2</span>
+                                    </label>
+                                    <b class="prod__option-price">
+                                        120 บาท
+                                    </b>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="prod__option">
+                            <p class="prod__option-title">
+                                Additional Request
+                            </p>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="E.g. No veggies" />
+                            </div>
+
+
+                            <div class="custom-input-number">
+                                <button type="button" class="cin-btn cin-btn-1 cin-btn-md cin-decrement">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <input type="number" 
+                                    class="cin-input basket-quantity" 
+                                    step="1" 
+                                    value="0" 
+                                    min="0"
+                                    max="10"
+                                />
+                                <button type="button" class="cin-btn cin-btn-1 cin-btn-md cin-increment">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+
+                        </section>
                     </div>
+
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-lg btn__primary btn-tocart inactive">
+                    <button type="button" class="btn btn-lg btn__primary btn-tocart inactive" id="btnAddToCart">
                         <span>
                             Add to Cart
                         </span>
@@ -300,6 +386,54 @@
 <script src="./js/vendor/bootstrap.min.js"></script>
 
 <script>
+    
+    var amount = 0; 
+
+    $(document).on('click', '.custom-input-number .cin-increment', function (e) {
+        let $input = $(this).siblings('.cin-input'),
+            val = parseInt($input.val()),
+            max = parseInt($input.attr('max')),
+            step = parseInt($input.attr('step'));
+
+        let temp = val + step;
+        if (temp <= max) { 
+            $input.val(temp);
+            amount = temp;
+            changeBtnAddToCartState();
+        }else{
+            $input.val(max);
+            amount = max;
+            changeBtnAddToCartState();
+        }
+    });
+
+    $(document).on('click', '.custom-input-number .cin-decrement', function (e) {
+        let $input = $(this).siblings('.cin-input'),
+            val = parseInt($input.val()),
+            min = parseInt($input.attr('min')),
+            step = parseInt($input.attr('step'));
+
+        let temp = val - step;
+        if (temp >= min) { 
+            $input.val(temp);
+            amount = temp;
+            changeBtnAddToCartState();
+        }else{
+            $input.val(min);
+            amount = min;
+            changeBtnAddToCartState();
+        }
+    });
+
+    function changeBtnAddToCartState () { 
+        var elem = $("#btnAddToCart");
+        if(amount > 0) { 
+            $(elem).removeClass("inactive");
+
+        }else{ 
+            $(elem).addClass("inactive");
+        }
+    }
 
 </script>
 
