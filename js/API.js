@@ -14,12 +14,12 @@ var get = {
         )
     },
 
-    menu : function () { 
+    menu : function (id = '') { 
         return (
             axios({
                 method: 'get',
-                url: 'http://localhost:5000/cube-family-delivery-dev/asia-east2/api/menu'
+                url: 'http://localhost:5000/cube-family-delivery-dev/asia-east2/api/menu/' + id
             })
         )
-    } 
+    },
 }

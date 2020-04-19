@@ -192,3 +192,6 @@
     justify-content: space-between;
     padding: 0;
 }
+.prod__option .prod__option-radio .prod__option-price { 
+    font-size: 14px;
+}
