@@ -190,7 +190,7 @@ function listProdOption(option) {
                                 </label>
 
                                 <b class="prod__option-price">
-                                    ${option.option_price} บาท
+                                ${ Math.round(option.option_price) } บาท
                                 </b>
                             </div>
                         `;
@@ -198,7 +198,7 @@ function listProdOption(option) {
                         selectButtonList += `
 
                             <div class="form-check">
-                                <label  
+                                <label  class="pure-material-checkbox"
                                     for="${option_group.option_group_id}-${option.option_id}">
 
                                     <input type="checkbox" 

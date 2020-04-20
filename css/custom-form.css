@@ -1,3 +1,11 @@
+/* 
+    #####    ##   #####  #  ####  
+    #    #  #  #  #    # # #    # 
+    #    # #    # #    # # #    # 
+    #####  ###### #    # # #    # 
+    #   #  #    # #    # # #    # 
+    #    # #    # #####  #  ####  
+ */
 .pure-material-radio {
     z-index: 0;
     position: relative;
@@ -120,8 +128,133 @@
 .pure-material-radio > input:disabled + span::after {
     background-color: #77ac7f;
 }
+/* 
+     ####  #    # ######  ####  #    # #####   ####  #    # 
+    #    # #    # #      #    # #   #  #    # #    #  #  #  
+    #      ###### #####  #      ####   #####  #    #   ##   
+    #      #    # #      #      #  #   #    # #    #   ##   
+    #    # #    # #      #    # #   #  #    # #    #  #  #  
+     ####  #    # ######  ####  #    # #####   ####  #    # 
+*/
+/* Checkbox */
+.pure-material-checkbox {
+    z-index: 0;
+    position: relative;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-right: 10px
+}
 
+/* Input */
+.pure-material-checkbox > input {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    z-index: -1;
+    position: absolute;
+    left: -10px;
+    top: -8px;
+    display: block;
+    margin: 0;
+    border-radius: 4px;
+    width: 40px;
+    height: 40px;
+    background-color: #77ac7f;
+    outline: none;
+    opacity: 0;
+    transform: scale(1);
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.2s;
+}
 
+/* Span */
+.pure-material-checkbox > span {
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Circle */
+.pure-material-checkbox > span::before {
+    content: "";
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 2px 10px 2px 0;
+    border: solid 2px; /* Safari */
+    border-color: #707070;
+    border-radius: 4px;
+    width: 20px;
+    height: 20px;
+    vertical-align: top;
+    transition: border-color 0.2s;
+}
+
+/* Check */
+.pure-material-checkbox > span::after {
+    content: "\2714";
+    display: block;
+    position: absolute;
+    top: -3px;
+    left: 0;
+    color: white;
+    width: 10px;
+    height: 10px;
+    transform: translate(5px, 5px) scale(0);
+    transition: transform 0.2s;
+}
+
+/* Checked */
+.pure-material-checkbox > input:checked {
+    background-color: #77ac7f;
+}
+
+.pure-material-checkbox > input:checked + span::before {
+    border-color: #77ac7f;
+    background-color: #77ac7f;
+}
+
+.pure-material-checkbox > input:checked + span::after {
+    transform: translate(5px, 5px) scale(1);
+}
+
+/* Active */
+.pure-material-checkbox > input:active {
+    opacity: 1;
+    transform: scale(0);
+    transition: transform 0s, opacity 0s;
+}
+
+.pure-material-checkbox > input:active + span::before {
+    border-color: #77ac7f;
+}
+
+/* Disabled */
+.pure-material-checkbox > input:disabled {
+    opacity: 0;
+}
+
+.pure-material-checkbox > input:disabled + span {
+    color: #77ac7f;
+    cursor: initial;
+}
+
+.pure-material-checkbox > input:disabled + span::before {
+    border-color: #77ac7f;
+}
+
+.pure-material-checkbox > input:disabled + span::after {
+    background-color: #77ac7f;
+}
+
+/* 
+    #    # #    # #    # #####  ###### #####  
+    ##   # #    # ##  ## #    # #      #    # 
+    # #  # #    # # ## # #####  #####  #    # 
+    #  # # #    # #    # #    # #      #####  
+    #   ## #    # #    # #    # #      #   #  
+    #    #  ####  #    # #####  ###### #    # 
+*/
 /*custom-input-number*/
 .custom-input-number input[type="number"]::-webkit-inner-spin-button,
 .custom-input-number input[type="number"]::-webkit-outer-spin-button {
@@ -190,3 +323,5 @@
     -ms-user-select: none;
     user-select: none;
 }
+
+
