@@ -225,7 +225,7 @@
     $('#orderNowBtn').click(function() {
         console.log('window.slack_channelId', window.slack_channelId)
         axios({
-            method: 'post',
+            method: 'get',
             url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/slack/sendMessage',
             data: {
                 "channel": window.slack_channelId,
