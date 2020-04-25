@@ -1,3 +1,7 @@
+var cart = {
+    items: []
+}
+
 
 function init() { 
 
@@ -72,8 +76,6 @@ function init() {
     })
 }
 
-
-
 $('#prodModal').on('show.bs.modal', function(e) {
 
     var dataID = e.relatedTarget
@@ -112,7 +114,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
                             Additional Request
                         </p>
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="E.g. No veggies" />
+                            <input type="text" class="form-control" placeholder="E.g. No veggies" id="additionalReqInput" />
                         </div>
 
                         <div class="custom-input-number">
@@ -120,7 +122,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
                                 <i class="fas fa-minus"></i>
                             </button>
                             <input type="number" 
-                                class="cin-input basket-quantity" 
+                                class="cin-input basket-quantity" id="quatityInput"
                                 step="1" 
                                 value="0" 
                                 min="0"
@@ -151,6 +153,58 @@ $('#prodModal').on('show.bs.modal', function(e) {
         $(prod_content).append(footer);
 
         listProdOption(res.data.option_group_list);
+
+        $('#btnAddToCart').click(function(e) {
+            window.cart.items.push({
+                "menuId": res.data.menu_id,
+                "name": res.data.name,
+                "displayName": res.data.description,
+                "memo": $('#additionalReqInput').val(),
+                "basePrice": Math.round(res.data.price),
+                "price": Math.round(res.data.price),
+                "totalPrice": Math.round(res.data.price),
+                "qty": parseInt($('#quatityInput').val()),
+                "options": [{
+                    "name": "บราวชูการ์-null-null-2-0-1-h5ozslyiynR5UWTmQsPChQ==",
+                    "displayName": "บราวชูการ์",
+                    "values": [{
+                        "name": "บราวน์ชูการ์-null-null-10.00",
+                        "displayName": "บราวน์ชูการ์",
+                        "quantity": 0,
+                        "additionalPrice": 10
+                    }]
+                }, {
+                    "name": "วุ้นฟรุ๊ตสลัด-null-null-2-0-1-qmJjgepFYTWt/rw2l181Qg==",
+                    "displayName": "วุ้นฟรุ๊ตสลัด",
+                    "values": [{
+                        "name": "วุ้นฟรุ๊ตสลัด-null-null-5.00",
+                        "displayName": "วุ้นฟรุ๊ตสลัด",
+                        "quantity": 0,
+                        "additionalPrice": 5
+                    }]
+                }, {
+                    "name": "วุ้นลิ้นจี่-null-null-2-0-1-XdSginszG0Y1fNS5fabRYw==",
+                    "displayName": "วุ้นลิ้นจี่",
+                    "values": [{
+                        "name": "วุ้นลิ้นจี่-null-null-5.00",
+                        "displayName": "วุ้นลิ้นจี่",
+                        "quantity": 0,
+                        "additionalPrice": 5
+                    }]
+                }, {
+                    "name": "วุ้นสตรอเบอร์รี่-null-null-2-0-1-CeMAZdSfht0uoL40nyEfTQ==",
+                    "displayName": "วุ้นสตรอเบอร์รี่",
+                    "values": [{
+                        "name": "วุ้นสตรอเบอร์รี่-null-null-5.00",
+                        "displayName": "วุ้นสตรอเบอร์รี่",
+                        "quantity": 0,
+                        "additionalPrice": 5
+                    }]
+                }],
+                "promotionId": "",
+                "reason": null
+            })
+        })
     });
 });
 
@@ -239,4 +293,5 @@ function listProdOption(option) {
 $('#prodModal').on('hide.bs.modal', function(e) {
     $("#prod_content").empty();
 });
+
 init();

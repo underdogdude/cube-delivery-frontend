@@ -39,6 +39,9 @@
         <div class="tab-content" id="menuTabContent"></div>
     </div>
 
+    <input class="btn btn-primary" type="button" value="View Cart" id="viewCartBtn"/>
+    <input class="btn btn-success" type="button" value="Order Now" id="orderNowBtn"/>
+
     <!-- Modal -->
     <div class="modal animated slideInUp faster menu__modal" id="prodModal" tabindex="-1" role="dialog"
         aria-labelledby="prodModal" aria-hidden="true">
@@ -209,6 +212,10 @@
             $(elem).addClass("inactive");
         }
     }
+
+    $('#viewCartBtn').click(function() {
+        console.log(window.cart)
+    })
 
 </script>
 
