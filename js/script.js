@@ -155,6 +155,20 @@ $('#prodModal').on('show.bs.modal', function(e) {
         listProdOption(res.data.option_group_list);
 
         $('#btnAddToCart').click(function(e) {
+
+            // make option list
+            let optionList = [];
+
+            for (let optionGroup of res.data.option_group_list) {
+
+                let checkedList = $(`input[name=${optionGroup.option_group_id}]:checked`);
+                if (checkedList.length > 0) {
+                    
+                    console.log('optionGroup', $(`input[name=${optionGroup.option_group_id}]:checked`))
+                }
+                
+            }
+
             window.cart.items.push({
                 "menuId": res.data.menu_id,
                 "name": res.data.name,
@@ -236,6 +250,7 @@ function listProdOption(option) {
                                     <input type="radio" 
                                         name="${option_group.option_group_id}"
                                         id="${option_group.option_group_id}-${option.option_id}"
+                                        value="${option.option_id}"
                                         class="form-check-input">
 
                                     <span class="form-check-label">
@@ -252,12 +267,13 @@ function listProdOption(option) {
                         selectButtonList += `
 
                             <div class="form-check">
-                                <label  class="pure-material-checkbox"
+                                <label class="pure-material-checkbox"
                                     for="${option_group.option_group_id}-${option.option_id}">
 
                                     <input type="checkbox" 
                                         name="${option_group.option_group_id}"
                                         id="${option_group.option_group_id}-${option.option_id}"
+                                        value="${option.option_id}"
                                         class="form-check-input">
 
                                     <span class="form-check-label">

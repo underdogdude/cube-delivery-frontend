@@ -41,6 +41,7 @@
 
     <input class="btn btn-primary" type="button" value="View Cart" id="viewCartBtn"/>
     <input class="btn btn-success" type="button" value="Order Now" id="orderNowBtn"/>
+    <input class="btn btn-danger" type="button" value="Line logout" id="logoutBtn"/>
 
     <!-- Modal -->
     <div class="modal animated slideInUp faster menu__modal" id="prodModal" tabindex="-1" role="dialog"
@@ -159,7 +160,11 @@
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
 </script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="./js/vendor/bootstrap.min.js"></script>
+
+<script src="./js/liff-script.js"></script>
 <script src="./js/API.js"></script>
 <script src="./js/script.js"></script>
 
@@ -215,6 +220,202 @@
 
     $('#viewCartBtn').click(function() {
         console.log(window.cart)
+    })
+
+    $('#orderNowBtn').click(function() {
+        console.log('window.slack_channelId', window.slack_channelId)
+        axios({
+            method: 'post',
+            url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/slack/sendMessage',
+            data: {
+                "channel": window.slack_channelId,
+                "blocks": 
+                        [
+                            {
+                                "type": "context",
+                                "elements": [
+                                    {
+                                        "text": "*November 12, 2019*  |  Ordering Team Announcements",
+                                        "type": "mrkdwn"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "divider"
+                            },
+                            {
+                                "type": "section",
+                                "text": {
+                                    "type": "mrkdwn",
+                                    "text": "*Customer Detail*"
+                                }
+                            },
+                            {
+                                "type": "section",
+                                "text": {
+                                    "type": "mrkdwn",
+                                    "text": `\n\n *Name*, ${window.customer_displayName} \n\n *Phone*, 0838692401 \n\n *Address*, 1004/142 Nirun Residence 9, floor 6, building C,  Sukhumwit Road, Bang Na, Bang Na, Bangkok 10260`
+                                },
+                                "accessory": {
+                                    "type": "image",
+                                    "image_url": `${window.customer_avatar}`,
+                                    "alt_text": `${window.customer_displayName} avatar`
+                                }
+                            },
+                            {
+                                "type": "divider"
+                            },
+                            {
+                                "type": "section",
+                                "text": {
+                                    "type": "mrkdwn",
+                                    "text": ":calendar: |   *COMING ORDER*  | :calendar: "
+                                }
+                            },
+                            {
+                                "type": "section",
+                                "text": {
+                                    "type": "mrkdwn",
+                                    "text": "*Buy 3 Get 1, ROOIBOS MILK TEA*"
+                                },
+                                "accessory": {
+                                    "type": "button",
+                                    "text": {
+                                        "type": "plain_text",
+                                        "text": "x1",
+                                        "emoji": true
+                                    }
+                                }
+                            },
+                            {
+                                "type": "context",
+                                "elements": [
+                                    {
+                                        "type": "mrkdwn",
+                                        "text": "*รายการที่ 1*: \n\n • ใส่แก้ว หวานธรรมชาติ \n• ใส่แก้ว เพิ่มน้ำตาลช่อดอกมะพร้าว 3กรัม"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "context",
+                                "elements": [
+                                    {
+                                        "type": "mrkdwn",
+                                        "text": "*รายการที่ 2*: \n\n • ใส่แก้ว หวานธรรมชาติ \n• ใส่แก้ว เพิ่มน้ำตาลช่อดอกมะพร้าว 3กรัม"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "divider"
+                            },
+                            {
+                                "type": "section",
+                                "text": {
+                                    "type": "mrkdwn",
+                                    "text": "*Rooibos - LATTE ( ชารอยบอสลาเต้ )*"
+                                },
+                                "accessory": {
+                                    "type": "button",
+                                    "text": {
+                                        "type": "plain_text",
+                                        "text": "x3",
+                                        "emoji": true
+                                    }
+                                }
+                            },
+                            {
+                                "type": "context",
+                                "elements": [
+                                    {
+                                        "type": "mrkdwn",
+                                        "text": "*Topping*: \n\n •  Rooibos - Bubble"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "context",
+                                "elements": [
+                                    {
+                                        "type": "mrkdwn",
+                                        "text": "*package*: \n\n • ใส่แก้ว"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "section",
+                                "text": {
+                                    "type": "mrkdwn",
+                                    "text": "*Rooibos - LATTE ( ชารอยบอสลาเต้ )*"
+                                },
+                                "accessory": {
+                                    "type": "button",
+                                    "text": {
+                                        "type": "plain_text",
+                                        "text": "x1",
+                                        "emoji": true
+                                    }
+                                }
+                            },
+                            {
+                                "type": "context",
+                                "elements": [
+                                    {
+                                        "type": "mrkdwn",
+                                        "text": "*package*: \n\n • ใส่ขวด"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "divider"
+                            },
+                            {
+                                "type": "context",
+                                "elements": [
+                                    {
+                                        "type": "mrkdwn",
+                                        "text": "\n\n`Total Price : 1000 Baht`\n\n"
+                                    }
+                                ]
+                            },
+                                {
+                                "type": "actions",
+                                "elements": [
+                                    {
+                                        "type": "button",
+                                        "text": {
+                                            "type": "plain_text",
+                                            "emoji": true,
+                                            "text": "Approve"
+                                        },
+                                        "style": "primary",
+                                        "value": "click_me_123"
+                                    },
+                                    {
+                                        "type": "button",
+                                        "text": {
+                                            "type": "plain_text",
+                                            "emoji": true,
+                                            "text": "Deny"
+                                        },
+                                        "style": "danger",
+                                        "value": "click_me_123"
+                                    }
+                                ]
+                            }
+                        ]
+            },
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(function (response) {
+            console.log(response);
+        })
+    })
+
+    $('#logoutBtn').click(function() {
+        console.log('logout')
+        liff.logout()
     })
 
 </script>

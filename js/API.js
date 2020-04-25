@@ -1,6 +1,6 @@
 axios({
     method: 'get',
-    url: 'http://localhost:5000/cube-family-delivery-dev/asia-east2/api/menu_group'
+    url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/menu_group'
 });
 
 
@@ -9,7 +9,7 @@ var get = {
         return (
             axios({
                 method: 'get',
-                url: 'http://localhost:5000/cube-family-delivery-dev/asia-east2/api/menu_group'
+                url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/menu_group'
             })
         )
     },
@@ -18,7 +18,7 @@ var get = {
         return (
             axios({
                 method: 'get',
-                url: 'http://localhost:5000/cube-family-delivery-dev/asia-east2/api/menu/' + id
+                url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/menu/' + id
             })
         )
     },
