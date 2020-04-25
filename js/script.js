@@ -59,7 +59,7 @@ function init() {
                                             ${ Math.round(value.price) }บาท
                                         </span>
                                         <a class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#prodModal" data-id="${ value.menu_id }" >
-                                            ADD
+                                            <i class="fas fa-plus"></i>
                                         </a>
                                     </div>
                                 </div>
