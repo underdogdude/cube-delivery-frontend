@@ -268,8 +268,8 @@ function listProdOption(option) {
                                         value="${ Math.round(option.option_price) }"
                                         class="form-check-input">
 
-                                    <span class="form-check-label" id="optionName-${option_group.option_group_id}-${option.option_id}">
-                                    <p>
+                                    <span class="form-check-label"></span>
+                                    <p id="optionName-${option_group.option_group_id}-${option.option_id}">
                                         ${option.option_name}
                                     </p>
                                 </label>
@@ -294,8 +294,8 @@ function listProdOption(option) {
                                         value="${ Math.round(option.option_price) }"
                                         class="form-check-input">
 
-                                    <span class="form-check-label" id="optionName-${option_group.option_group_id}-${option.option_id}">
-                                    <p>
+                                    <span class="form-check-label"></span>
+                                    <p id="optionName-${option_group.option_group_id}-${option.option_id}">
                                         ${option.option_name}
                                     </p>
                                    

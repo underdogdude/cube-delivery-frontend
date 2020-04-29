@@ -136,14 +136,13 @@
     margin-bottom: 60px;
 }
 
-.menu__modal  .modal-body .product__img{
-    
-    /* height: 45%;  */
-    /* background-attachment: fixed;
+/* .menu__modal  .modal-body .product__img{
+    height: 45%; 
+    background-attachment: fixed;
     background-position: center center;
     background-repeat: no-repeat;
-    background-size: cover; */
-}
+    background-size: cover;
+} */
 
 .menu__modal  .modal-body .product__order{
     padding: 1rem;
