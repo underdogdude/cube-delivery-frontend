@@ -31,6 +31,23 @@
                     CUBE FAMILY
                 </strong>
             </a>
+
+            <div class="user-menu-wrap">
+                <a class="mini-photo-wrapper" href="#"><img class="mini-photo" src="https://image.flaticon.com/icons/svg/149/149071.svg" width="36" height="36"/></a>
+                <div class="menu-container">
+                    <ul class="user-menu">
+                        <li class="user-menu__item">
+                            <button class="btn btn__signout text-danger" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Log Out
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+                <!-- {/* <img src={logo} alt="" width={"100px"}/> */} -->
+                <!-- <img src={avatarURL} alt="" className="avartar" /> -->
+                
         </nav>
     </header>
 
@@ -41,7 +58,7 @@
 
     <input class="btn btn-primary" type="button" value="View Cart" id="viewCartBtn"/>
     <input class="btn btn-success" type="button" value="Order Now" id="orderNowBtn"/>
-    <input class="btn btn-danger" type="button" value="Line logout" id="logoutBtn"/>
+    <!-- <input class="btn btn-danger" type="butto  n" value="Line logout" id="logoutBtn"/> -->
 
     <!-- Modal -->
     <div class="modal animated slideInUp faster menu__modal" id="prodModal" tabindex="-1" role="dialog"
@@ -184,10 +201,12 @@
             $input.val(temp);
             amount = temp;
             changeBtnAddToCartState();
+            updatePriceAmount(amount);
         }else{
             $input.val(max);
             amount = max;
             changeBtnAddToCartState();
+            updatePriceAmount(amount);
         }
     });
 
@@ -202,10 +221,12 @@
             $input.val(temp);
             amount = temp;
             changeBtnAddToCartState();
+            updatePriceAmount(amount);
         }else{
             $input.val(min);
             amount = min;
             changeBtnAddToCartState();
+            updatePriceAmount(amount);
         }
     });
 
@@ -218,6 +239,12 @@
             $(elem).addClass("inactive");
         }
     }
+
+    // AVARTAR CLICKABLE
+    document.querySelector('.mini-photo-wrapper').addEventListener('click', function() {
+        document.querySelector('.menu-container').classList.toggle('active');
+    });
+
 
     $('#viewCartBtn').click(function() {
         console.log(window.cart)

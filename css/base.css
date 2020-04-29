@@ -21,40 +21,110 @@ body {
     -ms-overflow-style: none;
 }
 
-.font-weight-light { 
+.font-weight-light {
     font-family: cubeFont-light;
 }
-.font-weight-bold { 
+.font-weight-bold {
     font-family: cubeFont-bold;
 }
 
-.text__primary { 
-    color: #77AC7F; 
+.text__primary {
+    color: #77ac7f;
 }
-.text__secondary { 
+.text__secondary {
     color: #707070;
 }
-.text__ellipsis{ 
+.text__ellipsis {
     overflow: hidden;
-    white-space:nowrap;
-    text-overflow:ellipsis;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 ::-webkit-scrollbar {
     display: none;
 }
 
-.modal .close-left {  
+.modal .close-left {
     margin: -1rem -1rem -1rem -1rem;
 }
 
-.btn__primary { 
+.btn__primary {
     background: #699670;
     color: white;
 }
 
-.inactive { 
+.inactive {
     color: #cdcdcd;
     background: #f6f6f6;
     pointer-events: none;
+}
+
+/* Avartar drop down */
+
+.user-menu-wrap {
+    position: relative;
+    width: 36px;
+}
+
+.mini-photo-wrapper {
+    display: block;
+}
+
+.mini-photo {
+    border-radius: 50%;
+}
+
+.menu-container {
+    visibility: hidden;
+    opacity: 0;
+}
+.menu-container.active {
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.user-menu {
+    list-style: none;
+    padding-left: 0;
+    position: absolute;
+    right: -22px;
+    background-color: #fff;
+    width: 120px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 10px;
+}
+.user-menu .user-menu-link {
+    display: block;
+    text-decoration: none;
+    color: #444;
+    font-size: 14px;
+    padding: 5px 10px;
+}
+.user-menu .user-menu-link:hover {
+    background-color: #4183c4;
+    color: #fff;
+}
+.user-menu:before {
+    position: absolute;
+    top: -16px;
+    left: 72px;
+    display: inline-block;
+    content: "";
+    border: 8px solid transparent;
+    border-bottom-color: #ccc;
+    border-bottom-color: rgba(0, 0, 0, 0.15);
+}
+.user-menu:after {
+    position: absolute;
+    top: -14px;
+    left: 73px;
+    display: inline-block;
+    content: "";
+    border: 7px solid transparent;
+    border-bottom-color: #fff;
 }
