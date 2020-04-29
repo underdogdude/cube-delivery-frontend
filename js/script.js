@@ -1,5 +1,5 @@
 var cart = {
-    items: []
+    items: {}
 }
 
 
@@ -157,67 +157,75 @@ $('#prodModal').on('show.bs.modal', function(e) {
         $('#btnAddToCart').click(function(e) {
 
             // make option list
-            let optionList = [];
+            var optionGroupList = [];
+            var hashOptionGroupList = '';
+            for (var optionGroup of res.data.option_group_list) {
 
-            for (let optionGroup of res.data.option_group_list) {
-
-                let checkedList = $(`input[name=${optionGroup.option_group_id}]:checked`);
+                var checkedList = $(`input[name=${optionGroup.option_group_id}]:checked`);
                 if (checkedList.length > 0) {
-                    
-                    console.log('optionGroup', $(`input[name=${optionGroup.option_group_id}]:checked`))
+
+                    let optionList = [];
+                    var radioButtonId = $(`input[name=${optionGroup.option_group_id}]:checked`).attr('id');
+                    var optionGroupId = radioButtonId.split('-')[0];
+                    var optionGroupName = $(`#optionGroupName-${optionGroupId}`).text().trim();
+
+                    $(`input[name=${optionGroup.option_group_id}]:checked`).each(function(index) {
+                        var radioButtonId = $(`input[name=${optionGroup.option_group_id}]:checked`).eq(index).attr('id');
+                        var optionId = radioButtonId.split('-')[1];
+
+                        var optionName = $(`#optionName-${optionGroupId}-${optionId}`).text().trim();
+                        var optionPrice = $(`#optionPrice-${optionGroupId}-${optionId}`).text().trim();
+
+                        optionList.push({
+                            "name": optionName,
+                            "displayName": optionName,
+                            "quantity": 1,
+                            "additionalPrice": optionPrice
+                        })
+                        
+                        console.log('optionGroupName', radioButtonId, optionGroupId, optionId, optionGroupName, optionName, optionPrice)
+                    })
+
+                    optionGroupList.push({
+                        "name": optionGroupName,
+                        "displayName": optionGroupName,
+                        "values": optionList
+                    })
+
+                    hashOptionGroupList = md5(JSON.stringify(optionGroupList));
                 }
                 
             }
 
-            window.cart.items.push({
-                "menuId": res.data.menu_id,
-                "name": res.data.name,
-                "displayName": res.data.description,
-                "memo": $('#additionalReqInput').val(),
-                "basePrice": Math.round(res.data.price),
-                "price": Math.round(res.data.price),
-                "totalPrice": Math.round(res.data.price),
-                "qty": parseInt($('#quatityInput').val()),
-                "options": [{
-                    "name": "บราวชูการ์-null-null-2-0-1-h5ozslyiynR5UWTmQsPChQ==",
-                    "displayName": "บราวชูการ์",
-                    "values": [{
-                        "name": "บราวน์ชูการ์-null-null-10.00",
-                        "displayName": "บราวน์ชูการ์",
-                        "quantity": 0,
-                        "additionalPrice": 10
-                    }]
-                }, {
-                    "name": "วุ้นฟรุ๊ตสลัด-null-null-2-0-1-qmJjgepFYTWt/rw2l181Qg==",
-                    "displayName": "วุ้นฟรุ๊ตสลัด",
-                    "values": [{
-                        "name": "วุ้นฟรุ๊ตสลัด-null-null-5.00",
-                        "displayName": "วุ้นฟรุ๊ตสลัด",
-                        "quantity": 0,
-                        "additionalPrice": 5
-                    }]
-                }, {
-                    "name": "วุ้นลิ้นจี่-null-null-2-0-1-XdSginszG0Y1fNS5fabRYw==",
-                    "displayName": "วุ้นลิ้นจี่",
-                    "values": [{
-                        "name": "วุ้นลิ้นจี่-null-null-5.00",
-                        "displayName": "วุ้นลิ้นจี่",
-                        "quantity": 0,
-                        "additionalPrice": 5
-                    }]
-                }, {
-                    "name": "วุ้นสตรอเบอร์รี่-null-null-2-0-1-CeMAZdSfht0uoL40nyEfTQ==",
-                    "displayName": "วุ้นสตรอเบอร์รี่",
-                    "values": [{
-                        "name": "วุ้นสตรอเบอร์รี่-null-null-5.00",
-                        "displayName": "วุ้นสตรอเบอร์รี่",
-                        "quantity": 0,
-                        "additionalPrice": 5
-                    }]
-                }],
-                "promotionId": "",
-                "reason": null
-            })
+
+            console.log('optionGroupList', optionGroupList, hashOptionGroupList)
+
+            // hashOptionGroupList is for check user chooice same menu with same option (md5 of optionlist)
+
+            var refCardItem = window.cart.items[`${res.data.menu_id}-${hashOptionGroupList}`];
+
+            // In the first select [refCardItem] will be undefined because it doesn't have this menu with this option yet;
+            if (refCardItem == undefined) {
+                refCardItem = {
+                    "menuId": res.data.menu_id,
+                    "name": res.data.name,
+                    "displayName": res.data.description,
+                    "memo": $('#additionalReqInput').val(),
+                    "basePrice": Math.round(res.data.price),
+                    "price": Math.round(res.data.price),
+                    "totalPrice": Math.round(res.data.price),
+                    "qty": parseInt($('#quatityInput').val()),
+                    "options": optionGroupList,
+                    "promotionId": "",
+                    "reason": null
+                }
+                window.cart.items[`${res.data.menu_id}-${hashOptionGroupList}`] = refCardItem
+            } else {
+                var currentQty = refCardItem.qty;
+                refCardItem.memo = $('#additionalReqInput').val();
+                refCardItem.qty = parseInt(currentQty) + parseInt($('#quatityInput').val());
+            }
+            
         })
     });
 });
@@ -253,7 +261,7 @@ function listProdOption(option) {
                                         value="${option.option_id}"
                                         class="form-check-input">
 
-                                    <span class="form-check-label">
+                                    <span class="form-check-label" id="optionName-${option_group.option_group_id}-${option.option_id}">
                                         ${option.option_name}
                                     </span>
                                 </label>
@@ -276,7 +284,7 @@ function listProdOption(option) {
                                         value="${option.option_id}"
                                         class="form-check-input">
 
-                                    <span class="form-check-label">
+                                    <span class="form-check-label" id="optionName-${option_group.option_group_id}-${option.option_id}">
                                         ${option.option_name}
                                     </span>
                                 </label>
@@ -284,6 +292,7 @@ function listProdOption(option) {
                                 <b class="prod__option-price">
                                     ${ Math.round(option.option_price) } บาท
                                 </b>
+                                <span style="display:none;" id="optionPrice-${option_group.option_group_id}-${option.option_id}">${ Math.round(option.option_price) }</span>
                             </div>
                         `;
                     }
@@ -296,6 +305,7 @@ function listProdOption(option) {
                         </span>
                         ${ option_group.option_group_name }
                     </p>
+                    <span style="display:none;" id="optionGroupName-${option_group.option_group_id}">${ option_group.option_group_name }</span>
                     <div class="prod__option-radio">
                         ${selectButtonList}
                     </div>

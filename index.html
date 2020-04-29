@@ -163,6 +163,7 @@
 <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="./js/vendor/bootstrap.min.js"></script>
+<script src="./js/vendor/md5.min.js"></script>
 
 <script src="./js/liff-script.js"></script>
 <script src="./js/API.js"></script>
@@ -225,7 +226,7 @@
     $('#orderNowBtn').click(function() {
         console.log('window.slack_channelId', window.slack_channelId)
         axios({
-            method: 'get',
+            method: 'post',
             url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/slack/sendMessage',
             data: {
                 "channel": window.slack_channelId,

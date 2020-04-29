@@ -36,7 +36,7 @@ function appInit() {
         var slackChannelName = clean_display_name(profile.displayName);
 
         axios({
-            method: 'get',
+            method: 'post',
             url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/slack/createChannel',
             data: {
                 "name": slackChannelName,
@@ -47,7 +47,6 @@ function appInit() {
             }
         })
         .then(function (response) {
-            console.log(response);
             window.slack_channelId = response.data.channelId
         })
           
