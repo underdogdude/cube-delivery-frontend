@@ -332,6 +332,7 @@ $('#prodModal').on('hide.bs.modal', function(e) {
     // Clear all price
     current_price = 0;
     product_price = 0;
+    amount = 0;
     amount_price = 0;
     option_price = 0;
 });
@@ -342,6 +343,7 @@ init();
 var amount_price = 0;
 function updatePriceAmount(amount) { 
 
+    amount = amount;
     if(amount != 0) { 
         // current_price = product_price * amount;
         amount_price = product_price * amount;
@@ -384,7 +386,7 @@ function updatePrice() {
         current_price = product_price + option_price;
 
     }else { 
-        current_price = amount_price + option_price;
+        current_price = amount_price + (option_price * amount);
     }
     $("#current_price").html(current_price.toLocaleString());
 }
