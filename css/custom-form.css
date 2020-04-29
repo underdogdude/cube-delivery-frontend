@@ -40,7 +40,7 @@
 /* Span */
 .pure-material-radio > span {
     display: inline-block;
-    width: 100%;
+    /* width: 100%; */
     cursor: pointer;
 }
 
@@ -171,7 +171,7 @@
 /* Span */
 .pure-material-checkbox > span {
     display: inline-block;
-    width: 100%;
+    /* width: 100%; */
     cursor: pointer;
 }
 

@@ -1,6 +1,9 @@
 var cart = {
     items: []
 }
+var current_price = 0
+var product_price;
+var all_option_lists = [];
 
 
 function init() { 
@@ -62,7 +65,7 @@ function init() {
                                         <span class="price">
                                             ${ Math.round(value.price) }บาท
                                         </span>
-                                        <a class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#prodModal" data-id="${ value.menu_id }" >
+                                        <a class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#prodModal" data-id="${ value.menu_id }" href="#">
                                             <i class="fas fa-plus"></i>
                                         </a>
                                     </div>
@@ -82,8 +85,6 @@ $('#prodModal').on('show.bs.modal', function(e) {
     var prod_content = $("#prod_content");
     var id = $(dataID).attr("data-id") 
 
-    console.log(id,'id');
-
     get.menu(id).then(res=> {
         console.log(res,'test');
         var header = `
@@ -99,8 +100,8 @@ $('#prodModal').on('show.bs.modal', function(e) {
 
         var body = `
                 <div class="modal-body">
-                    <div class="product__img"
-                        style="background-image: url('https://d2waa76v2pig3r.cloudfront.net/${res.data.image_key}');">
+                    <div class="product__img">
+                        <img src="https://d2waa76v2pig3r.cloudfront.net/${res.data.image_key}"  width="100%" />
                     </div>
                     <div class="product__order">
                         <section class="prod__desc">
@@ -126,7 +127,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
                                 step="1" 
                                 value="0" 
                                 min="0"
-                                max="10"
+                                max="99"
                             />
                             <button type="button" class="cin-btn cin-btn-1 cin-btn-md cin-increment">
                                 <i class="fas fa-plus"></i>
@@ -136,14 +137,18 @@ $('#prodModal').on('show.bs.modal', function(e) {
                 </div>
             </div>
         `;
-
+        product_price = Math.round(res.data.price);
+        current_price = Math.round(res.data.price);
         var footer = `
             <div class="modal-footer">
                 <button type="button" class="btn btn-lg btn__primary btn-tocart inactive" id="btnAddToCart">
                     <span>
                         Add to Cart
                     </span>
-                    <span class="">${ Math.round(res.data.price) }บาท</span>
+                    <span class="" >
+                        <span id="current_price">${ product_price.toLocaleString() }</span>
+                        บาท
+                    </span>
                 </button>
             </div>
         `;
@@ -153,6 +158,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
         $(prod_content).append(footer);
 
         listProdOption(res.data.option_group_list);
+
 
         $('#btnAddToCart').click(function(e) {
 
@@ -225,6 +231,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
 
 function listProdOption(option) { 
 
+    all_option_lists = option;
     
     if (option) {
         option.forEach((value) => {
@@ -244,46 +251,53 @@ function listProdOption(option) {
                         selectButtonList += `
 
                             <div class="form-check">
-                                <label class="pure-material-radio"  
+                                <label class="pure-material-radio form-check__labelwrapper"  
                                     for="${option_group.option_group_id}-${option.option_id}">
 
                                     <input type="radio" 
                                         name="${option_group.option_group_id}"
                                         id="${option_group.option_group_id}-${option.option_id}"
-                                        value="${option.option_id}"
+                                        value="${ Math.round(option.option_price) }"
                                         class="form-check-input">
 
-                                    <span class="form-check-label">
+                                    <span class="form-check-label"></span>
+                                    <p> 
                                         ${option.option_name}
-                                    </span>
+                                    </p>
                                 </label>
 
-                                <b class="prod__option-price">
-                                ${ Math.round(option.option_price) } บาท
-                                </b>
+                                <label class="pure-material-radio"  
+                                for="${option_group.option_group_id}-${option.option_id}">
+                                    <b class="prod__option-price">
+                                    ${ Math.round(option.option_price) } บาท
+                                    </b>
+                                </label>
                             </div>
                         `;
                     } else {
                         selectButtonList += `
 
                             <div class="form-check">
-                                <label class="pure-material-checkbox"
+                                <label class="pure-material-checkbox form-check__labelwrapper"
                                     for="${option_group.option_group_id}-${option.option_id}">
-
                                     <input type="checkbox" 
                                         name="${option_group.option_group_id}"
                                         id="${option_group.option_group_id}-${option.option_id}"
-                                        value="${option.option_id}"
+                                        value="${ Math.round(option.option_price) }"
                                         class="form-check-input">
-
-                                    <span class="form-check-label">
+                                        
+                                    <span class="form-check-label"></span>
+                                    <p> 
                                         ${option.option_name}
-                                    </span>
+                                    </p>
+                                   
                                 </label>
-                                
-                                <b class="prod__option-price">
-                                    ${ Math.round(option.option_price) } บาท
-                                </b>
+                                <label class="pure-material-radio"  
+                                    for="${option_group.option_group_id}-${option.option_id}">
+                                    <b class="prod__option-price">
+                                        ${ Math.round(option.option_price) } บาท
+                                    </b>
+                                </label>
                             </div>
                         `;
                     }
@@ -304,10 +318,74 @@ function listProdOption(option) {
             }  
         })
     }
+
+    $('input:radio').change(function () {
+        updatePriceOption();
+    });
+    $('input:checkbox').change(function () {
+        updatePriceOption();
+    });
 }
 
 $('#prodModal').on('hide.bs.modal', function(e) {
     $("#prod_content").empty();
+    // Clear all price
+    current_price = 0;
+    product_price = 0;
+    amount_price = 0;
+    option_price = 0;
 });
 
 init();
+
+
+var amount_price = 0;
+function updatePriceAmount(amount) { 
+
+    if(amount != 0) { 
+        // current_price = product_price * amount;
+        amount_price = product_price * amount;
+        updatePrice();
+    }
+}
+
+var option_price = 0;
+function updatePriceOption() { 
+
+    option_price = 0; // set value to zero.
+
+    for (optionGroup of all_option_lists) {
+
+        let checkedList = $(`input[name=${optionGroup.option_group_id}]:checked`);
+
+        if (checkedList.length > 0) {
+
+            var option_selected = Number($(`input[name=${optionGroup.option_group_id}]:checked`).val());
+            
+            if(!isNaN(option_selected)) { 
+                option_price += option_selected;
+            }
+        }
+    }
+    updatePrice();
+}
+
+/*
+    @param
+    ${current_price} = total price 
+    ${product_price} = 1piece of price
+    ${amount_price} = kind a all total but exclude option_price
+    ${option_price} = option price
+*/
+
+function updatePrice() { 
+
+    if (amount_price == 0) {
+        current_price = product_price + option_price;
+
+    }else { 
+        current_price = amount_price + option_price;
+    }
+    $("#current_price").html(current_price.toLocaleString());
+}
+
