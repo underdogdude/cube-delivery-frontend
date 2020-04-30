@@ -431,5 +431,13 @@ var myCart = {
         $("#mycart_total").html(get_total.toLocaleString());
         $("#mycart_amount").html(get_amount);
         $("#mycart__btn_container").css("display","block");
+    },
+    clicked: function() { 
+        console.log('add cart slick');
+        var element =  document.querySelector('main')
+            element.classList.add('animated', 'slideOutLeft')
+            element.addEventListener('animationend', function() { 
+                window.location = "./mycart.html";
+            })
     }
 }

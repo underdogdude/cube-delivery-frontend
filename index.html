@@ -50,27 +50,27 @@
                 
         </nav>
     </header>
+    <main>
+        <div class="container-fluid p-0">
+            <ul class="nav nav-tabs menu__tab flex-nowrap" id="menuTab" role="tablist"></ul>
+            <div class="tab-content" id="menuTabContent"></div>
+        </div>
 
-    <div class="container-fluid p-0">
-        <ul class="nav nav-tabs menu__tab flex-nowrap" id="menuTab" role="tablist"></ul>
-        <div class="tab-content" id="menuTabContent"></div>
-    </div>
+        <input class="btn btn-primary" type="button" value="View Cart" id="viewCartBtn"/>
+        <input class="btn btn-success" type="button" value="Order Now" id="orderNowBtn"/>
+        <!-- <input class="btn btn-danger" type="butto  n" value="Line logout" id="logoutBtn"/> -->
 
-    <input class="btn btn-primary" type="button" value="View Cart" id="viewCartBtn"/>
-    <input class="btn btn-success" type="button" value="Order Now" id="orderNowBtn"/>
-    <!-- <input class="btn btn-danger" type="butto  n" value="Line logout" id="logoutBtn"/> -->
-
-    <div class="mycart__btn-container" id="mycart__btn_container" style="display: none;">
-        <button class="btn btn__primary mycart__btn shadow-lg">
-            <span class="amount" id="mycart_amount">1</span>
-            <span class="title">My Cart</span>
-            <span class="total">
-                <p class="total_label">TOTAL</p>
-                <span id="mycart_total">100</span>
-            </span>
-        </button>
-    </div>
-
+        <div class="mycart__btn-container" id="mycart__btn_container" style="display: none;">
+            <button class="btn btn__primary mycart__btn shadow-lg" onclick="myCart.clicked()">
+                <span class="amount" id="mycart_amount">1</span>
+                <span class="title">My Cart</span>
+                <span class="total">
+                    <p class="total_label">TOTAL</p>
+                    <span id="mycart_total">100</span>
+                </span>
+            </button>
+        </div>
+    </main>
     <!-- Modal -->
     <div class="modal animated slideInUp faster menu__modal" id="prodModal" tabindex="-1" role="dialog"
         aria-labelledby="prodModal" aria-hidden="true">
