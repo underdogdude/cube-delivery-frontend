@@ -1,6 +1,7 @@
 var cart = {
     items: {}
 }
+
 var current_price = 0
 var product_price;
 var all_option_lists = [];
@@ -165,6 +166,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
             // make option list
             var optionGroupList = [];
             var hashOptionGroupList = '';
+            var totalAdditionalPrice = 0;
             for (var optionGroup of res.data.option_group_list) {
 
                 var checkedList = $(`input[name=${optionGroup.option_group_id}]:checked`);
@@ -186,8 +188,10 @@ $('#prodModal').on('show.bs.modal', function(e) {
                             "name": optionName,
                             "displayName": optionName,
                             "quantity": 1,
-                            "additionalPrice": optionPrice
-                        })
+                            "additionalPrice": parseInt(optionPrice)
+                        });
+
+                        totalAdditionalPrice += parseInt(optionPrice)
                         
                         console.log('optionGroupName', radioButtonId, optionGroupId, optionId, optionGroupName, optionName, optionPrice)
                     })
@@ -208,7 +212,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
 
             // hashOptionGroupList is for check user chooice same menu with same option (md5 of optionlist)
 
-            var refCardItem = window.cart.items[`${res.data.menu_id}-${hashOptionGroupList}`];
+            var refCardItem = cart.items[`${res.data.menu_id}-${hashOptionGroupList}`];
 
             // In the first select [refCardItem] will be undefined because it doesn't have this menu with this option yet;
             if (refCardItem == undefined) {
@@ -219,18 +223,20 @@ $('#prodModal').on('show.bs.modal', function(e) {
                     "memo": $('#additionalReqInput').val(),
                     "basePrice": Math.round(res.data.price),
                     "price": Math.round(res.data.price),
-                    "totalPrice": Math.round(res.data.price),
+                    "totalPrice": Math.round(res.data.price) + totalAdditionalPrice,
                     "qty": parseInt($('#quatityInput').val()),
                     "options": optionGroupList,
                     "promotionId": "",
                     "reason": null
                 }
-                window.cart.items[`${res.data.menu_id}-${hashOptionGroupList}`] = refCardItem
+                cart.items[`${res.data.menu_id}-${hashOptionGroupList}`] = refCardItem
             } else {
                 var currentQty = refCardItem.qty;
                 refCardItem.memo = $('#additionalReqInput').val();
                 refCardItem.qty = parseInt(currentQty) + parseInt($('#quatityInput').val());
             }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
             
             addtoCart();
         });
@@ -419,13 +425,13 @@ function addtoCart() {
 }
 
 var myCart = { 
-    // TODO: THIS FUCKING PRICE STILL NOT INCLUDING A OPTION PRICE
     showBtn: function() { 
-        var get_amount = Object.keys(window.cart.items).length;
+        var cartItems = JSON.parse(localStorage.getItem('cart')).items;
+        var get_amount = Object.keys(cartItems).length;
         var get_total = 0;
-        for (var i in window.cart.items){ 
+        for (var i in cartItems){ 
 
-            get_total += (window.cart.items[i].totalPrice * window.cart.items[i].qty);
+            get_total += (cartItems[i].totalPrice * cartItems[i].qty);
         }
         
         $("#mycart_total").html(get_total.toLocaleString());

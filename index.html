@@ -57,6 +57,7 @@
         </div>
 
         <input class="btn btn-primary" type="button" value="View Cart" id="viewCartBtn"/>
+        <input class="btn btn-default" type="button" value="Clear Cart" id="clearCartBtn"/>
         <input class="btn btn-success" type="button" value="Order Now" id="orderNowBtn"/>
         <!-- <input class="btn btn-danger" type="butto  n" value="Line logout" id="logoutBtn"/> -->
 
@@ -103,9 +104,12 @@
 
 <script>
     
+    var cartItems = JSON.parse(localStorage.getItem('cart')).items;
+
     // check mycart btn
-    if(Object.keys(window.cart.items).length > 1) { 
+    if(Object.keys(JSON.parse(localStorage.getItem('cart')).items).length > 0) { 
         $("#mycart__btn_container").css("display","block");
+        myCart.showBtn();
     }else { 
         $("#mycart__btn_container").css("display","none");
     }
@@ -169,7 +173,12 @@
 
 
     $('#viewCartBtn').click(function() {
-        console.log(window.cart)
+        let cart = localStorage.getItem('cart')
+        console.log(JSON.parse(cart))
+    })
+
+    $('#clearCartBtn').click(function() {
+        localStorage.setItem('cart', JSON.stringify({ items: {}}))
     })
 
     $('#orderNowBtn').click(function() {
