@@ -232,7 +232,8 @@ $('#prodModal').on('show.bs.modal', function(e) {
                 refCardItem.qty = parseInt(currentQty) + parseInt($('#quatityInput').val());
             }
             
-        })
+            addtoCart();
+        });
     });
 });
 
@@ -401,3 +402,34 @@ function updatePrice() {
     $("#current_price").html(current_price.toLocaleString());
 }
 
+
+function addtoCart() { 
+    var element = document.querySelector('#prodModal');
+        element.classList.add('slideOutDown');
+
+        element.addEventListener('animationend', function() { 
+            // class modal when CLICK ADDTOCART ONLY!
+            if($(this).hasClass('slideOutDown')) { 
+                element.classList.remove('slideOutDown');
+                $('#prodModal').modal('hide');
+            }
+        });
+
+    myCart.showBtn();
+}
+
+var myCart = { 
+    // TODO: THIS FUCKING PRICE STILL NOT INCLUDING A OPTION PRICE
+    showBtn: function() { 
+        var get_amount = Object.keys(window.cart.items).length;
+        var get_total = 0;
+        for (var i in window.cart.items){ 
+
+            get_total += (window.cart.items[i].totalPrice * window.cart.items[i].qty);
+        }
+        
+        $("#mycart_total").html(get_total.toLocaleString());
+        $("#mycart_amount").html(get_amount);
+        $("#mycart__btn_container").css("display","block");
+    }
+}

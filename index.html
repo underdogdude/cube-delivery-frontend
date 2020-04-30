@@ -60,110 +60,25 @@
     <input class="btn btn-success" type="button" value="Order Now" id="orderNowBtn"/>
     <!-- <input class="btn btn-danger" type="butto  n" value="Line logout" id="logoutBtn"/> -->
 
+    <div class="mycart__btn-container" id="mycart__btn_container" style="display: none;">
+        <button class="btn btn__primary mycart__btn shadow-lg">
+            <span class="amount" id="mycart_amount">1</span>
+            <span class="title">My Cart</span>
+            <span class="total">
+                <p class="total_label">TOTAL</p>
+                <span id="mycart_total">100</span>
+            </span>
+        </button>
+    </div>
+
     <!-- Modal -->
     <div class="modal animated slideInUp faster menu__modal" id="prodModal" tabindex="-1" role="dialog"
         aria-labelledby="prodModal" aria-hidden="true">
         <div class="modal__dialog" role="document">
             <div class="modal-content" id="prod_content">
-                <!-- <div class="modal-header">
-                    <button type="button" class="close close-left mr-1" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <span class="text__ellipsis">
-                        Rooibos - MILK TEA (ชานมรอยบอส) dsfalsmdflsdkmf
-                    </span>
-                </div> -->
-                <!-- <div class="modal-body">
-                    <div class="product__img"
-                        style="background-image: url('https://globalassets.starbucks.com/assets/7fe2123728f844849ae4f9ea01473468.jpg');">
-                    </div>
-                    <div class="product__order">
-                        <section class="prod__desc">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec condimentum ipsum nec nibh
-                        </section>
-                        <section class="prod__option">
-                            <p class="prod__option-title">
-                                title
-                            </p>
-                            <div class="prod__option-radio">
-                                <div class="form-check">
-                                    <label class="pure-material-radio">
-                                        <input type="radio" name="group" class="form-check-input">
-                                        <span class="form-check-label">Radio Option 2</span>
-                                    </label>
-                                    <b class="prod__option-price">
-                                        120 บาท
-                                    </b>
-                                </div>
-                                <div class="form-check">
-                                    <label class="pure-material-radio">
-                                        <input type="radio" name="group" class="form-check-input">
-                                        <span class="form-check-label">Radio Option 2</span>
-                                    </label>
-                                    <b class="prod__option-price">
-                                        120 บาท
-                                    </b>
-                                </div>
-                            </div>
-                        </section>
-                        <section class="prod__option">
-                            <p class="prod__option-title">
-                                <span class="text__primary">
-                                    *
-                                </span>
-                                title2
-                            </p>
-                            <div class="prod__option-radio">
-                                <div class="form-check">
-                                    <label class="pure-material-radio">
-                                        <input type="radio" name="group" class="form-check-input">
-                                        <span class="form-check-label">Radio Option 2</span>
-                                    </label>
-                                    <b class="prod__option-price">
-                                        120 บาท
-                                    </b>
-                                </div>
-                                <div class="form-check">
-                                    <label class="pure-material-radio">
-                                        <input type="radio" name="group" class="form-check-input">
-                                        <span class="form-check-label">Radio Option 2</span>
-                                    </label>
-                                    <b class="prod__option-price">
-                                        120 บาท
-                                    </b>
-                                </div>
-                            </div>
-                        </section>
-                        <section class="prod__option">
-                            <p class="prod__option-title">
-                                Additional Request
-                            </p>
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="E.g. No veggies" />
-                            </div>
-
-
-                            <div class="custom-input-number">
-                                <button type="button" class="cin-btn cin-btn-1 cin-btn-md cin-decrement">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <input type="number" 
-                                    class="cin-input basket-quantity" 
-                                    step="1" 
-                                    value="0" 
-                                    min="0"
-                                    max="10"
-                                />
-                                <button type="button" class="cin-btn cin-btn-1 cin-btn-md cin-increment">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-
-                        </section>
-                    </div>
-
-                </div> -->
-               
+                <!-- 
+                    JAVASCRIPT INSERT HERE
+                -->
             </div>
         </div>
     </div>
@@ -188,6 +103,13 @@
 
 <script>
     
+    // check mycart btn
+    if(Object.keys(window.cart.items).length > 1) { 
+        $("#mycart__btn_container").css("display","block");
+    }else { 
+        $("#mycart__btn_container").css("display","none");
+    }
+
     var amount = 0;
 
     $(document).on('click', '.custom-input-number .cin-increment', function (e) {

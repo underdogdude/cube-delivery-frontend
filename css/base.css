@@ -48,7 +48,8 @@ body {
     margin: -1rem -1rem -1rem -1rem;
 }
 
-.btn__primary {
+.btn__primary,
+.btn__primary:hover {
     background: #699670;
     color: white;
 }
