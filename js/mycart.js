@@ -338,5 +338,6 @@ function checkout() {
     })
     .then(function (response) {
         console.log(response);
+        localStorage.removeItem('cart');
     })
 }
