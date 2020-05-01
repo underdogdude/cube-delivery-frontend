@@ -284,8 +284,10 @@ function checkout() {
 
     var cartArr = Object.values(cartCheckout.items);
     var totalCartPrice = cartArr.reduce(function(total, num) {
-        return total + num.totalPrice;
+        return total + (num.totalPrice * num.qty);
     }, 0);
+
+    console.log('totalCartPrice', totalCartPrice)
 
     blockArray.push({
         "type": "context",
@@ -323,7 +325,6 @@ function checkout() {
         ]
     });
 
-    console.log(blockArray)
     axios({
             method: 'post',
             url: 'http://localhost:5000/cube-family-delivery-dev/asia-east2/api/slack/sendMessage',
