@@ -44,3 +44,15 @@ var loading = {
         $(this.elem).hide();
     }
 }
+
+
+    // AVARTAR CLICKABLE
+    document.querySelector('.mini-photo-wrapper').addEventListener('click', function() {
+        document.querySelector('.menu-container').classList.toggle('active');
+    });
+
+
+$('#logoutBtn').click(function() {
+    console.log('logout')
+    liff.logout()
+})

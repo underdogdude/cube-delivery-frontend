@@ -101,10 +101,14 @@ var cartLists = {
                     </div>
                 </div>
                 <div class="cartlist__footer">
-                    <span class="price">
-                        ${ (items[i].totalPrice * items[i].qty).toLocaleString()}
-                        บาท
-                    </span>
+                    <div class="d-flex flex-column">
+                        <i class="morerequest text__primary">${ items[i].memo}</i>
+                        <span class="price">
+                            ${ (items[i].totalPrice * items[i].qty).toLocaleString()}
+                            บาท
+                        </span>
+                    </div>
+                    
                     <div class="custom-input-checkout">
                         <button type="button" class="cic-btn cic-btn-1 cic-btn-small cic-decrement"
                             onclick="amount_btn.decrease('${i}')">
