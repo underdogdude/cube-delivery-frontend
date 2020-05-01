@@ -7,17 +7,6 @@ var product_price;
 var all_option_lists = [];
 
 
-var loading = { 
-    elem : $("#loading") ,
-    show : function() {
-
-        $(this.elem).show();
-    },
-    hide: function()  {
-
-        $(this.elem).hide();
-    }
-}
 
 function init() { 
 
@@ -253,8 +242,18 @@ $('#prodModal').on('show.bs.modal', function(e) {
                 refCardItem.qty = parseInt(currentQty) + parseInt($('#quatityInput').val());
             }
 
-            localStorage.setItem('cart', JSON.stringify(cart));
-            
+            // cart.item มีแน่อน
+            if(cartFunction.hasItem()) { 
+                // ต้องเอาไปเติม
+                var cartInLocal = cartFunction.getItem(); // is{ } inside cart;
+                $.extend( true, cartInLocal.items, cart.items );
+                localStorage.setItem('cart', JSON.stringify(cartInLocal));
+
+            }else{ 
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+
             addtoCart();
         });
     });
@@ -301,7 +300,9 @@ function listProdOption(option) {
                                 <label class="pure-material-radio"  
                                 for="${option_group.option_group_id}-${option.option_id}">
                                     <b class="prod__option-price">
-                                    ${ Math.round(option.option_price) } บาท
+                                        <span id="optionPrice-${option_group.option_group_id}-${option.option_id}">
+                                            ${ Math.round(option.option_price) }
+                                        </span> บาท
                                     </b>
                                 </label>
                             </div>
@@ -327,10 +328,12 @@ function listProdOption(option) {
                                 <label class="pure-material-radio"  
                                     for="${option_group.option_group_id}-${option.option_id}">
                                     <b class="prod__option-price">
-                                        ${ Math.round(option.option_price) } บาท
+                                        <span id="optionPrice-${option_group.option_group_id}-${option.option_id}">
+                                            ${ Math.round(option.option_price) }
+                                        </span> บาท
                                     </b>
                                 </label>
-                                <span style="display:none;" id="optionPrice-${option_group.option_group_id}-${option.option_id}">${ Math.round(option.option_price) }</span>
+                                
                             </div>
                         `;
                     }

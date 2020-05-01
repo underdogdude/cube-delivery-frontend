@@ -62,53 +62,18 @@
             </div>
             <div class="content">
                 <div class="cartlist" id="cartlist">
-                    <div class="cartlist__item">
-                        <div class="cartlist__header">
-                            <div class="mr-3">
-                                <h4 class="title"> 
-                                    Special!2 get free 1 when order a cold drink and toast from Cube family
-                                </h4>
-                                <span class="desc">
-                                    [Select order from menu]
-                                </span>
-                            </div>
-                            <div class="text-danger">
-                                <i class="far fa-trash-alt"></i>
-                            </div>
-                        </div>
-                        <div class="cartlist__footer">
-                            <span class="price">
-                                12บาท
-                            </span>
-                            <div class="custom-input-checkout">
-                                <button type="button" class="cic-btn cic-btn-1 cic-btn-small cic-decrement">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <input type="number" 
-                                    class="cic-input" id="quatityInput"
-                                    step="1" 
-                                    value="0" 
-                                    min="0"
-                                    max="99"
-                                />
-                                <button type="button" class="cic-btn cic-btn-1 cic-btn-small cic-increment">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
 
         <!--  -->
         <div class="mycart__btn-container" id="mycart__btn_container">
-            <button class="btn btn__primary mycart__btn shadow-lg">
-                <span class="amount" id="mycart_amount">1</span>
+            <button class="btn btn__primary mycart__btn shadow-lg" style="background: #44694a;">
+                <span class="amount" id="mycart_amount"></span>
                 <span class="title">Check Out</span>
                 <span class="total">
                     <p class="total_label">TOTAL</p>
-                    <span id="mycart_total">100</span>
+                    <span id="mycart_total"></span>
                 </span>
             </button>
         </div>
@@ -128,15 +93,14 @@
 <script src="./js/vendor/md5.min.js"></script>
 <script src="./js/liff-script.js"></script>
 <script src="./js/API.js"></script>
+<script src="./js/global.js"></script>
 <script src="./js/mycart.js"></script>
 
 <script>
 
     if(localStorage.getItem('cart') !== null) { 
-        var cartItems = JSON.parse(localStorage.getItem('cart')).items;
+        reRender();
 
-            myCart.showBtn();
-            cartLists.render(cartItems);
     }else { 
         window.location = "./index.html";
     }

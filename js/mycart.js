@@ -1,6 +1,6 @@
 var myCart = {
     showBtn: function () {
-        var cartItems = JSON.parse(localStorage.getItem("cart")).items;
+        var cartItems = cartFunction.getItem().items;
         var get_amount = 0;
         var get_total = 0;
 
@@ -14,7 +14,6 @@ var myCart = {
         $("#mycart__btn_container").css("display", "block");
     },
     clicked: function () {
-        console.log("add cart slick");
         var element = document.querySelector("main");
         element.classList.add("animated", "slideOutLeft");
         element.addEventListener("animationend", function () {
@@ -34,7 +33,6 @@ var cartLists = {
 
         for( var i in items ) {
 
-           console.log(items[i] , "list");
            string += `
             <div class="cartlist__item">
                 <div class="cartlist__header">
@@ -47,7 +45,7 @@ var cartLists = {
                         </span>
                     </div>
                     <div class="text-danger">
-                        <i class="far fa-trash-alt"></i>
+                        <i class="far fa-trash-alt  btn__remove"  onclick="cartLists.remove('${i}')"></i>
                     </div>
                 </div>
                 <div class="cartlist__footer">
@@ -88,7 +86,6 @@ var cartLists = {
                 var optionStringValues =  ``; 
                 if(optionLists[i].values.length > 0) {
                     for(var j in optionLists[i].values) {
-                        console.log(optionLists[i].values[j],' J');
                         optionStringValues += `${optionLists[i].values[j].name } `;
                     }
                     optionString += optionStringValues;
@@ -97,5 +94,20 @@ var cartLists = {
             }
         }
         return optionString;
+    },
+
+    remove: function(key) { 
+
+        var cartInLocal = cartFunction.getItem();
+            delete cartInLocal.items[key];
+
+        localStorage.setItem("cart", JSON.stringify(cartInLocal));
+        reRender();
     }
+}
+
+function reRender() { 
+    var cartInLocal = cartFunction.getItem();
+    myCart.showBtn();
+    cartLists.render(cartInLocal.items);
 }

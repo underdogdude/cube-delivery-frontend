@@ -40,6 +40,9 @@
     color: #a9a9a9;
     font-size: 14px;
 }
+.cartlist .cartlist__item .cartlist__header .btn__remove{ 
+    cursor: pointer;
+}
 .cartlist .cartlist__item .cartlist__footer {
     display: flex;
     justify-content: space-between;
@@ -50,5 +53,3 @@
     font-size: 18px;
     color: #3D6A40;
 }
-
-
