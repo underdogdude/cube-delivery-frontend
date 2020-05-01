@@ -225,7 +225,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
                 refCardItem = {
                     "menuId": res.data.menu_id,
                     "name": res.data.name,
-                    "displayName": res.data.description,
+                    "description": res.data.description,
                     "memo": $('#additionalReqInput').val(),
                     "basePrice": Math.round(res.data.price),
                     "price": Math.round(res.data.price),

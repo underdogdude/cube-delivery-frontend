@@ -167,187 +167,165 @@ function reRender() {
 }
 
 
-function checkout() { 
+function checkout() {
 
+    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    var cartCheckout = JSON.parse(localStorage.getItem('cart'));
+    var orderDate = moment(new Date()).format("LL");
+    console.log('cartInLocal', userInfo, cartCheckout, orderDate);
+
+    var blockArray = [
+        {
+            "type": "context",
+            "elements": [
+                {
+                    "text": `*${orderDate}*  |  Ordering Team Announcements`,
+                    "type": "mrkdwn"
+                }
+            ]
+        },
+        {
+            "type": "divider"
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "*Customer Detail*"
+            }
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": `\n\n *Name*, ${userInfo.line_displayName} \n\n *Phone*, [-] \n\n *Address*, [-]`
+            },
+            "accessory": {
+                "type": "image",
+                "image_url": `${userInfo.line_pictureUrl}`,
+                "alt_text": `${userInfo.line_displayName} avatar`
+            }
+        },
+        {
+            "type": "divider"
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": ":calendar: |   *COMING ORDER*  | :calendar: "
+            }
+        }
+    ];
+
+    for(var item in cartCheckout.items) {
+        var itemDetail = cartCheckout.items[item];
+        blockArray.push(
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": `*${itemDetail.name}*`
+                },
+                "accessory": {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": `x${itemDetail.qty}`,
+                        "emoji": true
+                    }
+                }
+            }
+        )
+
+        for (var option of itemDetail.options) {
+
+            var valueStr = "";
+            for (var value of option.values) {
+                valueStr += `• ${value.displayName} (${value.additionalPrice} Baht) \n`;
+            }
+
+            blockArray.push(
+                {
+                    "type": "context",
+                    "elements": [
+                        {
+                            "type": "mrkdwn",
+                            "text": `*${option.displayName}*: \n\n ${valueStr}`
+                        }
+                    ]
+                }
+            )
+        }
+
+        blockArray.push(
+            {
+                "type": "context",
+                "elements": [
+                    {
+                        "type": "mrkdwn",
+                        "text": `* remark * \n\n ${itemDetail.memo}`
+                    }
+                ]
+            }
+        )
+
+        blockArray.push(
+            {
+                "type": "divider"
+            }
+        );
+
+    }
+
+    var cartArr = Object.values(cartCheckout.items);
+    var totalCartPrice = cartArr.reduce(function(total, num) {
+        return total + num.totalPrice;
+    }, 0);
+
+    blockArray.push({
+        "type": "context",
+        "elements": [
+            {
+                "type": "mrkdwn",
+                "text": "\n\n`Total Price : " + totalCartPrice + " Baht`\n\n"
+            }
+        ]
+    });
+
+    blockArray.push({
+        "type": "actions",
+        "elements": [
+            {
+                "type": "button",
+                "text": {
+                    "type": "plain_text",
+                    "emoji": true,
+                    "text": "Approve"
+                },
+                "style": "primary",
+                "value": "click_me_123"
+            },
+            {
+                "type": "button",
+                "text": {
+                    "type": "plain_text",
+                    "emoji": true,
+                    "text": "Deny"
+                },
+                "style": "danger",
+                "value": "click_me_123"
+            }
+        ]
+    });
+
+    console.log(blockArray)
     axios({
             method: 'post',
-            url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/slack/sendMessage',
+            url: 'http://localhost:5000/cube-family-delivery-dev/asia-east2/api/slack/sendMessage',
             data: {
-                "channel": window.slack_channelId,
-                "blocks": 
-                        [
-                            {
-                                "type": "context",
-                                "elements": [
-                                    {
-                                        "text": "*November 12, 2019*  |  Ordering Team Announcements",
-                                        "type": "mrkdwn"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "divider"
-                            },
-                            {
-                                "type": "section",
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": "*Customer Detail*"
-                                }
-                            },
-                            {
-                                "type": "section",
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": `\n\n *Name*, ${window.customer_displayName} \n\n *Phone*, 0838692401 \n\n *Address*, 1004/142 Nirun Residence 9, floor 6, building C,  Sukhumwit Road, Bang Na, Bang Na, Bangkok 10260`
-                                },
-                                "accessory": {
-                                    "type": "image",
-                                    "image_url": `${window.customer_avatar}`,
-                                    "alt_text": `${window.customer_displayName} avatar`
-                                }
-                            },
-                            {
-                                "type": "divider"
-                            },
-                            {
-                                "type": "section",
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": ":calendar: |   *COMING ORDER*  | :calendar: "
-                                }
-                            },
-                            {
-                                "type": "section",
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": "*Buy 3 Get 1, ROOIBOS MILK TEA*"
-                                },
-                                "accessory": {
-                                    "type": "button",
-                                    "text": {
-                                        "type": "plain_text",
-                                        "text": "x1",
-                                        "emoji": true
-                                    }
-                                }
-                            },
-                            {
-                                "type": "context",
-                                "elements": [
-                                    {
-                                        "type": "mrkdwn",
-                                        "text": "*รายการที่ 1*: \n\n • ใส่แก้ว หวานธรรมชาติ \n• ใส่แก้ว เพิ่มน้ำตาลช่อดอกมะพร้าว 3กรัม"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "context",
-                                "elements": [
-                                    {
-                                        "type": "mrkdwn",
-                                        "text": "*รายการที่ 2*: \n\n • ใส่แก้ว หวานธรรมชาติ \n• ใส่แก้ว เพิ่มน้ำตาลช่อดอกมะพร้าว 3กรัม"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "divider"
-                            },
-                            {
-                                "type": "section",
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": "*Rooibos - LATTE ( ชารอยบอสลาเต้ )*"
-                                },
-                                "accessory": {
-                                    "type": "button",
-                                    "text": {
-                                        "type": "plain_text",
-                                        "text": "x3",
-                                        "emoji": true
-                                    }
-                                }
-                            },
-                            {
-                                "type": "context",
-                                "elements": [
-                                    {
-                                        "type": "mrkdwn",
-                                        "text": "*Topping*: \n\n •  Rooibos - Bubble"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "context",
-                                "elements": [
-                                    {
-                                        "type": "mrkdwn",
-                                        "text": "*package*: \n\n • ใส่แก้ว"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "section",
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": "*Rooibos - LATTE ( ชารอยบอสลาเต้ )*"
-                                },
-                                "accessory": {
-                                    "type": "button",
-                                    "text": {
-                                        "type": "plain_text",
-                                        "text": "x1",
-                                        "emoji": true
-                                    }
-                                }
-                            },
-                            {
-                                "type": "context",
-                                "elements": [
-                                    {
-                                        "type": "mrkdwn",
-                                        "text": "*package*: \n\n • ใส่ขวด"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "divider"
-                            },
-                            {
-                                "type": "context",
-                                "elements": [
-                                    {
-                                        "type": "mrkdwn",
-                                        "text": "\n\n`Total Price : 1000 Baht`\n\n"
-                                    }
-                                ]
-                            },
-                                {
-                                "type": "actions",
-                                "elements": [
-                                    {
-                                        "type": "button",
-                                        "text": {
-                                            "type": "plain_text",
-                                            "emoji": true,
-                                            "text": "Approve"
-                                        },
-                                        "style": "primary",
-                                        "value": "click_me_123"
-                                    },
-                                    {
-                                        "type": "button",
-                                        "text": {
-                                            "type": "plain_text",
-                                            "emoji": true,
-                                            "text": "Deny"
-                                        },
-                                        "style": "danger",
-                                        "value": "click_me_123"
-                                    }
-                                ]
-                            }
-                        ]
+                "channel": userInfo.slack_channelId,
+                "blocks": blockArray
             },
             headers: {
                 'Content-Type': 'application/json'

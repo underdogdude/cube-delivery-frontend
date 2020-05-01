@@ -4,7 +4,7 @@ var get = {
         return (
             axios({
                 method: 'get',
-                url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/menu_group'
+                url: 'http://localhost:5000/cube-family-delivery-dev/asia-east2/api/menu_group'
             })
         )
     },
@@ -13,7 +13,7 @@ var get = {
         return (
             axios({
                 method: 'get',
-                url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/menu/' + id
+                url: 'http://localhost:5000/cube-family-delivery-dev/asia-east2/api/menu/' + id
             })
         )
     },

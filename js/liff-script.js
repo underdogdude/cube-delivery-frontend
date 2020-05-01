@@ -24,7 +24,7 @@ function liffInit() {
 
 function appInit() {
     if (!liff.isLoggedIn() && !liff.isInClient()) {
-        // liff.login();
+        liff.login();
     } else {
       liff.getProfile().then(async (profile) => {
 
@@ -39,7 +39,7 @@ function appInit() {
 
         axios({
             method: 'post',
-            url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/slack/createChannel',
+            url: 'http://localhost:5000/cube-family-delivery-dev/asia-east2/api/slack/createChannel',
             data: {
                 "name": slackChannelName,
                 "user_ids": 'U012Q4PMCDA'
@@ -50,6 +50,14 @@ function appInit() {
         })
         .then(function (response) {
             window.slack_channelId = response.data.channelId
+
+            localStorage.setItem('userInfo', JSON.stringify({
+                line_userId: profile.userId,
+                line_displayName: profile.displayName,
+                line_pictureUrl: profile.pictureUrl,
+                slack_channelId: response.data.channelId,
+                slack_channelName: slackChannelName,
+            }))
         })
           
 
