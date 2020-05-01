@@ -53,3 +53,7 @@
     font-size: 18px;
     color: #3D6A40;
 }
+
+.cartlist .cartlist__item .cartlist__footer .morerequest{ 
+    font-size: 12px;
+}

@@ -190,11 +190,6 @@
         }
     }
 
-    // AVARTAR CLICKABLE
-    document.querySelector('.mini-photo-wrapper').addEventListener('click', function() {
-        document.querySelector('.menu-container').classList.toggle('active');
-    });
-
 
     $('#viewCartBtn').click(function() {
         let cart = localStorage.getItem('cart')
@@ -207,10 +202,6 @@
 
     
 
-    $('#logoutBtn').click(function() {
-        console.log('logout')
-        liff.logout()
-    })
 
 </script>
 
