@@ -33,6 +33,8 @@ function appInit() {
         window.customer_displayName = profile.displayName;
         customer_avatar = profile.pictureUrl;
 
+        $("#avartar").attr("src", customer_avatar);
+
         var slackChannelName = clean_display_name(profile.displayName);
 
         axios({
