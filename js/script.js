@@ -444,11 +444,13 @@ function addtoCart() {
 var myCart = { 
     showBtn: function() { 
         var cartItems = JSON.parse(localStorage.getItem('cart')).items;
-        var get_amount = Object.keys(cartItems).length;
+        var get_amount = 0;
         var get_total = 0;
-        for (var i in cartItems){ 
 
+        for (var i in cartItems){ 
+            console.log(cartItems);
             get_total += (cartItems[i].totalPrice * cartItems[i].qty);
+            get_amount += cartItems[i].qty;
         }
         
         $("#mycart_total").html(get_total.toLocaleString());

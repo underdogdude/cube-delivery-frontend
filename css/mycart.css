@@ -1,0 +1,54 @@
+.page-title > .title {    
+    font-family: cubeFont-bold;
+    font-size: 18px;
+    font-weight: bold;
+    color: #3e3e3e;
+    padding: 14px;
+    border-bottom: 5px solid #e2e2e2;
+    margin-bottom: 0px;
+}
+
+.content{  
+    background: #fff;
+    padding: 14px;
+}
+
+.cartlist  { 
+    padding-bottom: 40px;
+}
+.cartlist .cartlist__item {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed #dee2e6;
+}
+.cartlist .cartlist__item:last-child{
+    border-bottom: none;
+}
+
+.cartlist .cartlist__item .cartlist__header {
+    display: flex;
+    justify-content: space-between; 
+    margin-bottom: 10px;
+}
+.cartlist .cartlist__item .cartlist__header .title{ 
+    color: #707070;
+    font-size: 18px;
+    font-weight: 300;
+    margin-bottom: 0;
+}
+.cartlist .cartlist__item .cartlist__header .desc{ 
+    color: #a9a9a9;
+    font-size: 14px;
+}
+.cartlist .cartlist__item .cartlist__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+.cartlist .cartlist__item .cartlist__footer .price{ 
+    font-family: cubeFont-bold;
+    font-size: 18px;
+    color: #3D6A40;
+}
+
+

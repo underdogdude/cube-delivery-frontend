@@ -16,26 +16,131 @@
     <link rel="stylesheet" href="./css/base.css">
     <link rel="stylesheet" href="./css/menu.css">
     <link rel="stylesheet" href="./css/custom-form.css">
+    <link rel="stylesheet" href="./css/mycart.css">
 
 </head>
 <body>
+    <header>
+        <!-- Image and text -->
+        <nav class="navbar navbar-light border-bottom">
+            <a class="navbar-brand" href="#">
+                <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                <strong class="ml-2 text__secondary">
+                    CUBE FAMILY
+                </strong>
+            </a>
+            <div class="user-menu-wrap">
+                <a class="mini-photo-wrapper" href="#">
+                    <img 
+                        class="mini-photo" 
+                        src="https://image.flaticon.com/icons/svg/149/149071.svg" 
+                        width="36" 
+                        height="36" 
+                        id="avartar"
+                        onError="this.onerror=null;this.src='https://image.flaticon.com/icons/svg/149/149071.svg';"
+                    />
+                </a>
+                <div class="menu-container">
+                    <ul class="user-menu">
+                        <li class="user-menu__item">
+                            <button class="btn btn__signout text-danger" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Log Out
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="container-fluid p-0">
+            <div class="page-title">
+                <h1 class="title">
+                    My Cart
+                </h1>
+            </div>
+            <div class="content">
+                <div class="cartlist" id="cartlist">
+                    <div class="cartlist__item">
+                        <div class="cartlist__header">
+                            <div class="mr-3">
+                                <h4 class="title"> 
+                                    Special!2 get free 1 when order a cold drink and toast from Cube family
+                                </h4>
+                                <span class="desc">
+                                    [Select order from menu]
+                                </span>
+                            </div>
+                            <div class="text-danger">
+                                <i class="far fa-trash-alt"></i>
+                            </div>
+                        </div>
+                        <div class="cartlist__footer">
+                            <span class="price">
+                                12บาท
+                            </span>
+                            <div class="custom-input-checkout">
+                                <button type="button" class="cic-btn cic-btn-1 cic-btn-small cic-decrement">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <input type="number" 
+                                    class="cic-input" id="quatityInput"
+                                    step="1" 
+                                    value="0" 
+                                    min="0"
+                                    max="99"
+                                />
+                                <button type="button" class="cic-btn cic-btn-1 cic-btn-small cic-increment">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--  -->
+        <div class="mycart__btn-container" id="mycart__btn_container">
+            <button class="btn btn__primary mycart__btn shadow-lg">
+                <span class="amount" id="mycart_amount">1</span>
+                <span class="title">Check Out</span>
+                <span class="total">
+                    <p class="total_label">TOTAL</p>
+                    <span id="mycart_total">100</span>
+                </span>
+            </button>
+        </div>
+    </main>
 
 
 </body>
+
+<!-- Vendor JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+</script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+<script src="./js/vendor/bootstrap.min.js"></script>
+<script src="./js/vendor/md5.min.js"></script>
+<script src="./js/liff-script.js"></script>
+<script src="./js/API.js"></script>
+<script src="./js/mycart.js"></script>
+
 <script>
 
-    function init() { 
+    if(localStorage.getItem('cart') !== null) { 
+        var cartItems = JSON.parse(localStorage.getItem('cart')).items;
 
-        if(localStorage.getItem('cart') !== null) { 
-            var cartItems = JSON.parse(localStorage.getItem('cart')).items;
-        }else { 
-            window.location = "./index.html";
-        }
+            myCart.showBtn();
+            cartLists.render(cartItems);
+    }else { 
+        window.location = "./index.html";
     }
-    init();
 
-    
-    console.log(cartItems);
 </script>
 
 </html>
