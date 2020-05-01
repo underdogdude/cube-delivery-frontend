@@ -1,8 +1,3 @@
-axios({
-    method: 'get',
-    url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/menu_group'
-});
-
 
 var get = {
     menu_group : function () { 

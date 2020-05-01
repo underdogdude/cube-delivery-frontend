@@ -7,7 +7,21 @@ var product_price;
 var all_option_lists = [];
 
 
+var loading = { 
+    elem : $("#loading") ,
+    show : function() {
+
+        $(this.elem).show();
+    },
+    hide: function()  {
+
+        $(this.elem).hide();
+    }
+}
+
 function init() { 
+
+    loading.show();
 
     get.menu_group().then(res => { 
         
@@ -47,6 +61,8 @@ function init() {
             // list prods
 
             get.menu().then(res=> {
+
+                loading.hide();
                 res.data.forEach(value => {
                     if(value.name) {
                         $(`
@@ -86,8 +102,9 @@ $('#prodModal').on('show.bs.modal', function(e) {
     var prod_content = $("#prod_content");
     var id = $(dataID).attr("data-id") 
 
+    loading.show();
     get.menu(id).then(res=> {
-        console.log(res,'test');
+
         var header = `
             <div class="modal-header">
                 <button type="button" class="close close-left mr-1" data-dismiss="modal" aria-label="Close">
@@ -159,7 +176,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
         $(prod_content).append(footer);
 
         listProdOption(res.data.option_group_list);
-
+        loading.hide();
 
         $('#btnAddToCart').click(function(e) {
 

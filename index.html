@@ -33,7 +33,9 @@
             </a>
 
             <div class="user-menu-wrap">
-                <a class="mini-photo-wrapper" href="#"><img class="mini-photo" src="https://image.flaticon.com/icons/svg/149/149071.svg" width="36" height="36"/></a>
+                <a class="mini-photo-wrapper" href="#">
+                    <img class="mini-photo" src="https://image.flaticon.com/icons/svg/149/149071.svg" width="36" height="36"/>
+                </a>
                 <div class="menu-container">
                     <ul class="user-menu">
                         <li class="user-menu__item">
@@ -84,6 +86,14 @@
         </div>
     </div>
 
+    <!-- Loading -->
+    <div class="loading__blackdrop" id="loading">
+        <div class="loading__container">
+            <div class="loading__icon">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+        </div>
+    </div>
 </body>
 
 
@@ -103,15 +113,18 @@
 <script src="./js/script.js"></script>
 
 <script>
-    
-    var cartItems = JSON.parse(localStorage.getItem('cart')).items;
 
-    // check mycart btn
-    if(Object.keys(JSON.parse(localStorage.getItem('cart')).items).length > 0) { 
-        $("#mycart__btn_container").css("display","block");
-        myCart.showBtn();
+    if(localStorage.getItem('cart') !== null) { 
+        var cartItems = JSON.parse(localStorage.getItem('cart')).items;
+
+        if(Object.keys(cartItems).length > 0) { 
+            $("#mycart__btn_container").css("display","block");
+            myCart.showBtn();
+        }else { 
+            $("#mycart__btn_container").css("display","none");
+        }
     }else { 
-        $("#mycart__btn_container").css("display","none");
+        var cartItems = {};
     }
 
     var amount = 0;

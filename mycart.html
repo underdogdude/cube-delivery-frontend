@@ -3,9 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
+    <title>CUBE FAMILY</title>
+    <!-- Fav Icon -->
+    <link rel="icon" type="image/png" href="./img/logo.png" />
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="./css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/vendor/animate.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="./css/vendor/fontawesome-all.css">
+    <!-- Global -->
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/menu.css">
+    <link rel="stylesheet" href="./css/custom-form.css">
+
 </head>
 <body>
-    <h1>THIS IS MYCART PAGE</h1>
+
+
 </body>
+<script>
+
+    function init() { 
+
+        if(localStorage.getItem('cart') !== null) { 
+            var cartItems = JSON.parse(localStorage.getItem('cart')).items;
+        }else { 
+            window.location = "./index.html";
+        }
+    }
+    init();
+
+    
+    console.log(cartItems);
+</script>
+
 </html>
