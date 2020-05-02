@@ -176,7 +176,6 @@ function checkout() {
     var userInfo = JSON.parse(localStorage.getItem('userInfo'));
     var cartCheckout = JSON.parse(localStorage.getItem('cart'));
     var orderDate = moment(new Date()).format("LL");
-    console.log('cartInLocal', userInfo, cartCheckout, orderDate);
 
     var blockArray = [
         {
@@ -287,7 +286,6 @@ function checkout() {
         return total + (num.totalPrice * num.qty);
     }, 0);
 
-    console.log('totalCartPrice', totalCartPrice)
 
     blockArray.push({
         "type": "context",

@@ -150,12 +150,12 @@
         if (temp <= max) { 
             $input.val(temp);
             amount = temp;
-            changeBtnAddToCartState();
+            // changeBtnAddToCartState();
             updatePriceAmount(amount);
         }else{
             $input.val(max);
             amount = max;
-            changeBtnAddToCartState();
+            // changeBtnAddToCartState();
             updatePriceAmount(amount);
         }
     });
@@ -170,30 +170,29 @@
         if (temp >= min) { 
             $input.val(temp);
             amount = temp;
-            changeBtnAddToCartState();
+            // changeBtnAddToCartState();
             updatePriceAmount(amount);
         }else{
             $input.val(min);
             amount = min;
-            changeBtnAddToCartState();
+            // changeBtnAddToCartState();
             updatePriceAmount(amount);
         }
     });
 
-    function changeBtnAddToCartState () { 
-        var elem = $("#btnAddToCart");
-        if(amount > 0) { 
-            $(elem).removeClass("inactive");
+    // function changeBtnAddToCartState () { 
+    //     var elem = $("#btnAddToCart");
+    //     if(amount > 0) { 
+    //         $(elem).removeClass("inactive");
 
-        }else{ 
-            $(elem).addClass("inactive");
-        }
-    }
+    //     }else{ 
+    //         $(elem).addClass("inactive");
+    //     }
+    // }
 
 
     $('#viewCartBtn').click(function() {
         let cart = localStorage.getItem('cart')
-        console.log(JSON.parse(cart))
     })
 
     $('#clearCartBtn').click(function() {

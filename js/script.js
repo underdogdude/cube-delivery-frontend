@@ -138,8 +138,8 @@ $('#prodModal').on('show.bs.modal', function(e) {
                             <input type="number" 
                                 class="cin-input basket-quantity" id="quatityInput"
                                 step="1" 
-                                value="0" 
-                                min="0"
+                                value="1" 
+                                min="1"
                                 max="99"
                             />
                             <button type="button" class="cin-btn cin-btn-1 cin-btn-md cin-increment">
@@ -183,7 +183,6 @@ $('#prodModal').on('show.bs.modal', function(e) {
 
                 var checkedList = $(`input[name=${optionGroup.option_group_id}]:checked`);
                 if (checkedList.length > 0) {
-
                     let optionList = [];
                     var radioButtonId = $(`input[name=${optionGroup.option_group_id}]:checked`).attr('id');
                     var optionGroupId = radioButtonId.split('-')[0];
@@ -216,11 +215,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
 
                     hashOptionGroupList = md5(JSON.stringify(optionGroupList));
                 }
-                
             }
-
-
-            console.log('optionGroupList', optionGroupList, hashOptionGroupList)
 
             // hashOptionGroupList is for check user chooice same menu with same option (md5 of optionlist)
 
@@ -408,19 +403,32 @@ function updatePriceAmount(amount) {
 
 var option_price = 0;
 function updatePriceOption() { 
-
+    console.log(all_option_lists , ' all option group');
     option_price = 0; // set value to zero.
 
+    var input_name_lists = [];
     for (optionGroup of all_option_lists) {
 
         let checkedList = $(`input[name=${optionGroup.option_group_id}]:checked`);
-
         if (checkedList.length > 0) {
 
+            var input_name = $(checkedList).attr("name");
             var option_selected = Number($(`input[name=${optionGroup.option_group_id}]:checked`).val());
             
             if(!isNaN(option_selected)) { 
                 option_price += option_selected;
+            }
+            
+            // validate ADD TO CART BTN
+            input_name_lists.push(input_name);
+            var unique_name_lists = input_name_lists.filter(function(item, pos) {
+                return input_name_lists.indexOf(item) == pos;
+            })
+            var elem = $("#btnAddToCart");
+            if(unique_name_lists.length < all_option_lists.length) { 
+                $(elem).addClass("inactive");
+            }else{ 
+                $(elem).removeClass("inactive");
             }
         }
     }
@@ -469,7 +477,6 @@ var myCart = {
         var get_total = 0;
 
         for (var i in cartItems){ 
-            console.log(cartItems);
             get_total += (cartItems[i].totalPrice * cartItems[i].qty);
             get_amount += cartItems[i].qty;
         }
@@ -479,7 +486,6 @@ var myCart = {
         $("#mycart__btn_container").css("display","block");
     },
     clicked: function() { 
-        console.log('add cart slick');
         var element =  document.querySelector('main')
             element.classList.add('animated', 'slideOutLeft')
             element.addEventListener('animationend', function() { 
