@@ -295,20 +295,21 @@ function listProdOption(option) {
                         selectButtonList += `
 
                             <div class="form-check">
-                                <label class="pure-material-radio form-check__labelwrapper"  
-                                    for="${option_group.option_group_id}-${option.option_id}">
-
+                                <div class="custom-control custom-radio">
                                     <input type="radio" 
                                         name="${option_group.option_group_id}"
                                         id="${option_group.option_group_id}-${option.option_id}"
                                         value="${ Math.round(option.option_price) }"
-                                        class="form-check-input">
+                                        class="form-check-input custom-control-input">
 
-                                    <span class="form-check-label"></span>
-                                    <p id="optionName-${option_group.option_group_id}-${option.option_id}">
+                                    <label class="custom-control-label" 
+                                        for="${option_group.option_group_id}-${option.option_id}">
+
+                                        <p id="optionName-${option_group.option_group_id}-${option.option_id}">
                                         ${option.option_name}
-                                    </p>
-                                </label>
+                                        </p>
+                                    </label>
+                                </div>
 
                                 <label class="pure-material-radio"  
                                 for="${option_group.option_group_id}-${option.option_id}">
@@ -324,20 +325,24 @@ function listProdOption(option) {
                         selectButtonList += `
 
                             <div class="form-check">
-                                <label class="pure-material-checkbox form-check__labelwrapper"
-                                    for="${option_group.option_group_id}-${option.option_id}">
+                                <div class="custom-control custom-checkbox">
+
                                     <input type="checkbox" 
                                         name="${option_group.option_group_id}"
                                         id="${option_group.option_group_id}-${option.option_id}"
                                         value="${ Math.round(option.option_price) }"
-                                        class="form-check-input">
+                                        class="form-check-input custom-control-input"
+                                    />
 
-                                    <span class="form-check-label"></span>
-                                    <p id="optionName-${option_group.option_group_id}-${option.option_id}">
+                                    <label class="custom-control-label" 
+                                        for="${option_group.option_group_id}-${option.option_id}">
+
+                                        <p id="optionName-${option_group.option_group_id}-${option.option_id}">
                                         ${option.option_name}
-                                    </p>
-                                   
-                                </label>
+                                        </p>
+                                    </label>
+                                </div>
+                                
                                 <label class="pure-material-radio"  
                                     for="${option_group.option_group_id}-${option.option_id}">
                                     <b class="prod__option-price">
@@ -346,7 +351,6 @@ function listProdOption(option) {
                                         </span> บาท
                                     </b>
                                 </label>
-                                
                             </div>
                         `;
                     }
