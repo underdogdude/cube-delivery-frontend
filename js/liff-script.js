@@ -8,7 +8,8 @@ function clean_display_name (name) {
 }
 
 function liffInit() {
-    var liffId = '1654140731-mR5YN8LL';
+    // var liffId = '1654140731-mR5YN8LL';
+    var liffId = '1654165370-zNwlvWJZ'; // Production
     liff.init({
         liffId: liffId || ""
     }).then(() => {
@@ -39,7 +40,7 @@ function appInit() {
 
         axios({
             method: 'post',
-            url: 'http://localhost:5000/cube-family-delivery-dev/asia-east2/api/slack/createChannel',
+            url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/slack/createChannel',
             data: {
                 "name": slackChannelName,
                 "user_ids": 'U012Q4PMCDA'

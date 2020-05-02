@@ -327,7 +327,7 @@ function checkout() {
 
     axios({
             method: 'post',
-            url: 'http://localhost:5000/cube-family-delivery-dev/asia-east2/api/slack/sendMessage',
+            url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/slack/sendMessage',
             data: {
                 "channel": userInfo.slack_channelId,
                 "blocks": blockArray
