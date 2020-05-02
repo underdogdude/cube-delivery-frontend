@@ -168,11 +168,12 @@ function reRender() {
     var cartInLocal = cartFunction.getItem();
     myCart.showBtn();
     cartLists.render(cartInLocal.items);
+    loading.hide();
 }
 
 
 function checkout() {
-
+    loading.show();
     var userInfo = JSON.parse(localStorage.getItem('userInfo'));
     var cartCheckout = JSON.parse(localStorage.getItem('cart'));
     var orderDate = moment(new Date()).format("LL");
@@ -337,12 +338,30 @@ function checkout() {
     .then(function (response) {
 
         localStorage.removeItem('cart');
+
+        axios({
+            method: 'post',
+            url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/line/notify',
+            data: {
+                "channelID": userInfo.slack_channelId,
+                "imageURL": userInfo.line_pictureUrl,
+                "from": userInfo.line_displayName,
+                "amount": totalCartPrice
+            },
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        loading.hide();
+
         Swal.fire(
             'สำเร็จ!',
             '',
             'success'
           ).then(
             function() {
+
                 window.location = "./index.html"
             }
         )

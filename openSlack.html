@@ -1,0 +1,6 @@
+<script>
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    const channelID = urlParams.get('channelID')
+    window.location = 'slack://channel?team=T012Q250WJG&id=' + channelID;
+</script>

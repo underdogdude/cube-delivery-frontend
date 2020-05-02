@@ -7,6 +7,7 @@ function clean_display_name (name) {
     return name.replace(/\s/g, '_').toLowerCase();
 }
 
+var lineToken = '';
 function liffInit() {
     // var liffId = '1654140731-mR5YN8LL';
     var liffId = '1654165370-zNwlvWJZ'; // Production
@@ -14,9 +15,9 @@ function liffInit() {
         liffId: liffId || ""
     }).then(() => {
 
-        var token = liff.getAccessToken();
-        if ( token != null ) {
-            console.log('token', token)
+        lineToken = liff.getIDToken();
+        if ( lineToken != null ) {
+            console.log('lineToken ', lineToken)
         }
 
         appInit();
@@ -56,6 +57,7 @@ function appInit() {
                 line_userId: profile.userId,
                 line_displayName: profile.displayName,
                 line_pictureUrl: profile.pictureUrl,
+                line_decodeToken: liff.getDecodedIDToken(lineToken),
                 slack_channelId: response.data.channelId,
                 slack_channelName: slackChannelName,
             }))
