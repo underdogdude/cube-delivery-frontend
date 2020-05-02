@@ -1,3 +1,7 @@
+var API_URL = '';
+var LINE_LIFF_ID = '';
+
+
 var cartFunction = { 
     
     hasItem : function () { 
