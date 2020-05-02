@@ -337,7 +337,23 @@ function checkout() {
             }
     })
     .then(function (response) {
-        console.log(response);
+
         localStorage.removeItem('cart');
+        Swal.fire(
+            'สำเร็จ!',
+            '',
+            'success'
+          ).then(
+            function() {
+                window.location = "./index.html"
+            }
+        )
+    }).catch(function () { 
+        localStorage.removeItem('cart');
+        Swal.fire(
+            'กรุณาลองใหม่อีกครั้ง',
+            '',
+            'error'
+        )
     })
 }

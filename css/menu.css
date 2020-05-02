@@ -84,6 +84,7 @@
 .menu__layout-hasimg { 
     display: flex;
     margin-top: 15px;
+    padding-bottom: 5px;
 }
 .menu__layout-hasimg .menu__layout-hasimg-thumbnail{ 
     width: 100px;
@@ -91,8 +92,16 @@
     height: 100px;
     min-height: 100px;
     border-radius: 10px;
+    margin-bottom: 10px;
+}
+.menu__content .menu__layout-hasimg-imgsection {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
     margin-right: 15px;
 }
+
 
 .menu__layout-hasimg .menu__layout-hasimg-thumbnail img{
     width: 100%;

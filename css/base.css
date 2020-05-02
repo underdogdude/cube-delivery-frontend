@@ -155,3 +155,11 @@ body {
     font-size: 30px;
     color: #fff;
 }
+
+.badge__recommend { 
+    padding-left: 10px;
+    padding-right: 10px;
+    background: #ab8875;
+    color: white;
+    margin-bottom: 10px;
+}
