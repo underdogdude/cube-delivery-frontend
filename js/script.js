@@ -276,8 +276,8 @@ function isRecommend(value = "") {
 function listProdOption(option) { 
 
     all_option_lists = option;
-    
-    if (option) {
+    console.log(option, ' THIS IS A OPTION');
+    if (option.length !== 0) {
         option.forEach((value) => {
 
             let option_group = value.option_group
@@ -367,6 +367,8 @@ function listProdOption(option) {
             `).appendTo($('#prod__option'));
             }  
         })
+    }else{
+        activeAddToCart();
     }
 
     $('input:radio').change(function () {
@@ -424,11 +426,11 @@ function updatePriceOption() {
             var unique_name_lists = input_name_lists.filter(function(item, pos) {
                 return input_name_lists.indexOf(item) == pos;
             })
-            var elem = $("#btnAddToCart");
+
             if(unique_name_lists.length < all_option_lists.length) { 
-                $(elem).addClass("inactive");
+                inactiveAddToCart();
             }else{ 
-                $(elem).removeClass("inactive");
+                activeAddToCart();
             }
         }
     }
@@ -492,4 +494,13 @@ var myCart = {
                 window.location = "./mycart.html";
             })
     }
+}
+
+function activeAddToCart() { 
+    var elem = $("#btnAddToCart");
+    $(elem).removeClass("inactive");
+}
+function inactiveAddToCart() { 
+    var elem = $("#btnAddToCart");
+    $(elem).addClass("inactive");
 }
