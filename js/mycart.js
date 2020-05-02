@@ -104,7 +104,7 @@ var cartLists = {
                     <div class="d-flex flex-column">
                         <i class="morerequest text__primary">${ items[i].memo}</i>
                         <span class="price">
-                            ${ (items[i].totalPrice * items[i].qty).toLocaleString()}
+                            ${ (items[i].totalPrice * items[i].qty).toLocaleString() }
                             บาท
                         </span>
                     </div>
@@ -217,7 +217,7 @@ function checkout() {
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": ":calendar: |   *COMING ORDER*  | :calendar: "
+                "text": ":calendar: |  *COMING ORDER*  | :calendar: "
             }
         }
     ];
@@ -272,7 +272,7 @@ function checkout() {
                     }
                 ]
             }
-        )
+        );
 
         blockArray.push(
             {
