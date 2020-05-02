@@ -56,9 +56,12 @@ function init() {
                     if(value.name) {
                         $(`
                             <div class="menu__layout-hasimg">
-                                <div class="menu__layout-hasimg-thumbnail">
-                                    <img src="https://d2waa76v2pig3r.cloudfront.net/${value.image_key}"
-                                        alt="">
+                                <div class="menu__layout-hasimg-imgsection">
+                                    <div class="menu__layout-hasimg-thumbnail">
+                                        <img src="https://d2waa76v2pig3r.cloudfront.net/${value.image_key}"
+                                            alt="">
+                                    </div>
+                                    ${isRecommend(value.recommended)}
                                 </div>
                                 <div class="menu__layout-hasimg-detail">
                                     <h4 class="title">
@@ -93,6 +96,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
 
     loading.show();
     get.menu(id).then(res=> {
+        
 
         var header = `
             <div class="modal-header">
@@ -111,7 +115,9 @@ $('#prodModal').on('show.bs.modal', function(e) {
                         <img src="https://d2waa76v2pig3r.cloudfront.net/${res.data.image_key}"  width="100%" />
                     </div>
                     <div class="product__order">
+                        
                         <section class="prod__desc">
+                            ${ isRecommend(res.data.recommended) }
                             ${ res.data.description }
                         </section>
                     
@@ -259,6 +265,18 @@ $('#prodModal').on('show.bs.modal', function(e) {
     });
 });
 
+function isRecommend(value = "") {
+    
+    if(value) { 
+        if(value === 1) {
+            return `<span class="badge badge-pill badge__recommend">Recommend</span>`;
+        }else { 
+            return "";
+        }
+    }else { 
+        return "";
+    }
+}
 
 function listProdOption(option) { 
 
