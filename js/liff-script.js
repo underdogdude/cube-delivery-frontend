@@ -7,15 +7,17 @@ function clean_display_name (name) {
     return name.replace(/\s/g, '_').toLowerCase();
 }
 
+var lineToken = '';
 function liffInit() {
-    var liffId = '1654140731-mR5YN8LL';
+    // var liffId = '1654140731-mR5YN8LL';
+    var liffId = '1654165370-zNwlvWJZ'; // Production
     liff.init({
         liffId: liffId || ""
     }).then(() => {
 
-        var token = liff.getAccessToken();
-        if ( token != null ) {
-            console.log('token', token)
+        lineToken = liff.getIDToken();
+        if ( lineToken != null ) {
+            console.log('lineToken ', lineToken)
         }
 
         appInit();
@@ -39,7 +41,7 @@ function appInit() {
 
         axios({
             method: 'post',
-            url: 'http://localhost:5000/cube-family-delivery-dev/asia-east2/api/slack/createChannel',
+            url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/slack/createChannel',
             data: {
                 "name": slackChannelName,
                 "user_ids": 'U012Q4PMCDA'
@@ -55,6 +57,7 @@ function appInit() {
                 line_userId: profile.userId,
                 line_displayName: profile.displayName,
                 line_pictureUrl: profile.pictureUrl,
+                line_decodeToken: liff.getDecodedIDToken(lineToken),
                 slack_channelId: response.data.channelId,
                 slack_channelName: slackChannelName,
             }))
