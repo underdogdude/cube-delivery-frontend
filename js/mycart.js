@@ -281,7 +281,6 @@ function checkout() {
         );
 
     }
-
     var cartArr = Object.values(cartCheckout.items);
     var totalCartPrice = cartArr.reduce(function(total, num) {
         return total + (num.totalPrice * num.qty);
@@ -337,8 +336,6 @@ function checkout() {
     })
     .then(function (response) {
 
-        localStorage.removeItem('cart');
-
         axios({
             method: 'post',
             url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/line/notify',
@@ -352,19 +349,19 @@ function checkout() {
                 'Content-Type': 'application/json'
             }
         })
-
+        sendFlexMessage(userInfo.line_displayName,  cartCheckout.items);
         loading.hide();
-
+        localStorage.removeItem('cart');
         Swal.fire(
             'สำเร็จ!',
             '',
             'success'
-          ).then(
+        ).then(
             function() {
-
-                window.location = "./index.html"
+                liff.closeWindow();
             }
         )
+
     }).catch(function () { 
         localStorage.removeItem('cart');
         Swal.fire(
@@ -373,4 +370,228 @@ function checkout() {
             'error'
         )
     })
+}
+
+
+function sendFlexMessage(name, order) { 
+    console.log(order);
+    var blockOrderArray = [];
+    var TOTAL = 0;
+    var AMOUNT = 0;
+
+    for(var item in order) {
+        var itemDetail = order[item];
+
+        AMOUNT += itemDetail.qty
+        TOTAL += itemDetail.totalPrice * itemDetail.qty;
+
+        blockOrderArray.push(
+            {
+                "type": "box",
+                "layout": "vertical",
+                "contents": getOrderObject(order)
+            }
+        )
+    }
+    
+    blockOrderArray.push({
+        "type": "box",
+        "layout": "horizontal",
+        "margin": "xxl",
+        "contents": [
+          {
+            "type": "text",
+            "text": "จำนวนทั้งหมด",
+            "size": "md",
+            "color": "#555555"
+          },
+          {
+            "type": "text",
+            "text": AMOUNT.toLocaleString(),
+            "size": "lg",
+            "color": "#111111",
+            "align": "end"
+          }
+        ]
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
+          {
+            "type": "text",
+            "text": "ยอดรวม",
+            "size": "md",
+            "color": "#111111",
+            "weight": "bold"
+          },
+          {
+            "type": "text",
+            "text": TOTAL.toLocaleString(),
+            "size": "lg",
+            "color": "#111111",
+            "align": "end",
+            "weight": "bold"
+          }
+        ]
+    });
+    
+
+    var flexMessage = {
+    
+            "type": "bubble",
+            "size": "mega",
+            "body": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "RECEIPT",
+                  "weight": "bold",
+                  "color": "#77ac7f",
+                  "size": "sm"
+                },
+                {
+                  "type": "text",
+                  "text": "คุณ" + name,
+                  "weight": "bold",
+                  "size": "xxl",
+                  "margin": "md"
+                },
+                {
+                  "type": "separator",
+                  "margin": "xxl"
+                },
+                {
+                  "type": "box",
+                  "layout": "vertical",
+                  "margin": "xxl",
+                  "spacing": "sm",
+                  "contents":
+                    //   All order place here
+                    blockOrderArray,
+                },
+                {
+                  "type": "separator",
+                  "margin": "xxl"
+                },
+                {
+                  "type": "box",
+                  "layout": "horizontal",
+                  "margin": "md",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": "ขอบคุณที่เข้ามาเป็นส่วนหนึ่งของ CUBE FAMILY 😋",
+                      "size": "xs",
+                      "color": "#aaaaaa",
+                      "flex": 0,
+                      "wrap": true
+                    }
+                  ],
+                  "position": "relative",
+                  "spacing": "none"
+                }
+              ]
+            },
+            "styles": {
+              "footer": {
+                "separator": true
+              }
+            }
+    }
+    if (liff.isInClient()) {
+        liff.sendMessages([flexMessage]);
+    }
+}
+
+
+function getOrderObject(order) { 
+
+    var blockOrderArray = [];
+    for(var item in order) {
+
+        var itemDetail = order[item];
+        
+        blockOrderArray.push({
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": itemDetail.name,
+                "size": "md",
+                "weight": "bold",
+                "flex": 4,
+                "wrap": false,
+                "color": "#707070"
+              }
+            ],
+            "position": "relative"
+        },{
+            "type": "box",
+            "layout": "vertical",
+            "contents":  getSubOption(itemDetail)
+        });
+
+        blockOrderArray.push(
+            {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "จำนวน: x" + itemDetail.qty,
+                    "align": "start",
+                    "size": "md"
+                  },
+                  {
+                    "type": "text",
+                    "text": itemDetail.totalPrice + "บาท",
+                    "align": "end",
+                    "weight": "bold",
+                    "color": "#3D6A40"
+                  }
+                ]
+            }
+        );
+
+        blockOrderArray.push({
+            "type": "separator",
+            "margin": "xl",
+            "color": "#ffffff"
+        })
+
+
+    }
+    return blockOrderArray;
+}
+
+function getSubOption(itemDetail) { 
+
+    var optionArr = [];
+    for (var option of itemDetail.options) {
+        
+        optionArr.push({
+            "type": "text",
+            "text": option.displayName,
+            "size": "sm",
+            "weight": "bold",
+            "color": "#a9a9a9"
+        })
+        var valueStr = "";
+        for (var value of option.values) {
+            valueStr += `• ${value.displayName} (${value.additionalPrice} บาท) \n`;
+            optionArr.push({
+                "type": "text",
+                "text": "•" + value.displayName + "(" + value.additionalPrice + "บาท)",
+                "size": "xs",
+                "color": "#a9a9a9",
+                "offsetStart": "20px"
+            })
+        }
+    }
+
+    return optionArr;
 }
