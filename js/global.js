@@ -50,16 +50,22 @@ var loading = {
 }
 
 
-    // AVARTAR CLICKABLE
-    document.querySelector('.mini-photo-wrapper').addEventListener('click', function() {
-        document.querySelector('.menu-container').classList.toggle('active');
-    });
+//     // AVARTAR CLICKABLE
+//     document.querySelector('.mini-photo-wrapper').addEventListener('click', function() {
+//         document.querySelector('.menu-container').classList.toggle('active');
+//     });
 
 
-$('#logoutBtn').click(function() {
-    console.log('logout')
-    liff.logout();
-    localStorage.removeItem('cart');
-    localStorage.removeItem('userInfo');
-    window.location = "./index.html";
-})
+// $('#logoutBtn').click(function() {
+//     if (liff.isLoggedIn()) {
+//         liff.logout();
+//         try{
+//             localStorage.removeItem('cart');
+//             localStorage.removeItem('userInfo');
+//             alert('Logout Successful!');
+//         }catch(error) { 
+//             console.log(error);
+//         }
+//         window.location.reload();
+//     }
+// })

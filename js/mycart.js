@@ -348,8 +348,11 @@ function checkout() {
             headers: {
                 'Content-Type': 'application/json'
             }
-        })
-        sendFlexMessage(userInfo.line_displayName,  cartCheckout.items);
+        }).then(function(response){
+
+            sendFlexMessage(userInfo.line_displayName,  cartCheckout.items);
+        });
+
         
     }).catch(function () { 
         localStorage.removeItem('cart');
@@ -491,13 +494,15 @@ function sendFlexMessage(name, order) {
             }
     }
 
-    if (liff.isInClient()) {
-        liff.sendMessages([{
-            "type": "flex",
-            "altText": `ออเดอร์ของคุณ`,
-            "contents": flexMessage
-        }]).then(function() { 
 
+    var message = [{
+        "type": "flex",
+        "altText": `ออเดอร์ของคุณ`,
+        "contents": flexMessage
+    }];
+
+    if (liff.isInClient()) {
+        liff.sendMessages(message).then(function() { 
             loading.hide();
             localStorage.removeItem('cart');
             Swal.fire(
@@ -509,8 +514,14 @@ function sendFlexMessage(name, order) {
                     liff.closeWindow();
                 }
             )
+        }).catch(function(err) {
+            console.log(err);
+            alert('Got Something Error');
         });
     }
+
+    console.log(JSON.stringify(message));
+
 }
 
 
