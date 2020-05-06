@@ -502,7 +502,11 @@ function sendFlexMessage(name, order) {
             }
     }
     if (liff.isInClient()) {
-        liff.sendMessages([flexMessage]);
+        liff.sendMessages([{
+            "type": "flex",
+            "altText": `ออเดอร์ของคุณ`,
+            "contents": flexMessage
+        }]);
     }
 }
 
