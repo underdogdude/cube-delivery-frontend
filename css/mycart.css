@@ -1,10 +1,17 @@
+.page-title{ 
+    border-bottom: 5px solid #e2e2e2;
+}
+.page-title .back__btn { 
+    margin-right: 8px;
+    color: #3e3e3e;
+    font-size: 13px;
+}
 .page-title > .title {    
     font-family: cubeFont-bold;
     font-size: 18px;
     font-weight: bold;
     color: #3e3e3e;
     padding: 14px;
-    border-bottom: 5px solid #e2e2e2;
     margin-bottom: 0px;
 }
 

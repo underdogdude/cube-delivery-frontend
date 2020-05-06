@@ -163,3 +163,10 @@ body {
     color: white;
     margin-bottom: 10px;
 }
+
+/* CUstom radio */
+.custom-control-input:checked~.custom-control-label::before {
+    color: #fff;
+    border-color: #69966f;
+    background-color: #69966f;
+}
