@@ -323,207 +323,32 @@ function checkout() {
         ]
     });
 
-    axios({
-            method: 'post',
-            url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/slack/sendMessage',
-            data: {
-                "channel": userInfo.slack_channelId,
-                "blocks": blockArray
-            },
-            headers: {
-                'Content-Type': 'application/json'
-            }
-    })
-    .then(function (response) {
+    // axios({
+    //     method: 'post',
+    //     url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/line/notify',
+    //     data: {
+    //         "channelID": userInfo.slack_channelId,
+    //         "imageURL": userInfo.line_pictureUrl,
+    //         "from": userInfo.line_displayName,
+    //         "amount": totalCartPrice
+    //     },
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     }
+    // }).then(function(response){
 
-        axios({
-            method: 'post',
-            url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/line/notify',
-            data: {
-                "channelID": userInfo.slack_channelId,
-                "imageURL": userInfo.line_pictureUrl,
-                "from": userInfo.line_displayName,
-                "amount": totalCartPrice
-            },
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(function(response){
+    //     sendFlexMessage(userInfo.line_displayName,  cartCheckout.items);
 
-            sendFlexMessage(userInfo.line_displayName,  cartCheckout.items);
-        });
-
-        
-    }).catch(function () { 
-        localStorage.removeItem('cart');
-        Swal.fire(
-            'กรุณาลองใหม่อีกครั้ง',
-            '',
-            'error'
-        )
-    })
+    // }).catch(function () { 
+    //     localStorage.removeItem('cart');
+    //     Swal.fire(
+    //         'กรุณาลองใหม่อีกครั้ง',
+    //         '',
+    //         'error'
+    //     )
+    // })
+    sendFlexMessage(cartCheckout.items);
 }
-
-
-function sendFlexMessage(name, order) { 
-
-    var blockOrderArray = [];
-    var TOTAL = 0;
-    var AMOUNT = 0;
-
-    for(var item in order) {
-        var itemDetail = order[item];
-
-        AMOUNT += itemDetail.qty
-        TOTAL += itemDetail.totalPrice * itemDetail.qty;
-
-        blockOrderArray.push(
-            {
-                "type": "box",
-                "layout": "vertical",
-                "contents": getOrderObject(order)
-            }
-        )
-    }
-    
-    blockOrderArray.push({
-        "type": "box",
-        "layout": "horizontal",
-        "margin": "xxl",
-        "contents": [
-          {
-            "type": "text",
-            "text": "จำนวนทั้งหมด",
-            "size": "md",
-            "color": "#555555"
-          },
-          {
-            "type": "text",
-            "text": AMOUNT.toLocaleString(),
-            "size": "lg",
-            "color": "#111111",
-            "align": "end"
-          }
-        ]
-      },
-      {
-        "type": "box",
-        "layout": "horizontal",
-        "contents": [
-          {
-            "type": "text",
-            "text": "ยอดรวม",
-            "size": "md",
-            "color": "#111111",
-            "weight": "bold"
-          },
-          {
-            "type": "text",
-            "text": TOTAL.toLocaleString(),
-            "size": "lg",
-            "color": "#111111",
-            "align": "end",
-            "weight": "bold"
-          }
-        ]
-    });
-    
-
-    var flexMessage = {
-    
-            "type": "bubble",
-            "size": "mega",
-            "body": {
-              "type": "box",
-              "layout": "vertical",
-              "contents": [
-                {
-                  "type": "text",
-                  "text": "RECEIPT",
-                  "weight": "bold",
-                  "color": "#77ac7f",
-                  "size": "sm"
-                },
-                {
-                  "type": "text",
-                  "text": "คุณ" + name,
-                  "weight": "bold",
-                  "size": "xxl",
-                  "margin": "md"
-                },
-                {
-                  "type": "separator",
-                  "margin": "xxl"
-                },
-                {
-                  "type": "box",
-                  "layout": "vertical",
-                  "margin": "xxl",
-                  "spacing": "sm",
-                  "contents":
-                    //   All order place here
-                    blockOrderArray,
-                },
-                {
-                  "type": "separator",
-                  "margin": "xxl"
-                },
-                {
-                  "type": "box",
-                  "layout": "horizontal",
-                  "margin": "md",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "ขอบคุณที่เข้ามาเป็นส่วนหนึ่งของ CUBE FAMILY 😋",
-                      "size": "xs",
-                      "color": "#aaaaaa",
-                      "flex": 0,
-                      "wrap": true
-                    }
-                  ],
-                  "position": "relative",
-                  "spacing": "none"
-                }
-              ]
-            },
-            "styles": {
-              "footer": {
-                "separator": true
-              }
-            }
-    }
-
-
-    var message = [{
-        "type": "flex",
-        "altText": `ออเดอร์ของคุณ`,
-        "contents": flexMessage
-    }];
-
-    if (liff.isInClient()) {
-        liff.sendMessages(message).then(function() { 
-            loading.hide();
-            localStorage.removeItem('cart');
-            Swal.fire(
-                'สำเร็จ!',
-                '',
-                'success'
-            ).then(
-                function() {
-                    liff.closeWindow();
-                }
-            )
-        }).catch(function(err) {
-            console.log(err);
-            alert('Got Something Error');
-        });
-    }
-
-    console.log(JSON.stringify(message));
-
-}
-
 
 function getOrderObject(order) { 
 

@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "cube-family-delivery-dev"
+    "dev": "cube-family-delivery-dev",
+    "production": "cube-family-delivery"
   }
 }
