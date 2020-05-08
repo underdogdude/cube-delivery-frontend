@@ -14,8 +14,8 @@ function liffInit() {
         // window.location = "./add-line.html"
     }
 
-    // var liffId = '1654140731-mR5YN8LL';
-    var liffId = '1654165370-zNwlvWJZ'; // Production
+    var liffId = '1654140731-mR5YN8LL';
+    // var liffId = '1654165370-zNwlvWJZ'; // Production
     liff.init({
         liffId: liffId || ""
     }).then(() => {
@@ -201,6 +201,7 @@ function getSubOption(itemDetail) {
             "size": "sm",
             "weight": "bold",
             "color": "#a9a9a9",
+            "margin": "lg",
             "wrap": true
         })
         for (var value of option.values) {
@@ -209,7 +210,6 @@ function getSubOption(itemDetail) {
                 "text": "• " + value.displayName + "(" + value.additionalPrice + "บาท)",
                 "size": "xs",
                 "color": "#a9a9a9",
-                "offsetStart": "20px",
                 "wrap": true
             })
         }
