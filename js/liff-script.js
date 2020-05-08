@@ -78,7 +78,7 @@ function getOrderObject(order) {
                         "size": "md",
                         "weight": "bold",
                         "flex": 4,
-                        "wrap": false,
+                        "wrap": true,
                         "color": "#707070"
                     },
                     {
@@ -133,7 +133,7 @@ function getOrderObject(order) {
                         "text": "Additional Requirement",
                         "weight": "bold",
                         "flex": 4,
-                        "wrap": false,
+                        "wrap": true,
                         "size": "xs",
                         "color": "#a9a9a9"
                     },
@@ -142,7 +142,7 @@ function getOrderObject(order) {
                         "text": itemDetail.memo,
                         "weight": "bold",
                         "flex": 4,
-                        "wrap": false,
+                        "wrap": true,
                         "size": "xs",
                         "color": "#a9a9a9"
                     }
@@ -168,14 +168,16 @@ function getOrderObject(order) {
                     "type": "text",
                     "text": "จำนวน: x" + itemDetail.qty,
                     "align": "start",
-                    "size": "md"
+                    "size": "md",
+                    "wrap": true
                   },
                   {
                     "type": "text",
                     "text": itemDetail.totalPrice + "บาท",
                     "align": "end",
                     "weight": "bold",
-                    "color": "#3D6A40"
+                    "color": "#3D6A40",
+                    "wrap": true
                   }
                 ]
             }
@@ -198,7 +200,8 @@ function getSubOption(itemDetail) {
             "text": option.displayName,
             "size": "sm",
             "weight": "bold",
-            "color": "#a9a9a9"
+            "color": "#a9a9a9",
+            "wrap": true
         })
         for (var value of option.values) {
             optionArr.push({
@@ -206,7 +209,8 @@ function getSubOption(itemDetail) {
                 "text": "• " + value.displayName + "(" + value.additionalPrice + "บาท)",
                 "size": "xs",
                 "color": "#a9a9a9",
-                "offsetStart": "20px"
+                "offsetStart": "20px",
+                "wrap": true
             })
         }
     }
@@ -260,7 +264,8 @@ function sendFlexMessage(order) {
                       "text": "คุณ " + customer_displayName,
                       "weight": "bold",
                       "size": "xl",
-                      "margin": "md"
+                      "margin": "md",
+                      "wrap": true
                     },
                     {
                         "type": "text",
@@ -290,7 +295,8 @@ function sendFlexMessage(order) {
                             "text": AMOUNT.toLocaleString(),
                             "size": "lg",
                             "color": "#111111",
-                            "align": "end"
+                            "align": "end",
+                            "wrap": true
                           }
                         ]
                       },
@@ -311,7 +317,8 @@ function sendFlexMessage(order) {
                             "size": "lg",
                             "color": "#77ac7f",
                             "align": "end",
-                            "weight": "bold"
+                            "weight": "bold",
+                            "wrap": true
                           }
                         ]
                     }
