@@ -234,6 +234,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
                     "qty": parseInt($('#quatityInput').val()),
                     "options": optionGroupList,
                     "promotionId": "",
+                    "imageURL": "https://d2waa76v2pig3r.cloudfront.net/" + res.data.image_key,
                     "reason": null
                 }
                 cart.items[`${res.data.menu_id}-${hashOptionGroupList}`] = refCardItem
