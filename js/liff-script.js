@@ -64,6 +64,8 @@ function getOrderObject(order) {
     for(var item in order) {
 
         var itemDetail = order[item];
+
+        if (itemDetail.memo == "") itemDetail.memo = "-"
         
         blockOrderArray.push(
             {
@@ -237,10 +239,10 @@ function sendFlexMessage(order) {
                   "contents": [
                     {
                       "type": "text",
-                      "text": "RECEIPT",
+                      "text": "ORDER",
                       "weight": "bold",
                       "color": "#77ac7f",
-                      "size": "md"
+                      "size": "lg"
                     },
                     {
                         "type": "separator",
@@ -361,11 +363,17 @@ function sendFlexMessage(order) {
           }
     })
 
-    var message = [{
-        "type": "flex",
-        "altText": `ออเดอร์ของคุณ`,
-        "contents": carouselMessage
-    }];
+    var message = [
+        {
+            "type": "flex",
+            "altText": `ออเดอร์ของคุณ`,
+            "contents": carouselMessage
+        },
+        {
+            "type": "text",
+            "text": "ขอบคุณสำหรับออเดอร์ค่ะ \nรบกวนแจ้งที่อยู่จัดส่ง \nเพื่อเช็คค่าจัดส่งค่ะ🙏🙏🙏"
+        }
+    ];
 
     console.log('flexMessage ', message)
 
@@ -373,15 +381,15 @@ function sendFlexMessage(order) {
         liff.sendMessages(message).then(function() { 
             loading.hide();
             localStorage.removeItem('cart');                  // Uncomment
+
             Swal.fire(
                 'สำเร็จ!',
                 '',
                 'success'
-            ).then(
-                function() {
-                    liff.closeWindow();
-                }
-            )
+            ).then(function() {
+                liff.closeWindow();
+            })
+            
         }).catch(function(err) {
             alert(err);
             alert('Got Something Error');
