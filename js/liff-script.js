@@ -14,8 +14,8 @@ function liffInit() {
         // window.location = "./add-line.html"
     }
 
-    var liffId = '1654140731-mR5YN8LL';
-    // var liffId = '1654165370-zNwlvWJZ'; // Production
+    // var liffId = '1654140731-mR5YN8LL';
+    var liffId = '1654165370-zNwlvWJZ'; // Production
     liff.init({
         liffId: liffId || ""
     }).then(() => {
@@ -224,124 +224,6 @@ function sendFlexMessage(order) {
         AMOUNT += itemDetail.qty
         TOTAL += itemDetail.totalPrice * itemDetail.qty;
     }
-
-    // blockOrderArray.push(
-    //     {
-    //         "type": "box",
-    //         "layout": "vertical",
-    //         "contents": getOrderObject(order)
-    //     }
-    // )
-    
-    // blockOrderArray.push({
-    //     "type": "box",
-    //     "layout": "horizontal",
-    //     "margin": "xxl",
-    //     "contents": [
-    //       {
-    //         "type": "text",
-    //         "text": "จำนวนทั้งหมด",
-    //         "size": "md",
-    //         "color": "#555555"
-    //       },
-    //       {
-    //         "type": "text",
-    //         "text": AMOUNT.toLocaleString(),
-    //         "size": "lg",
-    //         "color": "#111111",
-    //         "align": "end"
-    //       }
-    //     ]
-    //   },
-    //   {
-    //     "type": "box",
-    //     "layout": "horizontal",
-    //     "contents": [
-    //       {
-    //         "type": "text",
-    //         "text": "ยอดรวม",
-    //         "size": "md",
-    //         "color": "#111111",
-    //         "weight": "bold"
-    //       },
-    //       {
-    //         "type": "text",
-    //         "text": TOTAL.toLocaleString(),
-    //         "size": "lg",
-    //         "color": "#111111",
-    //         "align": "end",
-    //         "weight": "bold"
-    //       }
-    //     ]
-    // });
-    
-
-    // var flexMessage = {
-    
-    //         "type": "bubble",
-    //         "size": "mega",
-    //         "body": {
-    //           "type": "box",
-    //           "layout": "vertical",
-    //           "contents": [
-    //             {
-    //               "type": "text",
-    //               "text": "RECEIPT",
-    //               "weight": "bold",
-    //               "color": "#77ac7f",
-    //               "size": "sm"
-    //             },
-    //             {
-    //               "type": "text",
-    //               "text": "คุณ " + customer_displayName,
-    //               "weight": "bold",
-    //               "size": "xxl",
-    //               "margin": "md"
-    //             },
-    //             {
-    //               "type": "separator",
-    //               "margin": "xxl"
-    //             },
-    //             {
-    //               "type": "box",
-    //               "layout": "vertical",
-    //               "margin": "xxl",
-    //               "spacing": "sm",
-    //               "contents": 
-    //                 //   All order place here
-    //                 blockOrderArray
-    //             },
-    //             {
-    //               "type": "separator",
-    //               "margin": "xxl"
-    //             },
-    //             {
-    //               "type": "box",
-    //               "layout": "horizontal",
-    //               "margin": "md",
-    //               "contents": [
-    //                 {
-    //                   "type": "text",
-    //                   "text": "ขอบคุณที่เข้ามาเป็นส่วนหนึ่งของ CUBE FAMILY 😋",
-    //                   "size": "xs",
-    //                   "color": "#aaaaaa",
-    //                   "flex": 0,
-    //                   "wrap": true
-    //                 }
-    //               ],
-    //               "position": "relative",
-    //               "spacing": "none"
-    //             }
-    //           ]
-    //         },
-    //         "styles": {
-    //           "footer": {
-    //             "separator": true
-    //           }
-    //         }
-    // }
-
-
 
     let carouselMessage = {
         "type": "carousel",
