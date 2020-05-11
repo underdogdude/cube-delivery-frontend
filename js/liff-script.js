@@ -401,6 +401,9 @@ function sendFlexMessage(order) {
             alert(err);
             alert('Got Something Error');
         });
+    }else { 
+        alert("Plase Open This Link via LINE");
+        window.location = './index.html';
     }
 
     console.log(JSON.stringify(message));
