@@ -10,8 +10,8 @@ var lineToken = '';
 function liffInit() {
 
     if (!liff.isInClient()) {
-        // window.location = "https://line.me/R/ti/p/@cubefamily7"
-        // window.location = "./add-line.html"
+        window.location = "https://line.me/R/ti/p/@cubefamily7"
+        window.location = "./add-line.html"
     }
 
     var liffId = '1654140731-mR5YN8LL';
