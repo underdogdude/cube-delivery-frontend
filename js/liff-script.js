@@ -14,8 +14,8 @@ function liffInit() {
         window.location = "./add-line.html"
     }
 
-    var liffId = '1654140731-mR5YN8LL';
-    // var liffId = '1654165370-zNwlvWJZ'; // Production
+    // var liffId = '1654140731-mR5YN8LL';
+    var liffId = '1654165370-zNwlvWJZ'; // Production
     liff.init({
         liffId: liffId || ""
     }).then(() => {
