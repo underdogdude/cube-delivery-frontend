@@ -376,10 +376,10 @@ function sendFlexMessage(order) {
             "altText": `ออเดอร์ของคุณ`,
             "contents": carouselMessage
         },
-        {
-            "type": "text",
-            "text": "ขอบคุณสำหรับออเดอร์ค่ะ \nรบกวนแจ้งที่อยู่จัดส่ง \nเพื่อเช็คค่าจัดส่งค่ะ🙏🙏🙏"
-        }
+        // {
+        //     "type": "text",
+        //     "text": "ขอบคุณสำหรับออเดอร์ค่ะ \nรบกวนแจ้งที่อยู่จัดส่ง \nเพื่อเช็คค่าจัดส่งค่ะ🙏🙏🙏"
+        // }
     ];
 
     console.log('flexMessage ', message)
