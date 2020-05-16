@@ -10,8 +10,8 @@ var lineToken = '';
 function liffInit() {
 
     if (!liff.isInClient()) {
-        // window.location = "https://line.me/R/ti/p/@cubefamily7"
-        // window.location = "./add-line.html"
+        window.location = "https://line.me/R/ti/p/@cubefamily7"
+        window.location = "./add-line.html"
     }
 
     // var liffId = '1654140731-mR5YN8LL';
@@ -380,6 +380,7 @@ function sendFlexMessage(order) {
         // {
         //     "type": "text",
         //     "text": "ขอบคุณสำหรับออเดอร์ค่ะ \nรบกวนแจ้งที่อยู่จัดส่ง \nเพื่อเช็คค่าจัดส่งค่ะ🙏🙏🙏"
+<<<<<<< HEAD
         // },
         {
             "type": "text",
@@ -452,6 +453,8 @@ function sendFlexMessage(order) {
         //             }
         //         ]
         //     }
+=======
+>>>>>>> 34bd23fabcd3ec2cd5f5ca8bd6166b0794bf3191
         // }
     ];
 
@@ -474,6 +477,9 @@ function sendFlexMessage(order) {
             alert(err);
             alert('Got Something Error');
         });
+    }else { 
+        alert("Plase Open This Link via LINE");
+        window.location = './index.html';
     }
 
     console.log(JSON.stringify(message));
