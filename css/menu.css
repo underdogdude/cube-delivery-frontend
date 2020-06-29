@@ -43,7 +43,7 @@
     color: #3e3e3e;
 }
 .menu__content .menu__layout-noimg,
-.menu__content .menu__layout-hasimg { 
+.menu__content .menu__layout-hasimg,.menu__content .menu__link  { 
     border-bottom: 1px solid #dee2e6;
 }
 .menu__content .menu__layout-noimg:last-child,
@@ -69,21 +69,23 @@
     align-items: center;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     width: 100%;
 }
 .menu__layout-footer .price { 
     font-family: cubeFont-bold;
-    font-size: 25px;
+    font-size: 18px;
     color: #3D6A40;
 }
 
-
+.menu__link:hover, .menu__link:active { 
+    text-decoration: none;
+}
 
 /* Has Thumbnail */
 .menu__layout-hasimg { 
     display: flex;
-    margin-top: 15px;
+    margin-top: 18px;
     padding-bottom: 5px;
 }
 .menu__layout-hasimg .menu__layout-hasimg-thumbnail{ 
@@ -159,6 +161,7 @@
 }
 .menu__modal  .modal-body .product__order .prod__desc{
     white-space: pre-line;
+    position: relative;
 }
 
 .menu__modal .modal-footer {
@@ -201,6 +204,21 @@
     font-family: cubeFont-bold;
     font-size: 18px;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 10px;
+}
+
+.prod__option .prod__option-title .badge__required{
+    font-family: cubeFont-regular;
+    font-size: 14px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 2px;
+    background: #80aa831c;
+    color: #78ac7d;
+    min-width: 85px;
 }
 
 .prod__option .prod__option-radio .form-check{ 
@@ -251,4 +269,27 @@
     text-align: right;
     color: gainsboro;
     letter-spacing: 1px;
+}
+
+
+.showmore { 
+    position: absolute;
+    bottom: -1px;
+    width: 100%;
+    padding-bottom: 20px;
+    padding-top: 15px;
+    width: 100%;
+    height: 38px;
+    display: flex;
+    background: white;
+    align-items: center;
+    -webkit-box-shadow: 0px -7px 5px 0px rgba(255, 255, 255, 0.75);
+    -moz-box-shadow:    0px -7px 5px 0px rgba(255, 255, 255, 0.75);
+    box-shadow:         0px -7px 5px 0px rgba(255, 255, 255, 0.75);
+    color: #a9a9a9;
+    cursor: pointer;
+}
+.showmore.clicked {
+    bottom: 0;
+    position: relative;
 }

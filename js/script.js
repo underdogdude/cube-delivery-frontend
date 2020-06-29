@@ -55,7 +55,7 @@ function init() {
                 res.data.forEach(value => {
                     if(value.name) {
                         $(`
-                            <div class="menu__layout-hasimg">
+                        <a class="menu__link menu__layout-hasimg" data-toggle="modal" data-target="#prodModal" data-id="${ value.menu_id }" href="#">
                                 <div class="menu__layout-hasimg-imgsection">
                                     <div class="menu__layout-hasimg-thumbnail">
                                         <img src="https://d2waa76v2pig3r.cloudfront.net/${value.image_key}"
@@ -74,12 +74,10 @@ function init() {
                                         <span class="price">
                                             ${ Math.round(value.price) }บาท
                                         </span>
-                                        <a class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#prodModal" data-id="${ value.menu_id }" href="#">
-                                            <i class="fas fa-plus"></i>
-                                        </a>
                                     </div>
                                 </div>
-                            </div>
+                        </a>
+
                         `).appendTo($(`#${value.menu_group_id}_list`));
                     }
                 })
@@ -116,7 +114,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
                     </div>
                     <div class="product__order">
                         
-                        <section class="prod__desc">
+                        <section class="prod__desc" id="prod_desc_section">
                             ${ isRecommend(res.data.recommended) }
                             ${ res.data.description }
                         </section>
@@ -258,6 +256,8 @@ $('#prodModal').on('show.bs.modal', function(e) {
 
             addtoCart();
         });
+
+        descToggle.init();
     });
 });
 
@@ -358,12 +358,17 @@ function listProdOption(option) {
                 }
 
                 $(`
-                    <p class="prod__option-title">
-                        <span class="text__primary">
-                            *
-                        </span>
-                        ${ option_group.option_group_name }
-                    </p>
+                    <div class="prod__option-title">
+                        <div>
+                            <span class="text__primary">
+                                *
+                            </span>
+                            ${ option_group.option_group_name }
+                        </div>
+                        <div class="badge__required">
+                            1 REQUIRED
+                        </div>
+                    </div>
                     <span style="display:none;" id="optionGroupName-${option_group.option_group_id}">${ option_group.option_group_name }</span>
                     <div class="prod__option-radio">
                         ${selectButtonList}
@@ -508,4 +513,42 @@ function activeAddToCart() {
 function inactiveAddToCart() { 
     var elem = $("#btnAddToCart");
     $(elem).addClass("inactive");
+}
+
+var descToggle = { 
+
+    $elem: function() {
+        return $("#prod_desc_section");
+    },
+    init : function() { 
+
+        var $elem_prod_desc_section = this.$elem();
+        if($($elem_prod_desc_section).height() > 200) { 
+            $($elem_prod_desc_section).append(`
+                <div class="showmore" id="showmore" onclick="descToggle.toggle()">
+                    Show More
+                </div>`
+            );
+            $elem_prod_desc_section.css("height" , "200px");
+            $elem_prod_desc_section.css("overflow" , "hidden");
+        }
+    },
+    toggle: function() { 
+        var showmore_btn = $("#showmore");
+        var $elem_prod_desc_section = this.$elem();
+
+        if($(showmore_btn).hasClass('clicked')) { 
+
+            // $($elem_prod_desc_section).css("max-height" , "200px");
+            $($elem_prod_desc_section).animate({ "height": "200px" } , "slow");
+            $(showmore_btn).removeClass("clicked");
+            $(showmore_btn).html("Show More");
+
+        }else { 
+            // $($elem_prod_desc_section).css("max-height" , "100%");
+            $($elem_prod_desc_section).animate({ "height": "100%" } , "slow");
+            $(showmore_btn).addClass("clicked");
+            $(showmore_btn).html("Show Less");
+        }
+    }
 }
