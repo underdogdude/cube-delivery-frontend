@@ -64,11 +64,41 @@ body {
 
 .user-menu-wrap {
     position: relative;
-    width: 36px;
+    display: flex;
+    align-items: center;
+    /* width: 36px; */
+}
+
+.menu__icon { 
+    margin-left: 8px;
+    margin-right: 8px;
+    position: relative;
+}
+.menu__icon i { 
+    font-size: 20px;
+    color: #b9b9b9;
+}
+
+.menu__icon .dot { 
+    display: none;
+    height: 6px;
+    width: 6px;
+    background-color: #ab8875;
+    border-radius: 50%;
+    position: absolute;
+    right: -1px;
+    top: -1px;
+}
+.menu__icon .dot.is_inactive { 
+    display: none;
+}
+.menu__icon .dot.is_active { 
+    display: block;
 }
 
 .mini-photo-wrapper {
     display: block;
+    margin-left: 10px;
 }
 
 .mini-photo {

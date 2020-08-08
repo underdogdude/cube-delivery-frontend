@@ -15,7 +15,11 @@ var myCart = {
             $("#mycart__btn_container").css("display", "block");
         }else { 
             $("#mycart__btn_container").css("display", "none");
-            window.location = "./index.html";
+            // window.location = "./index.html";
+            $("#cartlist").html(`<p class="text__secondary text-center">
+                ไม่มีสินค้าในตะกร้า
+            </p>`);
+            console.log('sssss');
         }
     }
 };
@@ -80,56 +84,65 @@ var cartLists = {
     render: function(items) { 
 
         var cartlist_elem = $("#cartlist");
+
+        if(Object.keys(items).length !== 0) { 
+
             $(cartlist_elem).empty();
-        var string = ``;
+            var string = ``;
 
-        for( var i in items ) {
+            for( var i in items ) {
 
-           string += `
-            <div class="cartlist__item">
-                <div class="cartlist__header">
-                    <div class="mr-3">
-                        <h4 class="title"> 
-                            ${ items[i].name }
-                        </h4>
-                        <span class="desc">
-                            ${this.getOptionString( items[i].options )}
-                        </span>
+            string += `
+                <div class="cartlist__item">
+                    <div class="cartlist__header">
+                        <div class="mr-3">
+                            <h4 class="title"> 
+                                ${ items[i].name }
+                            </h4>
+                            <span class="desc">
+                                ${this.getOptionString( items[i].options )}
+                            </span>
+                        </div>
+                        <div class="text-danger">
+                            <i class="far fa-trash-alt  btn__remove"  onclick="cartLists.remove('${i}')"></i>
+                        </div>
                     </div>
-                    <div class="text-danger">
-                        <i class="far fa-trash-alt  btn__remove"  onclick="cartLists.remove('${i}')"></i>
+                    <div class="cartlist__footer">
+                        <div class="d-flex flex-column">
+                            <i class="morerequest text__primary">${ items[i].memo}</i>
+                            <span class="price">
+                                ${ (items[i].totalPrice * items[i].qty).toLocaleString() }
+                                บาท
+                            </span>
+                        </div>
+                        
+                        <div class="custom-input-checkout">
+                            <button type="button" class="cic-btn cic-btn-1 cic-btn-small cic-decrement"
+                                onclick="amount_btn.decrease('${i}')">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" 
+                                class="cic-input" id="${i}-quatityInput"
+                                step="1" 
+                                value="${items[i].qty}" 
+                                min="1"
+                                max="99"
+                            />
+                            <button type="button" class="cic-btn cic-btn-1 cic-btn-small cic-increment"
+                                onclick="amount_btn.increase('${i}')">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="cartlist__footer">
-                    <div class="d-flex flex-column">
-                        <i class="morerequest text__primary">${ items[i].memo}</i>
-                        <span class="price">
-                            ${ (items[i].totalPrice * items[i].qty).toLocaleString() }
-                            บาท
-                        </span>
-                    </div>
-                    
-                    <div class="custom-input-checkout">
-                        <button type="button" class="cic-btn cic-btn-1 cic-btn-small cic-decrement"
-                            onclick="amount_btn.decrease('${i}')">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <input type="number" 
-                            class="cic-input" id="${i}-quatityInput"
-                            step="1" 
-                            value="${items[i].qty}" 
-                            min="1"
-                            max="99"
-                        />
-                        <button type="button" class="cic-btn cic-btn-1 cic-btn-small cic-increment"
-                            onclick="amount_btn.increase('${i}')">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>`
+                </div>`
+            }
+            $(cartlist_elem).html(string);
+
+        }else{ 
+            $("#cartlist").html(`<p class="text__secondary text-center">
+                ไม่มีสินค้าในตะกร้า
+            </p>`);
         }
-        $(cartlist_elem).html(string);
     },
 
     getOptionString : function(optionLists) { 

@@ -492,10 +492,11 @@ var myCart = {
             get_total += (cartItems[i].totalPrice * cartItems[i].qty);
             get_amount += cartItems[i].qty;
         }
-        
         $("#mycart_total").html(get_total.toLocaleString());
         $("#mycart_amount").html(get_amount);
         $("#mycart__btn_container").css("display","block");
+        // Add Notify;
+        $("#icon_cart .dot").addClass("is_active");
     },
     clicked: function() { 
         var element =  document.querySelector('main')
@@ -503,7 +504,19 @@ var myCart = {
             element.addEventListener('animationend', function() { 
                 window.location = "./mycart.html";
             })
-    }
+    },
+    // verifyToCart: function() { 
+    //     try  { 
+    //         let cartItems  = cartFunction.getItem().items;
+    //         if(Object.keys(cartItems).length === 0) { 
+    //             alert("ตะกร้าของคุณไม่มีสินค้าอยู่");
+    //         }else { 
+    //             myCart.clicked();
+    //         }
+    //     }catch(err) { 
+    //         console.log(err);
+    //     }
+    // }
 }
 
 function activeAddToCart() { 

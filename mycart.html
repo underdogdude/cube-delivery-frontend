@@ -23,7 +23,7 @@
     <header>
         <!-- Image and text -->
         <nav class="navbar navbar-light border-bottom">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="./index.html">
                 <img src="./img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
                 <strong class="ml-2 text__secondary">
                     CUBE FAMILY
@@ -57,28 +57,50 @@
         <div class="container-fluid p-0">
             <div class="page-title d-flex justify-content-between align-items-center">
                 <h1 class="title">
-                    My Cart
+                    Cart
                 </h1>
                 <a href="./index.html" class="btn btn-sm btn-link back__btn border">
                     กลับไปหน้าเมนู
                 </a>
             </div>
-            <div class="content">
-                <div class="cartlist" id="cartlist">
+            <ul class="nav nav-tabs menu__tab cart__tab flex-nowrap" id="menuTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="cart-tab" data-toggle="tab" href="#cart" role="tab" aria-controls="cart" aria-selected="true">
+                        My Cart
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab" aria-controls="history" aria-selected="true">
+                        History
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content" id="menuTabContent">
+                <div class="tab-pane fade show active" id="cart" role="tabpanel" aria-labelledby="cart-tab">
+                    <div class="content">
+                        <div class="cartlist" id="cartlist">
+                        </div>
+                        <!-- CHECKOUT Button -->
+                        <div class="mycart__btn-container" id="mycart__btn_container">
+                            <button class="btn btn__primary mycart__btn shadow-lg" style="background: #2c4430;" onclick="checkout()">
+                                <span class="amount" id="mycart_amount"></span>
+                                <span class="title">Check Out</span>
+                                <span class="total">
+                                    <p class="total_label">TOTAL</p>
+                                    <span id="mycart_total"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade show" id="history" role="tabpanel" aria-labelledby="history-tab">
+                    <div class="content">
+                        <p class="text__secondary text-center">
+                            ไม่มีประวัติสินค้า
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <!--  -->
-        <div class="mycart__btn-container" id="mycart__btn_container">
-            <button class="btn btn__primary mycart__btn shadow-lg" style="background: #2c4430;" onclick="checkout()">
-                <span class="amount" id="mycart_amount"></span>
-                <span class="title">Check Out</span>
-                <span class="total">
-                    <p class="total_label">TOTAL</p>
-                    <span id="mycart_total"></span>
-                </span>
-            </button>
         </div>
     </main>
 
@@ -114,7 +136,7 @@
         reRender();
 
     }else { 
-        window.location = "./index.html";
+        // window.location = "./index.html";
     }
 
 </script>

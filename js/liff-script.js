@@ -10,12 +10,12 @@ var lineToken = '';
 function liffInit() {
 
     if (!liff.isInClient()) {
-        window.location = "https://line.me/R/ti/p/@cubefamily7"
-        window.location = "./add-line.html"
+        // window.location = "https://line.me/R/ti/p/@cubefamily7"
+        // window.location = "./add-line.html"
     }
 
-    // var liffId = '1654140731-mR5YN8LL';
-    var liffId = '1654165370-zNwlvWJZ'; // Production
+    var liffId = '1654140731-mR5YN8LL';
+    // var liffId = '1654165370-zNwlvWJZ'; // Production
     liff.init({
         liffId: liffId || ""
     }).then(() => {
@@ -31,7 +31,7 @@ function liffInit() {
 
 function appInit() {
     if (!liff.isLoggedIn() && !liff.isInClient()) {
-        liff.login();
+        // liff.login();
     } else {
       liff.getProfile().then(async (profile) => {
 

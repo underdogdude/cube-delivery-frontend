@@ -15,6 +15,11 @@
     margin-bottom: 0px;
 }
 
+.cart__tab .nav-item { 
+    flex: 1;
+    text-align: center;
+}
+
 .content{  
     background: #fff;
     padding: 14px;

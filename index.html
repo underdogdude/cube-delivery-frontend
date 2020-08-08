@@ -33,6 +33,14 @@
             </a>
 
             <div class="user-menu-wrap">
+                <!-- <a class="menu__icon" href="#" id="icon_history">
+                    <span class="dot "></span>
+                    <i class="fas fa-history"></i>
+                </a> -->
+                <a class="menu__icon" href="#" id="icon_cart" onclick="myCart.clicked()">
+                    <span class="dot "></span>
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
                 <a class="mini-photo-wrapper" href="#">
                     <img 
                         class="mini-photo" 
@@ -132,6 +140,7 @@
             myCart.showBtn();
         }else { 
             $("#mycart__btn_container").css("display","none");
+            $("#icon_cart .dot").removeClass("is_active");
         }
     }else { 
         var cartItems = {};
