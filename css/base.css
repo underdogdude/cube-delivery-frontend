@@ -81,13 +81,15 @@ body {
 
 .menu__icon .dot { 
     display: none;
-    height: 6px;
-    width: 6px;
     background-color: #ab8875;
     border-radius: 50%;
     position: absolute;
-    right: -1px;
-    top: -1px;
+    right: -8px;
+    top: -8px;
+    font-size: 8px;
+    color: white;
+    font-weight: 900;
+    padding: 2px 5px;
 }
 .menu__icon .dot.is_inactive { 
     display: none;

@@ -1,46 +1,55 @@
+/*
+    ในตอนแอดเมนู  ${isRecommend(value.recommended)}
+    ยังไม่ได้ทำเพราะไม่รู้ทำไง
+
+*/
+
 var cart = {
     items: {}
 }
 
 var current_price = 0
 var product_price;
-var all_option_lists = [];
+var ALL_OPTIONS_LIST = [];
 
 
-
-function init() { 
+function init () { 
 
     loading.show();
-
-    get.menu_group().then(res => { 
-        
+    get.menu_group2().then(res => { 
+        console.log(res);
         if(res.data) {
-            res.data.forEach(value => {
+            // Sort Menu Tab
+            let menuGroup = res.data.sort(function (a, b) {
+                return a.menu_order - b.menu_order;
+            }); 
+
+            menuGroup.forEach(value => {
                 $(`
                     <li class="nav-item">
-                        <a class="nav-link ${(value.seqMenuGroup == 0) ? 'active' : ''}" 
-                            id="${value.menu_group_id}-tab" 
+                        <a class="nav-link ${(value.menu_order == 1) ? 'active' : ''}" 
+                            id="${value.id}-tab" 
                             data-toggle="tab" 
-                            href="#group${value.menu_group_id}" 
+                            href="#group${value.id}" 
                             role="tab" 
-                            aria-controls="group${value.menu_group_id}"
-                            aria-selected="${(value.seqMenuGroup == 0) ? 'true' : 'false'}">
-                                ${value.menu_group_name}
+                            aria-controls="group${value.id}"
+                            aria-selected="${(value.menu_order == 1) ? 'true' : 'false'}">
+                                ${value.name}
                         </a>
                     </li>
                 `).appendTo($('#menuTab'));
-
+                
                 $(`
-                    <div class="tab-pane fade ${(value.seqMenuGroup == 0) ? 'show active' : ''}" 
-                         id="group${value.menu_group_id}" 
+                    <div class="tab-pane fade ${(value.menu_order == 1) ? 'show active' : ''}" 
+                         id="group${value.id}" 
                          role="tabpanel" 
-                         aria-labelledby="${value.menu_group_id}-tab"
+                         aria-labelledby="${value.id}-tab"
                     >
                         <div class="menu__content" 
-                             id="${value.menu_group_id}_list"
+                             id="${value.id}_list"
                         >
                             <span class="menu__layout-title">
-                                ${value.menu_group_name}
+                                ${value.name}
                             </span>
                         </div>
                     </div>
@@ -49,37 +58,39 @@ function init() {
 
             // list prods
 
-            get.menu().then(res=> {
-
+            get.menu2().then(res=> {
                 loading.hide();
                 res.data.forEach(value => {
-                    if(value.name) {
-                        $(`
-                        <a class="menu__link menu__layout-hasimg" data-toggle="modal" data-target="#prodModal" data-id="${ value.menu_id }" href="#">
-                                <div class="menu__layout-hasimg-imgsection">
-                                    <div class="menu__layout-hasimg-thumbnail">
-                                        <img src="https://d2waa76v2pig3r.cloudfront.net/${value.image_key}"
-                                            alt="">
+                    value.categories.map((item) => {
+                        // Image remote https -> http
+                        let image = value.images[0].src.slice(0,4) + value.images[0].src.slice(5, value.images[0].src.length);
+                        if(value.name)
+                            $(`
+                            <a class="menu__link menu__layout-hasimg" data-toggle="modal" data-target="#prodModal" data-id="${ value.id }" href="#">
+                                    <div class="menu__layout-hasimg-imgsection">
+                                        <div class="menu__layout-hasimg-thumbnail">
+                                            <img src="${ image }" alt="">
+                                        </div>
+                                        ${isRecommend(value.recommended)}
                                     </div>
-                                    ${isRecommend(value.recommended)}
-                                </div>
-                                <div class="menu__layout-hasimg-detail">
-                                    <h4 class="title">
-                                        ${value.name}
-                                    </h4>
-                                    <span class="desc">
-                                        ${value.description.slice(0, 144)}
-                                    </span>
-                                    <div class="menu__layout-footer">
-                                        <span class="price">
-                                            ${ Math.round(value.price) }บาท
+                                    <div class="menu__layout-hasimg-detail">
+                                        <h4 class="title">
+                                            ${value.name}
+                                        </h4>
+                                        <span class="desc">
+                                            ${value.short_description.slice(0, 144)}
                                         </span>
+                                        <div class="menu__layout-footer">
+                                            <span class="price">
+                                                ${ Math.round(value.price) }บาท
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                        </a>
-
-                        `).appendTo($(`#${value.menu_group_id}_list`));
-                    }
+                            </a>
+    
+                        `).appendTo($(`#${item.id}_list`));
+                        
+                    })
                 })
             });
         }
@@ -93,9 +104,9 @@ $('#prodModal').on('show.bs.modal', function(e) {
     var id = $(dataID).attr("data-id") 
 
     loading.show();
-    get.menu(id).then(res=> {
-        
+    get.menu2(id).then(res=> {
 
+        let image = res.data.images[0].src.slice(0,4) + res.data.images[0].src.slice(5, res.data.images[0].src.length);
         var header = `
             <div class="modal-header">
                 <button type="button" class="close close-left mr-1" data-dismiss="modal" aria-label="Close">
@@ -110,7 +121,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
         var body = `
                 <div class="modal-body">
                     <div class="product__img">
-                        <img src="https://d2waa76v2pig3r.cloudfront.net/${res.data.image_key}"  width="100%" />
+                        <img src="${ image }"  width="100%" />
                     </div>
                     <div class="product__order">
                         
@@ -163,12 +174,13 @@ $('#prodModal').on('show.bs.modal', function(e) {
                 </button>
             </div>
         `;
-
+        
         $(prod_content).append(header);
         $(prod_content).append(body);
         $(prod_content).append(footer);
 
-        listProdOption(res.data.option_group_list);
+        let obj = res.data.meta_data.find(o => o.key === "_product_addons");
+        listProdOption(obj.value);
         loading.hide();
 
         $('#btnAddToCart').click(function(e) {
@@ -177,22 +189,25 @@ $('#prodModal').on('show.bs.modal', function(e) {
             var optionGroupList = [];
             var hashOptionGroupList = '';
             var totalAdditionalPrice = 0;
-            for (var optionGroup of res.data.option_group_list) {
 
-                var checkedList = $(`input[name=${optionGroup.option_group_id}]:checked`);
+            // for (var optionGroup of res.data.option_group_list) {
+            obj.value.forEach((value, idx) => {
+                var checkedList = $(`input[name="${value.name.trim() + idx}"]:checked`);
+                
                 if (checkedList.length > 0) {
+
                     let optionList = [];
-                    var radioButtonId = $(`input[name=${optionGroup.option_group_id}]:checked`).attr('id');
+                    var radioButtonId = $(`input[name="${value.name.trim() + idx}"]:checked`).attr('id');
                     var optionGroupId = radioButtonId.split('-')[0];
-                    var optionGroupName = $(`#optionGroupName-${optionGroupId}`).text().trim();
+                    var optionGroupName = $(`#optionGroupName-${value.name.trim() + idx}`).text().trim();
 
-                    $(`input[name=${optionGroup.option_group_id}]:checked`).each(function(index) {
-                        var radioButtonId = $(`input[name=${optionGroup.option_group_id}]:checked`).eq(index).attr('id');
+                    $(`input[name="${value.name + idx}"]:checked`).each(function(index) {
+                        var radioButtonId = $(`input[name="${value.name.trim() + idx}"]:checked`).eq(index).attr('id');
+                        
                         var optionId = radioButtonId.split('-')[1];
-
                         var optionName = $(`#optionName-${optionGroupId}-${optionId}`).text().trim();
-                        var optionPrice = $(`#optionPrice-${optionGroupId}-${optionId}`).text().trim();
-
+                        var optionPrice = $(`#optionPrice-${idx}-${optionId}`).text().trim();
+                        console.log(optionPrice,' opsiontprice')
                         optionList.push({
                             "name": optionName,
                             "displayName": optionName,
@@ -213,16 +228,17 @@ $('#prodModal').on('show.bs.modal', function(e) {
 
                     hashOptionGroupList = md5(JSON.stringify(optionGroupList));
                 }
-            }
+            });
 
             // hashOptionGroupList is for check user chooice same menu with same option (md5 of optionlist)
 
             var refCardItem = cart.items[`${res.data.menu_id}-${hashOptionGroupList}`];
 
             // In the first select [refCardItem] will be undefined because it doesn't have this menu with this option yet;
+
             if (refCardItem == undefined) {
                 refCardItem = {
-                    "menuId": res.data.menu_id,
+                    "menuId": res.data.id,
                     "name": res.data.name,
                     "description": res.data.description,
                     "memo": $('#additionalReqInput').val(),
@@ -232,9 +248,10 @@ $('#prodModal').on('show.bs.modal', function(e) {
                     "qty": parseInt($('#quatityInput').val()),
                     "options": optionGroupList,
                     "promotionId": "",
-                    "imageURL": "https://d2waa76v2pig3r.cloudfront.net/" + res.data.image_key,
+                    "imageURL": image,
                     "reason": null
                 }
+                console.log(refCardItem,' CARD');
                 cart.items[`${res.data.menu_id}-${hashOptionGroupList}`] = refCardItem
             } else {
                 var currentQty = refCardItem.qty;
@@ -276,107 +293,108 @@ function isRecommend(value = "") {
 
 function listProdOption(option) { 
 
-    all_option_lists = option;
-    console.log(option, ' THIS IS A OPTION');
-    if (option.length !== 0) {
-        option.forEach((value) => {
+    ALL_OPTIONS_LIST = sortArrayOfObjects(option, 'position');
+    
+    if (ALL_OPTIONS_LIST.length !== 0) {
+        
+        ALL_OPTIONS_LIST.forEach((value, idx) => {
 
-            let option_group = value.option_group
+            var selectButtonListHTML = '';
 
-            if (option_group) {
+            value.options.map((opsItem, opsItemIdx) => {
 
-                var selectButtonList = '';
-                var option_list = option_group.option_list;
-
-                for (let optionKey in option_list) {
-
-                    var option = option_list[optionKey];
-
-                    if (option_group.max_choice == 1) {
-                        selectButtonList += `
-
+                var price = opsItem.price !== "" ? opsItem.price : "0";
+                
+                // If options has only ONE use radiobutton will not WORK;
+                if(value.type === "radiobutton" && value.options.length !== 1) { 
+                    selectButtonListHTML += `
                             <div class="form-check">
                                 <div class="custom-control custom-radio">
                                     <input type="radio" 
-                                        name="${option_group.option_group_id}"
-                                        id="${option_group.option_group_id}-${option.option_id}"
-                                        value="${ Math.round(option.option_price) }"
+                                        name="${value.name.trim() + idx}"
+                                        value="${ Math.round(price)}"
+                                        id="${value.name.trim() + idx}-${opsItemIdx}"
                                         class="form-check-input custom-control-input">
 
                                     <label class="custom-control-label" 
-                                        for="${option_group.option_group_id}-${option.option_id}">
-
-                                        <p id="optionName-${option_group.option_group_id}-${option.option_id}">
-                                        ${option.option_name}
+                                        for="${value.name.trim() + idx}-${opsItemIdx}">
+                                        <p id="optionName-${value.name.trim() + idx}-${opsItemIdx}">
+                                            ${opsItem.label}
                                         </p>
                                     </label>
                                 </div>
 
                                 <label class="pure-material-radio"  
-                                for="${option_group.option_group_id}-${option.option_id}">
+                                for="">
                                     <b class="prod__option-price">
-                                        <span id="optionPrice-${option_group.option_group_id}-${option.option_id}">
-                                            ${ Math.round(option.option_price) }
+                                        <span id="optionPrice-${idx}-${opsItemIdx}">
+                                        ${ Math.round(price)}
                                         </span> บาท
                                     </b>
                                 </label>
                             </div>
                         `;
-                    } else {
-                        selectButtonList += `
-
-                            <div class="form-check">
-                                <div class="custom-control custom-checkbox">
-
-                                    <input type="checkbox" 
-                                        name="${option_group.option_group_id}"
-                                        id="${option_group.option_group_id}-${option.option_id}"
-                                        value="${ Math.round(option.option_price) }"
-                                        class="form-check-input custom-control-input"
-                                    />
-
-                                    <label class="custom-control-label" 
-                                        for="${option_group.option_group_id}-${option.option_id}">
-
-                                        <p id="optionName-${option_group.option_group_id}-${option.option_id}">
-                                        ${option.option_name}
-                                        </p>
-                                    </label>
-                                </div>
-                                
-                                <label class="pure-material-radio"  
-                                    for="${option_group.option_group_id}-${option.option_id}">
-                                    <b class="prod__option-price">
-                                        <span id="optionPrice-${option_group.option_group_id}-${option.option_id}">
-                                            ${ Math.round(option.option_price) }
-                                        </span> บาท
-                                    </b>
+                }else { 
+                    selectButtonListHTML += `
+                        <div class="form-check">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" 
+                                    name="${value.name.trim() + idx}"
+                                    value="${ Math.round(price)}"
+                                    id="${value.name.trim() + idx}-${opsItemIdx}"
+                                    class="form-check-input custom-control-input"
+                                />
+                                <label class="custom-control-label" 
+                                    for="${value.name.trim() + idx}-${opsItemIdx}">
+                                    <p id="optionName-${value.name.trim() + idx}-${opsItemIdx}">
+                                        ${opsItem.label}
+                                    </p>
                                 </label>
                             </div>
-                        `;
-                    }
+                            <label class="pure-material-radio"  
+                                for="">
+                                    <b class="prod__option-price">
+                                        <span id="optionPrice-${idx}-${opsItemIdx}">
+                                        ${ Math.round(price)}
+                                        </span> บาท
+                                    </b>
+                            </label>
+                        </div>
+                    `;
                 }
-
-                $(`
-                    <div class="prod__option-title">
-                        <div>
-                            <span class="text__primary">
-                                *
-                            </span>
-                            ${ option_group.option_group_name }
-                        </div>
-                        <div class="badge__required">
-                            1 REQUIRED
-                        </div>
+            })
+            var isRequiredHTML = `<div class="badge__required">
+                    1 REQUIRED
+                </div>`
+            var isRequired = value.required === 1 ? isRequiredHTML : "";
+            $(`
+                <div class="prod__option-title">
+                    <div>
+                        <span class="text__primary">
+                            ${ isRequired.length > 0 ? "*" : "" }
+                        </span>
+                        ${ value.name }
                     </div>
-                    <span style="display:none;" id="optionGroupName-${option_group.option_group_id}">${ option_group.option_group_name }</span>
-                    <div class="prod__option-radio">
-                        ${selectButtonList}
-                    </div>
-                    
+                    ${ isRequired }
+                </div>
+                <span style="display:none;" id="optionGroupName-${value.name.trim() + idx}">
+                    ${ value.name }
+                </span>
+                </span>
+                <div class="prod__option-radio">
+                    ${selectButtonListHTML}
+                </div>
             `).appendTo($('#prod__option'));
-            }  
-        })
+        });
+
+        // Check button again
+        var required_amount = ALL_OPTIONS_LIST.filter((item) => {
+            return item.required === 1;
+        });
+        if(required_amount.length === 0) { 
+            activeAddToCart();
+        }
+        
     }else{
         activeAddToCart();
     }
@@ -415,35 +433,51 @@ function updatePriceAmount(amount) {
 
 var option_price = 0;
 function updatePriceOption() { 
-    console.log(all_option_lists , ' all option group');
+
     option_price = 0; // set value to zero.
 
     var input_name_lists = [];
-    for (optionGroup of all_option_lists) {
 
-        let checkedList = $(`input[name=${optionGroup.option_group_id}]:checked`);
+    ALL_OPTIONS_LIST.forEach((value, idx) => {
+        let checkedList = $(`input[name="${value.name.trim() + idx}"]:checked`);
         if (checkedList.length > 0) {
-
-            var input_name = $(checkedList).attr("name");
-            var option_selected = Number($(`input[name=${optionGroup.option_group_id}]:checked`).val());
+            // var input_name = $(checkedList).attr("name");
+            var option_selected = Number($(`input[name="${value.name.trim() + idx}"]:checked`).val());
             
             if(!isNaN(option_selected)) { 
                 option_price += option_selected;
             }
             
-            // validate ADD TO CART BTN
-            input_name_lists.push(input_name);
-            var unique_name_lists = input_name_lists.filter(function(item, pos) {
-                return input_name_lists.indexOf(item) == pos;
-            })
+            if(value.required === 1) {
+                var input_name = $(checkedList).attr("name");
 
-            if(unique_name_lists.length < all_option_lists.length) { 
-                inactiveAddToCart();
-            }else{ 
-                activeAddToCart();
+                var required_amount = ALL_OPTIONS_LIST.filter((item) => {
+                    return item.required === 1;
+                });
+
+                input_name_lists.push(input_name);
+
+                var unique_name_lists = input_name_lists.filter(function(item, pos) {
+                    return input_name_lists.indexOf(item) == pos;
+                })
+                if(unique_name_lists.length < required_amount.length) { 
+                    inactiveAddToCart();
+                }else{ 
+                    activeAddToCart();
+                }
             }
+            // input_name_lists.push(input_name);
+            // var unique_name_lists = input_name_lists.filter(function(item, pos) {
+            //     return input_name_lists.indexOf(item) == pos;
+            // })
+
+            // if(unique_name_lists.length < ALL_OPTIONS_LIST.length) { 
+            //     inactiveAddToCart();
+            // }else{ 
+            //     activeAddToCart();
+            // }
         }
-    }
+    });
     updatePrice();
 }
 
@@ -487,7 +521,7 @@ var myCart = {
         var cartItems = JSON.parse(localStorage.getItem('cart')).items;
         var get_amount = 0;
         var get_total = 0;
-
+        console.log(cartItems, 'CArt ITEM');
         for (var i in cartItems){ 
             get_total += (cartItems[i].totalPrice * cartItems[i].qty);
             get_amount += cartItems[i].qty;
@@ -497,6 +531,7 @@ var myCart = {
         $("#mycart__btn_container").css("display","block");
         // Add Notify;
         $("#icon_cart .dot").addClass("is_active");
+        $("#icon_cart .dot").html(get_amount);
     },
     clicked: function() { 
         var element =  document.querySelector('main')
@@ -565,3 +600,11 @@ var descToggle = {
         }
     }
 }
+
+
+
+const sortArrayOfObjects = (arr, key) => {
+    return arr.sort((a, b) => {
+        return a[key] - b[key];
+    });
+};
