@@ -12,6 +12,8 @@
     <!-- Vendor CSS -->
     <link rel="stylesheet" href="./css/vendor/bootstrap.min.css">
     <link rel="stylesheet" href="./css/vendor/animate.css">
+    <link rel="stylesheet" href="./css/vendor/slick.css">
+    <link rel="stylesheet" href="./css/vendor/slick-theme.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="./css/vendor/fontawesome-all.css">
     <!-- Global -->
@@ -42,14 +44,9 @@
                     <i class="fas fa-shopping-cart"></i>
                 </a>
                 <a class="mini-photo-wrapper" href="#">
-                    <img 
-                        class="mini-photo" 
-                        src="https://image.flaticon.com/icons/svg/149/149071.svg" 
-                        width="36" 
-                        height="36" 
-                        id="avartar"
-                        onError="this.onerror=null;this.src='https://image.flaticon.com/icons/svg/149/149071.svg';"
-                    />
+                    <img class="mini-photo" src="https://image.flaticon.com/icons/svg/149/149071.svg" width="36"
+                        height="36" id="avartar"
+                        onError="this.onerror=null;this.src='https://image.flaticon.com/icons/svg/149/149071.svg';" />
                 </a>
                 <div class="menu-container">
                     <ul class="user-menu">
@@ -62,9 +59,9 @@
                     </ul>
                 </div>
             </div>
-                <!-- {/* <img src={logo} alt="" width={"100px"}/> */} -->
-                <!-- <img src={avatarURL} alt="" className="avartar" /> -->
-                
+            <!-- {/* <img src={logo} alt="" width={"100px"}/> */} -->
+            <!-- <img src={avatarURL} alt="" className="avartar" /> -->
+
         </nav>
     </header>
     <main>
@@ -124,6 +121,7 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="./js/vendor/bootstrap.min.js"></script>
 <script src="./js/vendor/md5.min.js"></script>
+<script src="./js/vendor/slick.js"></script>
 
 <script src="./js/global.js?cache=' + new Date().getTime() + '"></script>
 <script src="./js/liff-script.js?cache=' + new Date().getTime() + '"></script>
@@ -131,18 +129,17 @@
 <script src="./js/script.js?cache=' + new Date().getTime() + '"></script>
 
 <script>
-
-    if(localStorage.getItem('cart') !== null) { 
+    if (localStorage.getItem('cart') !== null) {
         var cartItems = JSON.parse(localStorage.getItem('cart')).items;
 
-        if(Object.keys(cartItems).length > 0) { 
-            $("#mycart__btn_container").css("display","block");
+        if (Object.keys(cartItems).length > 0) {
+            $("#mycart__btn_container").css("display", "block");
             myCart.showBtn();
-        }else { 
-            $("#mycart__btn_container").css("display","none");
+        } else {
+            $("#mycart__btn_container").css("display", "none");
             $("#icon_cart .dot").removeClass("is_active");
         }
-    }else { 
+    } else {
         var cartItems = {};
     }
 
@@ -155,12 +152,12 @@
             step = parseInt($input.attr('step'));
 
         let temp = val + step;
-        if (temp <= max) { 
+        if (temp <= max) {
             $input.val(temp);
             amount = temp;
             // changeBtnAddToCartState();
             updatePriceAmount(amount);
-        }else{
+        } else {
             $input.val(max);
             amount = max;
             // changeBtnAddToCartState();
@@ -175,12 +172,12 @@
             step = parseInt($input.attr('step'));
 
         let temp = val - step;
-        if (temp >= min) { 
+        if (temp >= min) {
             $input.val(temp);
             amount = temp;
             // changeBtnAddToCartState();
             updatePriceAmount(amount);
-        }else{
+        } else {
             $input.val(min);
             amount = min;
             // changeBtnAddToCartState();
@@ -199,17 +196,15 @@
     // }
 
 
-    $('#viewCartBtn').click(function() {
+    $('#viewCartBtn').click(function () {
         let cart = localStorage.getItem('cart')
     })
 
-    $('#clearCartBtn').click(function() {
-        localStorage.setItem('cart', JSON.stringify({ items: {}}))
+    $('#clearCartBtn').click(function () {
+        localStorage.setItem('cart', JSON.stringify({
+            items: {}
+        }))
     })
-
-    
-
-
 </script>
 
 </html>

@@ -17,7 +17,6 @@ function init () {
 
     loading.show();
     get.menu_group2().then(res => { 
-        console.log(res);
         if(res.data) {
             // Sort Menu Tab
             let menuGroup = res.data.sort(function (a, b) {
@@ -63,7 +62,9 @@ function init () {
                 res.data.forEach(value => {
                     value.categories.map((item) => {
                         // Image remote https -> http
-                        let image = value.images[0].src.slice(0,4) + value.images[0].src.slice(5, value.images[0].src.length);
+                        
+                        let image = value.images[0].src.slice(0,4) + value.images[0].src.slice(5, value.images[0].src.length) ? value.images[0].src.slice(0,4) + value.images[0].src.slice(5, value.images[0].src.length) : "./img/logo.png";
+
                         if(value.name)
                             $(`
                             <a class="menu__link menu__layout-hasimg" data-toggle="modal" data-target="#prodModal" data-id="${ value.id }" href="#">
@@ -98,184 +99,201 @@ function init () {
 }
 
 $('#prodModal').on('show.bs.modal', function(e) {
+    try { 
 
-    var dataID = e.relatedTarget
-    var prod_content = $("#prod_content");
-    var id = $(dataID).attr("data-id") 
+        var dataID = e.relatedTarget
+        var prod_content = $("#prod_content");
+        var id = $(dataID).attr("data-id") 
 
-    loading.show();
-    get.menu2(id).then(res=> {
+        loading.show();
+        get.menu2(id).then(res=> {
 
-        let image = res.data.images[0].src.slice(0,4) + res.data.images[0].src.slice(5, res.data.images[0].src.length);
-        var header = `
-            <div class="modal-header">
-                <button type="button" class="close close-left mr-1" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <span class="text__ellipsis">
-                   ${ res.data.name }
-                </span>
-            </div>
-        `;
-
-        var body = `
-                <div class="modal-body">
-                    <div class="product__img">
-                        <img src="${ image }"  width="100%" />
-                    </div>
-                    <div class="product__order">
-                        
-                        <section class="prod__desc" id="prod_desc_section">
-                            ${ isRecommend(res.data.recommended) }
-                            ${ res.data.description }
-                        </section>
-                    
-                    <section class="prod__option" id="prod__option"></section>
-
-                    <section class="prod__option">
-                        <p class="prod__option-title">
-                            Additional Request
-                        </p>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="E.g. No veggies" id="additionalReqInput" />
-                        </div>
-
-                        <div class="custom-input-number">
-                            <button type="button" class="cin-btn cin-btn-1 cin-btn-md cin-decrement">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <input type="number" 
-                                class="cin-input basket-quantity" id="quatityInput"
-                                step="1" 
-                                value="1" 
-                                min="1"
-                                max="99"
-                            />
-                            <button type="button" class="cin-btn cin-btn-1 cin-btn-md cin-increment">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                    </section>
+            console.log(res ,' mene2 ID');
+            let image = "";
+            res.data.images.map((img)=>{
+                image += `
+                    <div class="slide-item" style="background-image: url('${ img.src.slice(0,4) + img.src.slice(5, img.src.length) }')"></div>
+                `
+            });
+            
+            var header = `
+                <div class="modal-header">
+                    <button type="button" class="close close-left mr-1" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <span class="text__ellipsis">
+                    ${ res.data.name }
+                    </span>
                 </div>
-            </div>
-        `;
-        product_price = Math.round(res.data.price);
-        current_price = Math.round(res.data.price);
-        var footer = `
-            <div class="modal-footer">
-                <button type="button" class="btn btn-lg btn__primary btn-tocart inactive" id="btnAddToCart">
-                    <span>
-                        Add to Cart
-                    </span>
-                    <span class="" >
-                        <span id="current_price">${ product_price.toLocaleString() }</span>
-                        บาท
-                    </span>
-                </button>
-            </div>
-        `;
-        
-        $(prod_content).append(header);
-        $(prod_content).append(body);
-        $(prod_content).append(footer);
+            `;
 
-        let obj = res.data.meta_data.find(o => o.key === "_product_addons");
-        listProdOption(obj.value);
-        loading.hide();
-
-        $('#btnAddToCart').click(function(e) {
-
-            // make option list
-            var optionGroupList = [];
-            var hashOptionGroupList = '';
-            var totalAdditionalPrice = 0;
-
-            // for (var optionGroup of res.data.option_group_list) {
-            obj.value.forEach((value, idx) => {
-                var checkedList = $(`input[name="${value.name.trim() + idx}"]:checked`);
-                
-                if (checkedList.length > 0) {
-
-                    let optionList = [];
-                    var radioButtonId = $(`input[name="${value.name.trim() + idx}"]:checked`).attr('id');
-                    var optionGroupId = radioButtonId.split('-')[0];
-                    var optionGroupName = $(`#optionGroupName-${value.name.trim() + idx}`).text().trim();
-
-                    $(`input[name="${value.name + idx}"]:checked`).each(function(index) {
-                        var radioButtonId = $(`input[name="${value.name.trim() + idx}"]:checked`).eq(index).attr('id');
+            var body = `
+                    <div class="modal-body">
+                            <div class="slick-container"> 
+                                ${image}
+                            </div>
+                        <div class="product__order">
+                            
+                            <section class="prod__desc" id="prod_desc_section">
+                                ${ isRecommend(res.data.recommended) }
+                                ${ res.data.description }
+                            </section>
                         
-                        var optionId = radioButtonId.split('-')[1];
-                        var optionName = $(`#optionName-${optionGroupId}-${optionId}`).text().trim();
-                        var optionPrice = $(`#optionPrice-${idx}-${optionId}`).text().trim();
-                        console.log(optionPrice,' opsiontprice')
-                        optionList.push({
-                            "name": optionName,
-                            "displayName": optionName,
-                            "quantity": 1,
-                            "additionalPrice": parseInt(optionPrice)
-                        });
+                        <section class="prod__option" id="prod__option"></section>
 
-                        totalAdditionalPrice += parseInt(optionPrice)
-                        
-                        console.log('optionGroupName', radioButtonId, optionGroupId, optionId, optionGroupName, optionName, optionPrice)
-                    })
+                        <section class="prod__option">
+                            <p class="prod__option-title">
+                                Additional Request
+                            </p>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="E.g. No veggies" id="additionalReqInput" />
+                            </div>
 
-                    optionGroupList.push({
-                        "name": optionGroupName,
-                        "displayName": optionGroupName,
-                        "values": optionList
-                    })
+                            <div class="custom-input-number">
+                                <button type="button" class="cin-btn cin-btn-1 cin-btn-md cin-decrement">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <input type="number" 
+                                    class="cin-input basket-quantity" id="quatityInput"
+                                    step="1" 
+                                    value="1" 
+                                    min="1"
+                                    max="99"
+                                />
+                                <button type="button" class="cin-btn cin-btn-1 cin-btn-md cin-increment">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            `;
+            product_price = Math.round(res.data.price);
+            current_price = Math.round(res.data.price);
+            var footer = `
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-lg btn__primary btn-tocart inactive" id="btnAddToCart">
+                        <span>
+                            Add to Cart
+                        </span>
+                        <span class="" >
+                            <span id="current_price">${ product_price.toLocaleString() }</span>
+                            บาท
+                        </span>
+                    </button>
+                </div>
+            `;
+            
+            $(prod_content).append(header);
+            $(prod_content).append(body);
+            $(prod_content).append(footer);
 
-                    hashOptionGroupList = md5(JSON.stringify(optionGroupList));
+            let obj = res.data.meta_data.find(o => o.key === "_product_addons");
+            listProdOption(obj.value);
+            loading.hide();
+
+            $('#btnAddToCart').click(function(e) {
+
+                // make option list
+                var optionGroupList = [];
+                var hashOptionGroupList = '';
+                var totalAdditionalPrice = 0;
+
+                // for (var optionGroup of res.data.option_group_list) {
+                obj.value.forEach((value, idx) => {
+                    var checkedList = $(`input[name="${value.name.trim() + idx}"]:checked`);
+                    
+                    if (checkedList.length > 0) {
+
+                        let optionList = [];
+                        var radioButtonId = $(`input[name="${value.name.trim() + idx}"]:checked`).attr('id');
+                        var optionGroupId = radioButtonId.split('-')[0];
+                        var optionGroupName = $(`#optionGroupName-${value.name.trim() + idx}`).text().trim();
+
+                        $(`input[name="${value.name + idx}"]:checked`).each(function(index) {
+                            var radioButtonId = $(`input[name="${value.name.trim() + idx}"]:checked`).eq(index).attr('id');
+                            
+                            var optionId = radioButtonId.split('-')[1];
+                            var optionName = $(`#optionName-${optionGroupId}-${optionId}`).text().trim();
+                            var optionPrice = $(`#optionPrice-${idx}-${optionId}`).text().trim();
+                            
+                            optionList.push({
+                                "name": optionName,
+                                "displayName": optionName,
+                                "quantity": 1,
+                                "additionalPrice": parseInt(optionPrice)
+                            });
+
+                            totalAdditionalPrice += parseInt(optionPrice)
+                            
+                            console.log('optionGroupName', radioButtonId, optionGroupId, optionId, optionGroupName, optionName, optionPrice)
+                        })
+
+                        optionGroupList.push({
+                            "name": optionGroupName,
+                            "displayName": optionGroupName,
+                            "values": optionList
+                        })
+
+                        hashOptionGroupList = md5(JSON.stringify(optionGroupList));
+                    }
+                });
+
+                // hashOptionGroupList is for check user chooice same menu with same option (md5 of optionlist)
+                var refCardItem = cart.items[`${res.data.id}-${hashOptionGroupList}`];
+
+                // In the first select [refCardItem] will be undefined because it doesn't have this menu with this option yet;
+                if (refCardItem == undefined) {
+                    refCardItem = {
+                        "menuId": res.data.id,
+                        "name": res.data.name,
+                        "description": res.data.description,
+                        "memo": $('#additionalReqInput').val(),
+                        "basePrice": Math.round(res.data.price),
+                        "price": Math.round(res.data.price),
+                        "totalPrice": Math.round(res.data.price) + totalAdditionalPrice,
+                        "qty": parseInt($('#quatityInput').val()),
+                        "options": optionGroupList,
+                        "promotionId": "",
+                        "imageURL": image,
+                        "reason": null
+                    }
+                    
+                    cart.items[`${res.data.id}-${hashOptionGroupList}`] = refCardItem
+                } else {
+                    var currentQty = refCardItem.qty;
+                    refCardItem.memo = $('#additionalReqInput').val();
+                    refCardItem.qty = parseInt(currentQty) + parseInt($('#quatityInput').val());
                 }
+
+                // cart.item มีแน่อน
+                if(cartFunction.hasItem()) { 
+                    // ต้องเอาไปเติม
+                    var cartInLocal = cartFunction.getItem(); // is{ } inside cart;
+                    $.extend( true, cartInLocal.items, cart.items );
+                    localStorage.setItem('cart', JSON.stringify(cartInLocal));
+
+                }else{ 
+
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                }
+
+                addtoCart();
             });
 
-            // hashOptionGroupList is for check user chooice same menu with same option (md5 of optionlist)
+            descToggle.init();
+            $('.slick-container').slick({
+                infinite: true,
+                slidesToShow: 1,
+                dots: true,
+            }) 
 
-            var refCardItem = cart.items[`${res.data.menu_id}-${hashOptionGroupList}`];
-
-            // In the first select [refCardItem] will be undefined because it doesn't have this menu with this option yet;
-
-            if (refCardItem == undefined) {
-                refCardItem = {
-                    "menuId": res.data.id,
-                    "name": res.data.name,
-                    "description": res.data.description,
-                    "memo": $('#additionalReqInput').val(),
-                    "basePrice": Math.round(res.data.price),
-                    "price": Math.round(res.data.price),
-                    "totalPrice": Math.round(res.data.price) + totalAdditionalPrice,
-                    "qty": parseInt($('#quatityInput').val()),
-                    "options": optionGroupList,
-                    "promotionId": "",
-                    "imageURL": image,
-                    "reason": null
-                }
-                console.log(refCardItem,' CARD');
-                cart.items[`${res.data.menu_id}-${hashOptionGroupList}`] = refCardItem
-            } else {
-                var currentQty = refCardItem.qty;
-                refCardItem.memo = $('#additionalReqInput').val();
-                refCardItem.qty = parseInt(currentQty) + parseInt($('#quatityInput').val());
-            }
-
-            // cart.item มีแน่อน
-            if(cartFunction.hasItem()) { 
-                // ต้องเอาไปเติม
-                var cartInLocal = cartFunction.getItem(); // is{ } inside cart;
-                $.extend( true, cartInLocal.items, cart.items );
-                localStorage.setItem('cart', JSON.stringify(cartInLocal));
-
-            }else{ 
-
-                localStorage.setItem('cart', JSON.stringify(cart));
-            }
-
-            addtoCart();
         });
+    }
+    catch (err) {
+        console.log(err);
+    }
 
-        descToggle.init();
-    });
 });
 
 function isRecommend(value = "") {
