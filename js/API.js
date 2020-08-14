@@ -37,3 +37,17 @@ var get = {
         )
     },
 }
+
+var woocommerceAPI = {
+    baseURL: "https://murmuring-scrubland-05877.herokuapp.com/api",
+    createOrder: function(data) {
+        console.log('create order data', data)
+        axios({
+            method: 'post',
+            url: this.baseURL + '/orders',
+            data: data
+        }).then(function(response) {
+            console.log('create order response ', response)
+        })
+    }
+}

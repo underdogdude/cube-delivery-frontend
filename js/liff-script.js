@@ -481,7 +481,7 @@ function sendFlexMessage(order) {
             alert('Got Something Error');
         });
     }else { 
-        alert("Plase Open This Link via LINE");
+        alert("Please Open This Link via LINE");
         window.location = './index.html';
     }
 

@@ -184,7 +184,6 @@ function reRender() {
     loading.hide();
 }
 
-
 function checkout() {
     loading.show();
     var userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -360,5 +359,48 @@ function checkout() {
     //         'error'
     //     )
     // })
+
+    console.log(Object.values(cartCheckout.items))
+    woocommerceAPI.createOrder({
+        payment_method: "bacs",
+        payment_method_title: "Direct Bank Transfer",
+        set_paid: true,
+        billing: {
+            first_name: customer_displayName,
+            last_name: "",
+            address_1: "123 test",
+            address_2: "",
+            city: "Bangkok",
+            state: "CNX",
+            postcode: "10920",
+            country: "TH",
+            email: "aonrobotz@gmail.com",
+            phone: "(555) 555-5555"
+        },
+        shipping: {
+            first_name: customer_displayName,
+            last_name: "",
+            address_1: "123 test shipping",
+            address_2: "",
+            city: "Bangkok Shipping",
+            state: "CNX SHIPPING",
+            postcode: "10269",
+            country: "TH"
+        },
+        line_items: Object.values(cartCheckout.items).map(function(itemValue) {
+            return { 
+                product_id: itemValue.menuId,
+                quantity: itemValue.qty
+            }
+        }),
+        shipping_lines: [
+            {
+            method_id: "flat_rate",
+            method_title: "Flat Rate",
+            total: "0"
+            }
+        ]
+    })
+
     sendFlexMessage(cartCheckout.items);
 }
