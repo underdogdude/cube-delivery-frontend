@@ -110,6 +110,8 @@ $('#prodModal').on('show.bs.modal', function(e) {
 
             console.log(res ,' mene2 ID');
             let image = "";
+            let imgThumbnail = res.data.images[0].src.slice(0,4) + res.data.images[0].src.slice(5, res.data.images[0].src.length) ? res.data.images[0].src.slice(0,4) + res.data.images[0].src.slice(5, res.data.images[0].src.length) : "./img/logo.png"
+
             res.data.images.map((img)=>{
                 image += `
                     <div class="slide-item" style="background-image: url('${ img.src.slice(0,4) + img.src.slice(5, img.src.length) }')"></div>
@@ -255,7 +257,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
                         "qty": parseInt($('#quatityInput').val()),
                         "options": optionGroupList,
                         "promotionId": "",
-                        "imageURL": image,
+                        "imageURL": imgThumbnail,
                         "reason": null
                     }
                     

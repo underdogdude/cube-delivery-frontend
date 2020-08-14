@@ -191,7 +191,7 @@ function getOrderObject(order) {
 }
 
 function getSubOption(itemDetail) { 
-
+    
     var optionArr = [];
     for (var option of itemDetail.options) {
         
