@@ -1,7 +1,7 @@
 /*
     ในตอนแอดเมนู  ${isRecommend(value.recommended)}
     ยังไม่ได้ทำเพราะไม่รู้ทำไง
-
+    TODO : ถ้าแก้ http -> https แล้วไปเปลี่ยนลิ่งรูปโดยไม่ต้องตัด string ด้วย !!!!
 */
 
 var cart = {
@@ -203,22 +203,25 @@ $('#prodModal').on('show.bs.modal', function(e) {
 
                 // for (var optionGroup of res.data.option_group_list) {
                 obj.value.forEach((value, idx) => {
-                    var checkedList = $(`input[name="${value.name.trim() + idx}"]:checked`);
-                    
+
+                    var nameRemoveSpace = value.name.replace(/\s/g, '');
+                    var checkedList = $(`input[name="${nameRemoveSpace + idx}"]:checked`);
+
                     if (checkedList.length > 0) {
 
                         let optionList = [];
-                        var radioButtonId = $(`input[name="${value.name.trim() + idx}"]:checked`).attr('id');
+                        var radioButtonId = $(`input[name="${nameRemoveSpace + idx}"]:checked`).attr('id');
                         var optionGroupId = radioButtonId.split('-')[0];
-                        var optionGroupName = $(`#optionGroupName-${value.name.trim() + idx}`).text().trim();
+                        var optionGroupName = $(`#optionGroupName-${nameRemoveSpace + idx}`).text().trim();
 
-                        $(`input[name="${value.name + idx}"]:checked`).each(function(index) {
-                            var radioButtonId = $(`input[name="${value.name.trim() + idx}"]:checked`).eq(index).attr('id');
+                        $(`input[name="${nameRemoveSpace + idx}"]:checked`).each(function(index) {
+                            
+                            var radioButtonId = $(`input[name="${nameRemoveSpace + idx}"]:checked`).eq(index).attr('id');
                             
                             var optionId = radioButtonId.split('-')[1];
                             var optionName = $(`#optionName-${optionGroupId}-${optionId}`).text().trim();
                             var optionPrice = $(`#optionPrice-${idx}-${optionId}`).text().trim();
-                            
+
                             optionList.push({
                                 "name": optionName,
                                 "displayName": optionName,
@@ -320,25 +323,25 @@ function listProdOption(option) {
         ALL_OPTIONS_LIST.forEach((value, idx) => {
 
             var selectButtonListHTML = '';
+            var nameRemoveSpace = value.name.replace(/\s/g, '');
 
             value.options.map((opsItem, opsItemIdx) => {
 
                 var price = opsItem.price !== "" ? opsItem.price : "0";
-                
                 // If options has only ONE use radiobutton will not WORK;
                 if(value.type === "radiobutton" && value.options.length !== 1) { 
                     selectButtonListHTML += `
                             <div class="form-check">
                                 <div class="custom-control custom-radio">
                                     <input type="radio" 
-                                        name="${value.name.trim() + idx}"
+                                        name="${nameRemoveSpace + idx}"
                                         value="${ Math.round(price)}"
-                                        id="${value.name.trim() + idx}-${opsItemIdx}"
+                                        id="${nameRemoveSpace + idx}-${opsItemIdx}"
                                         class="form-check-input custom-control-input">
 
                                     <label class="custom-control-label" 
-                                        for="${value.name.trim() + idx}-${opsItemIdx}">
-                                        <p id="optionName-${value.name.trim() + idx}-${opsItemIdx}">
+                                        for="${nameRemoveSpace + idx}-${opsItemIdx}">
+                                        <p id="optionName-${nameRemoveSpace + idx}-${opsItemIdx}">
                                             ${opsItem.label}
                                         </p>
                                     </label>
@@ -359,14 +362,14 @@ function listProdOption(option) {
                         <div class="form-check">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" 
-                                    name="${value.name.trim() + idx}"
+                                    name="${nameRemoveSpace + idx}"
                                     value="${ Math.round(price)}"
-                                    id="${value.name.trim() + idx}-${opsItemIdx}"
+                                    id="${nameRemoveSpace + idx}-${opsItemIdx}"
                                     class="form-check-input custom-control-input"
                                 />
                                 <label class="custom-control-label" 
-                                    for="${value.name.trim() + idx}-${opsItemIdx}">
-                                    <p id="optionName-${value.name.trim() + idx}-${opsItemIdx}">
+                                    for="${nameRemoveSpace + idx}-${opsItemIdx}">
+                                    <p id="optionName-${nameRemoveSpace + idx}-${opsItemIdx}">
                                         ${opsItem.label}
                                     </p>
                                 </label>
@@ -397,7 +400,7 @@ function listProdOption(option) {
                     </div>
                     ${ isRequired }
                 </div>
-                <span style="display:none;" id="optionGroupName-${value.name.trim() + idx}">
+                <span style="display:none;" id="optionGroupName-${nameRemoveSpace + idx}">
                     ${ value.name }
                 </span>
                 </span>
@@ -457,12 +460,15 @@ function updatePriceOption() {
     option_price = 0; // set value to zero.
 
     var input_name_lists = [];
-
+    
     ALL_OPTIONS_LIST.forEach((value, idx) => {
-        let checkedList = $(`input[name="${value.name.trim() + idx}"]:checked`);
+
+        var nameRemoveSpace = value.name.replace(/\s/g, '');
+
+        let checkedList = $(`input[name="${nameRemoveSpace + idx}"]:checked`);
         if (checkedList.length > 0) {
             // var input_name = $(checkedList).attr("name");
-            var option_selected = Number($(`input[name="${value.name.trim() + idx}"]:checked`).val());
+            var option_selected = Number($(`input[name="${nameRemoveSpace + idx}"]:checked`).val());
             
             if(!isNaN(option_selected)) { 
                 option_price += option_selected;

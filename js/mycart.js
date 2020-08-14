@@ -157,7 +157,7 @@ var cartLists = {
                 var optionStringValues =  ``; 
                 if(optionLists[i].values.length > 0) {
                     for(var j in optionLists[i].values) {
-                        optionStringValues += `${optionLists[i].values[j].name } `;
+                        optionStringValues += `${optionLists[i].values[j].name}`;
                     }
                     optionString += optionStringValues;
                 }

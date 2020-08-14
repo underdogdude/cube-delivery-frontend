@@ -1,3 +1,7 @@
+/*
+ TODO : ถ้าแก้ http -> https แล้วไปเปลี่ยนลิ่งรูปก่อนส่งไลน์ ลิฟด้วย !!!! บรรทักที่ 101
+*/
+
 var slack_channelId = '';
 var customer_displayName = '';
 var customer_avatar = ''
@@ -10,12 +14,12 @@ var lineToken = '';
 function liffInit() {
 
     if (!liff.isInClient()) {
-        // window.location = "https://line.me/R/ti/p/@cubefamily7"
-        // window.location = "./add-line.html"
+        window.location = "https://line.me/R/ti/p/@cubefamily7"
+        window.location = "./add-line.html"
     }
 
-    var liffId = '1654140731-mR5YN8LL';
-    // var liffId = '1654165370-zNwlvWJZ'; // Production
+    // var liffId = '1654140731-mR5YN8LL';
+    var liffId = '1654165370-zNwlvWJZ'; // Production
     liff.init({
         liffId: liffId || ""
     }).then(() => {
@@ -31,7 +35,7 @@ function liffInit() {
 
 function appInit() {
     if (!liff.isLoggedIn() && !liff.isInClient()) {
-        // liff.login();
+        liff.login();
     } else {
       liff.getProfile().then(async (profile) => {
 
@@ -66,7 +70,7 @@ function getOrderObject(order) {
         var itemDetail = order[item];
 
         if (itemDetail.memo == "") itemDetail.memo = "-"
-        
+
         blockOrderArray.push(
             {
                 "type": "box",
@@ -94,7 +98,7 @@ function getOrderObject(order) {
                 "contents": [
                     {
                         "type": "image",
-                        "url": itemDetail.imageURL,
+                        "url": "https://cube-family-delivery.firebaseapp.com/img/logo.png",
                         "align": "start",
                         "size": "full"
                     },
@@ -191,10 +195,10 @@ function getOrderObject(order) {
 }
 
 function getSubOption(itemDetail) { 
-    
+
     var optionArr = [];
     for (var option of itemDetail.options) {
-        
+
         optionArr.push({
             "type": "text",
             "text": option.displayName,
@@ -481,7 +485,6 @@ function sendFlexMessage(order) {
         window.location = './index.html';
     }
 
-    console.log(JSON.stringify(message));
 
 }
 
