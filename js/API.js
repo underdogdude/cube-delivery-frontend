@@ -42,12 +42,32 @@ var woocommerceAPI = {
     baseURL: "https://murmuring-scrubland-05877.herokuapp.com/api",
     createOrder: function(data) {
         console.log('create order data', data)
-        axios({
+        return axios({
             method: 'post',
             url: this.baseURL + '/orders',
             data: data
         }).then(function(response) {
             console.log('create order response ', response)
+            return response.data
+        })
+    },
+    searchCustomerId: function(email) {
+        return axios({
+            method: 'get',
+            url: this.baseURL + '/customers?email=' + email
+        }).then(function(response) {
+            console.log('search CustomerId response ', response)
+            if (response.data[0] == undefined) return false
+            return response.data[0].id
+        })
+    },
+    createCustomer: function(data) {
+        return axios({
+            method: 'post',
+            url: this.baseURL + '/customers',
+            data: data
+        }).then(function(response) {
+            console.log('create customer response ', response)
         })
     }
 }
