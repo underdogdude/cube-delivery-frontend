@@ -10,6 +10,10 @@ function clean_display_name (name) {
     return name.replace(/\s/g, '_').toLowerCase();
 }
 
+function clean_first_name (name) {
+    return name.replace(/[^a-z0-9\s]/gi,'');
+}
+
 var lineToken = '';
 function liffInit() {
 
@@ -18,8 +22,8 @@ function liffInit() {
         window.location = "./add-line.html"
     }
 
-    // var liffId = '1654140731-mR5YN8LL';
-    var liffId = '1654165370-zNwlvWJZ'; // Production
+    var liffId = '1654140731-mR5YN8LL';
+    // var liffId = '1654165370-zNwlvWJZ'; // Production
     liff.init({
         liffId: liffId || ""
     }).then(() => {
@@ -48,12 +52,26 @@ function appInit() {
 
         localStorage.setItem('userInfo', JSON.stringify({
             line_userId: profile.userId,
-            line_displayName: profile.displayName,
+            line_displayName: clean_first_name(profile.displayName),
             line_pictureUrl: profile.pictureUrl,
             line_decodeToken: liff.getDecodedIDToken(lineToken)
         }))
-          
-
+        
+        woocommerceAPI.searchCustomerId(profile.userId + '@line.cube.family').then(function(response) {
+            if (response === false) {
+                woocommerceAPI.createCustomer({
+                    email: profile.userId + "@line.cube.family",
+                    first_name: profile.displayName,
+                    last_name: "LINE",
+                    username: profile.userId,
+                    avatar_url: profile.pictureUrl
+                }).then(function(responseC) {
+                    window.wooCustomerId = responseC
+                })
+            } else {
+                window.wooCustomerId = response
+            }
+        })
       });
     }
 }
@@ -219,10 +237,21 @@ function getSubOption(itemDetail) {
         }
     }
 
+    if (optionArr.length == 0) {
+        optionArr = [{
+            "type": "text",
+            "text": "No Options",
+            "size": "sm",
+            "color": "#a9a9a9",
+            "margin": "lg",
+            "wrap": true
+        }]
+    }
+
     return optionArr;
 }
 
-function sendFlexMessage(order) { 
+function sendFlexMessage(order, orderId) { 
 
     // var blockOrderArray = [];
     var TOTAL = 0;
@@ -247,7 +276,7 @@ function sendFlexMessage(order) {
                   "contents": [
                     {
                       "type": "text",
-                      "text": "ORDER",
+                      "text": "ORDER" + ((orderId) ? ' #' + orderId : ''),
                       "weight": "bold",
                       "color": "#77ac7f",
                       "size": "lg"
