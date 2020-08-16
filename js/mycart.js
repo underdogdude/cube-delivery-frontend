@@ -4,16 +4,16 @@ var myCart = {
         var get_amount = 0;
         var get_total = 0;
 
-        if(Object.keys(cartItems).length > 0) { 
+        if (Object.keys(cartItems).length > 0) {
             for (var i in cartItems) {
                 get_total += cartItems[i].totalPrice * cartItems[i].qty;
                 get_amount += cartItems[i].qty;
             }
-    
+
             $("#mycart_total").html(get_total.toLocaleString());
             $("#mycart_amount").html(get_amount);
             $("#mycart__btn_container").css("display", "block");
-        }else { 
+        } else {
             $("#mycart__btn_container").css("display", "none");
             // window.location = "./index.html";
             $("#cartlist").html(`<p class="text__secondary text-center">
@@ -25,9 +25,9 @@ var myCart = {
 };
 
 
-var amount_btn = { 
+var amount_btn = {
 
-    increase: function(key) { 
+    increase: function (key) {
 
         var amount = this.getCurrentAmount(key);
         let $input = $("#" + key + "-quatityInput"),
@@ -36,16 +36,16 @@ var amount_btn = {
             step = parseInt($input.attr('step'));
 
         let temp = val + step;
-        if (temp <= max) { 
+        if (temp <= max) {
             $input.val(temp);
             amount = temp;
-        }else{
+        } else {
             $input.val(max);
             amount = max;
         }
         this.changeAmount(key, amount);
     },
-    decrease: function(key) { 
+    decrease: function (key) {
 
         var amount = this.getCurrentAmount(key);
         let $input = $("#" + key + "-quatityInput"),
@@ -54,21 +54,21 @@ var amount_btn = {
             step = parseInt($input.attr('step'));
 
         let temp = val - step;
-        if (temp >= min) { 
+        if (temp >= min) {
             $input.val(temp);
             amount = temp;
-        }else{
+        } else {
             $input.val(min);
             amount = min;
         }
         this.changeAmount(key, amount);
     },
 
-    getCurrentAmount: function(key) { 
+    getCurrentAmount: function (key) {
         return $("#" + key + "-quatityInput").val();
     },
 
-    changeAmount: function(id, amount){
+    changeAmount: function (id, amount) {
 
         var cartInLocal = cartFunction.getItem();
         cartInLocal.items[id].qty = Number(amount);
@@ -80,27 +80,27 @@ var amount_btn = {
 
 
 var cartLists = {
-    
-    render: function(items) { 
+
+    render: function (items) {
 
         var cartlist_elem = $("#cartlist");
 
-        if(Object.keys(items).length !== 0) { 
+        if (Object.keys(items).length !== 0) {
 
             $(cartlist_elem).empty();
             var string = ``;
 
-            for( var i in items ) {
+            for (var i in items) {
 
-            string += `
+                string += `
                 <div class="cartlist__item">
                     <div class="cartlist__header">
                         <div class="mr-3">
                             <h4 class="title"> 
-                                ${ items[i].name }
+                                ${ items[i].name}
                             </h4>
                             <span class="desc">
-                                ${this.getOptionString( items[i].options )}
+                                ${this.getOptionString(items[i].options)}
                             </span>
                         </div>
                         <div class="text-danger">
@@ -111,7 +111,7 @@ var cartLists = {
                         <div class="d-flex flex-column">
                             <i class="morerequest text__primary">${ items[i].memo}</i>
                             <span class="price">
-                                ${ (items[i].totalPrice * items[i].qty).toLocaleString() }
+                                ${ (items[i].totalPrice * items[i].qty).toLocaleString()}
                                 บาท
                             </span>
                         </div>
@@ -138,25 +138,25 @@ var cartLists = {
             }
             $(cartlist_elem).html(string);
 
-        }else{ 
+        } else {
             $("#cartlist").html(`<p class="text__secondary text-center">
                 ไม่มีสินค้าในตะกร้า
             </p>`);
         }
     },
 
-    getOptionString : function(optionLists) { 
-        
-        var optionString =  ``; 
-        
-        if(optionLists.length > 0) { 
-            for(var i in optionLists) {
-                
+    getOptionString: function (optionLists) {
+
+        var optionString = ``;
+
+        if (optionLists.length > 0) {
+            for (var i in optionLists) {
+
                 optionString += `<strong> ${optionLists[i].name} </strong> : `;
 
-                var optionStringValues =  ``; 
-                if(optionLists[i].values.length > 0) {
-                    for(var j in optionLists[i].values) {
+                var optionStringValues = ``;
+                if (optionLists[i].values.length > 0) {
+                    for (var j in optionLists[i].values) {
                         optionStringValues += `${optionLists[i].values[j].name}`;
                     }
                     optionString += optionStringValues;
@@ -167,17 +167,17 @@ var cartLists = {
         return optionString;
     },
 
-    remove: function(key) { 
+    remove: function (key) {
 
         var cartInLocal = cartFunction.getItem();
-            delete cartInLocal.items[key];
+        delete cartInLocal.items[key];
 
         localStorage.setItem("cart", JSON.stringify(cartInLocal));
         reRender();
     }
 }
 
-function reRender() { 
+function reRender() {
     var cartInLocal = cartFunction.getItem();
     myCart.showBtn();
     cartLists.render(cartInLocal.items);
@@ -234,7 +234,7 @@ function checkout() {
         }
     ];
 
-    for(var item in cartCheckout.items) {
+    for (var item in cartCheckout.items) {
         var itemDetail = cartCheckout.items[item];
         blockArray.push(
             {
@@ -294,7 +294,7 @@ function checkout() {
 
     }
     var cartArr = Object.values(cartCheckout.items);
-    var totalCartPrice = cartArr.reduce(function(total, num) {
+    var totalCartPrice = cartArr.reduce(function (total, num) {
         return total + (num.totalPrice * num.qty);
     }, 0);
 
@@ -362,45 +362,74 @@ function checkout() {
 
     console.log(Object.values(cartCheckout.items))
     woocommerceAPI.createOrder({
+        status: "on-hold",
+        created_via: "CUBE Ordering System on LINE LIFF",
         payment_method: "bacs",
         payment_method_title: "Direct Bank Transfer",
-        set_paid: true,
-        billing: {
-            first_name: customer_displayName,
-            last_name: "",
-            address_1: "123 test",
-            address_2: "",
-            city: "Bangkok",
-            state: "CNX",
-            postcode: "10920",
-            country: "TH",
-            email: "aonrobotz@gmail.com",
-            phone: "(555) 555-5555"
-        },
-        shipping: {
-            first_name: customer_displayName,
-            last_name: "",
-            address_1: "123 test shipping",
-            address_2: "",
-            city: "Bangkok Shipping",
-            state: "CNX SHIPPING",
-            postcode: "10269",
-            country: "TH"
-        },
-        line_items: Object.values(cartCheckout.items).map(function(itemValue) {
-            return { 
+        customer_id: window.wooCustomerId,
+        set_paid: false,
+        // billing: {
+        //     first_name: customer_displayName,
+        //     last_name: "",
+        //     address_1: "123 test",
+        //     address_2: "",
+        //     city: "Bangkok",
+        //     state: "CNX",
+        //     postcode: "10920",
+        //     country: "TH",
+        //     email: "aonrobotz@gmail.com",
+        //     phone: "(555) 555-5555"
+        // },
+        // shipping: {
+        //     first_name: customer_displayName,
+        //     last_name: "",
+        //     address_1: "123 test shipping",
+        //     address_2: "",
+        //     city: "Bangkok Shipping",
+        //     state: "CNX SHIPPING",
+        //     postcode: "10269",
+        //     country: "TH"
+        // },
+        line_items: Object.values(cartCheckout.items).map(function (itemValue) {
+            var itemOptions = makeMetaDataOption(itemValue.options)
+            itemOptions.push({
+                key: 'Note',
+                value: itemValue.memo
+            })
+
+            return {
+                name: itemValue.name,
                 product_id: itemValue.menuId,
-                quantity: itemValue.qty
+                quantity: itemValue.qty,
+                meta_data: itemOptions,
+                price: itemValue.price.toString(),
+                total: itemValue.totalPrice.toString()
             }
         }),
         shipping_lines: [
             {
-            method_id: "flat_rate",
-            method_title: "Flat Rate",
-            total: "0"
+                method_id: "flat_rate",
+                method_title: "Flat Rate",
+                total: "0"
             }
         ]
+    }).then(function(res) {
+        sendFlexMessage(cartCheckout.items, res.id);
     })
 
-    sendFlexMessage(cartCheckout.items);
+}
+
+function makeMetaDataOption (options) {
+    var woocommerceAddons = []
+    options.map(function(option){
+        var keyName = option.name;
+        option.values.map(function(value) {
+            var additionalPrice = value.additionalPrice
+            woocommerceAddons.push({
+                key: keyName + ((additionalPrice > 0) ? '(' + '฿' + additionalPrice + ')' : ''),
+                value: value.name
+            })
+        })
+    })
+    return woocommerceAddons
 }
