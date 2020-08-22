@@ -144,14 +144,8 @@ $('#prodModal').on('show.bs.modal', function(e) {
                         <section class="prod__option" id="prod__option"></section>
 
                         <section class="prod__option">
-                            <p class="prod__option-title">
-                                Additional Request
-                            </p>
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="E.g. No veggies" id="additionalReqInput" />
-                            </div>
-
-                            <div class="custom-input-number">
+                           
+                        <div class="custom-input-number">
                                 <button type="button" class="cin-btn cin-btn-1 cin-btn-md cin-decrement">
                                     <i class="fas fa-minus"></i>
                                 </button>
@@ -357,7 +351,7 @@ function listProdOption(option) {
                                 </label>
                             </div>
                         `;
-                }else { 
+                }else if(value.type === 'checkbox' || value.type === "radiobutton") { 
                     selectButtonListHTML += `
                         <div class="form-check">
                             <div class="custom-control custom-checkbox">
@@ -386,6 +380,15 @@ function listProdOption(option) {
                     `;
                 }
             })
+
+           if(value.type === 'custom') {
+                selectButtonListHTML += `
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="E.g. No veggies" id="additionalReqInput" />
+                    </div>
+                `
+            }
+
             var isRequiredHTML = `<div class="badge__required">
                     1 REQUIRED
                 </div>`

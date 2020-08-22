@@ -40,6 +40,14 @@ var get = {
 
 var woocommerceAPI = {
     baseURL: "https://murmuring-scrubland-05877.herokuapp.com/api",
+    getOrder: function(userID) { 
+        return (
+            axios({
+                method: 'get',
+                url: 'https://murmuring-scrubland-05877.herokuapp.com/api/orders/?customer_id=' + userID
+            })
+        )
+    },
     createOrder: function(data) {
         console.log('create order data', data)
         return axios({

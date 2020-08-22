@@ -48,7 +48,7 @@
     font-weight: 300;
     margin-bottom: 0;
 }
-.cartlist .cartlist__item .cartlist__header .desc{ 
+.cartlist .cartlist__item .cartlist__header .desc,.cartlist .cartlist__item .desc{ 
     color: #a9a9a9;
     font-size: 14px;
 }
@@ -68,4 +68,20 @@
 
 .cartlist .cartlist__item .cartlist__footer .morerequest{ 
     font-size: 12px;
+}
+
+
+.badge.pending { 
+    color: #FFA800;
+    background-color: #FFF4DE;
+}
+
+.badge.fail { 
+    color: #F64E60;
+    background-color: #FFE2E5;
+}
+
+.badge.success { 
+    color: #1BC5BD;
+    background-color: #C9F7F5;
 }

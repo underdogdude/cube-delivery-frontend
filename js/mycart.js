@@ -143,6 +143,77 @@ var cartLists = {
                 ไม่มีสินค้าในตะกร้า
             </p>`);
         }
+
+
+        var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        woocommerceAPI.getOrder(userInfo.wooCustomerId).then(res => {
+            var data = res.data;
+            var string = ``;
+            $("#historylist").empty();
+            if(data.length === 0) { 
+                string = `
+                    <p class="text__secondary text-center">
+                        ไม่มีประวัติสินค้า
+                    </p>
+                `
+            }
+            data.map((item) => {
+                // any, pending, processing, on-hold, completed, cancelled, refunded, failed and trash. 
+                var badgeHTML = "";
+                switch (item.status) {
+                    case "cancelled":
+                        badgeHTML += `<span class="badge fail">${item.status}</span>`
+                        break;
+                    case "refunded":
+                        badgeHTML += `<span class="badge fail">${item.status}</span>`
+                        break;
+                    case "failed":
+                        badgeHTML += `<span class="badge fail">${item.status}</span>`
+                        break;
+                    case "trash":
+                        badgeHTML += `<span class="badge fail">${item.status}</span>`
+                        break;
+                    case "completed":
+                        badgeHTML += `<span class="badge success">${item.status}</span>`
+                        break;
+                    default: 
+                        badgeHTML += `<span class="badge pending">${item.status}</span>`
+                        break;
+                }
+                string += `
+                <div class="cartlist__item">
+                    <div class="cartlist__header">
+                            <h4 class="title"> 
+                                <strong>
+                                    # ${ item.id}
+                                </strong>
+                            </h4>
+                            ${ badgeHTML }
+                    </div>
+                    <span class="desc">
+                            ${this.getNameString(item.line_items)}
+                        </span>
+                    <div class="cartlist__footer">
+                        <div class="d-flex flex-column">
+                            <span class="price">
+                                ${ item.total }
+                                บาท
+                            </span>
+                        </div>
+                    </div>
+                </div>`
+            });
+            $("#historylist").html(string);
+        });
+    },
+
+    getNameString: function(itemLists) {
+        var nameString = ``;
+        itemLists.map(item => {
+            nameString += `<strong>‣ ${item.name} </strong>`;
+            nameString += `</br>`;
+        });
+        return nameString
     },
 
     getOptionString: function (optionLists) {
@@ -178,87 +249,109 @@ var cartLists = {
 }
 
 function reRender() {
-    var cartInLocal = cartFunction.getItem();
-    myCart.showBtn();
-    cartLists.render(cartInLocal.items);
-    loading.hide();
+    try {
+        var cartInLocal = cartFunction.getItem();
+        myCart.showBtn();
+        cartLists.render(cartInLocal.items);
+        loading.hide();
+        
+    }catch (err) { 
+        myCart.showBtn();
+        loading.hide();
+    }
+   
 }
 
 function checkout() {
     loading.show();
-    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    var cartCheckout = JSON.parse(localStorage.getItem('cart'));
-    var orderDate = moment(new Date()).format("LL");
+    try {
 
-    var blockArray = [
-        {
-            "type": "context",
-            "elements": [
-                {
-                    "text": `*${orderDate}*  |  Ordering Team Announcements`,
-                    "type": "mrkdwn"
-                }
-            ]
-        },
-        {
-            "type": "divider"
-        },
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": "*Customer Detail*"
-            }
-        },
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": `\n\n *Name*, ${userInfo.line_displayName} \n\n *Phone*, [-] \n\n *Address*, [-]`
+        var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        var cartCheckout = JSON.parse(localStorage.getItem('cart'));
+        var orderDate = moment(new Date()).format("LL");
+
+        var blockArray = [
+            {
+                "type": "context",
+                "elements": [
+                    {
+                        "text": `*${orderDate}*  |  Ordering Team Announcements`,
+                        "type": "mrkdwn"
+                    }
+                ]
             },
-            "accessory": {
-                "type": "image",
-                "image_url": `${userInfo.line_pictureUrl}`,
-                "alt_text": `${userInfo.line_displayName} avatar`
-            }
-        },
-        {
-            "type": "divider"
-        },
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": ":calendar: |  *COMING ORDER*  | :calendar: "
-            }
-        }
-    ];
-
-    for (var item in cartCheckout.items) {
-        var itemDetail = cartCheckout.items[item];
-        blockArray.push(
+            {
+                "type": "divider"
+            },
             {
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": `*${itemDetail.name}*`
+                    "text": "*Customer Detail*"
+                }
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": `\n\n *Name*, ${userInfo.line_displayName} \n\n *Phone*, [-] \n\n *Address*, [-]`
                 },
                 "accessory": {
-                    "type": "button",
-                    "text": {
-                        "type": "plain_text",
-                        "text": `x${itemDetail.qty}`,
-                        "emoji": true
-                    }
+                    "type": "image",
+                    "image_url": `${userInfo.line_pictureUrl}`,
+                    "alt_text": `${userInfo.line_displayName} avatar`
+                }
+            },
+            {
+                "type": "divider"
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": ":calendar: |  *COMING ORDER*  | :calendar: "
                 }
             }
-        )
+        ];
 
-        for (var option of itemDetail.options) {
+        for (var item in cartCheckout.items) {
+            var itemDetail = cartCheckout.items[item];
+            blockArray.push(
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": `*${itemDetail.name}*`
+                    },
+                    "accessory": {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": `x${itemDetail.qty}`,
+                            "emoji": true
+                        }
+                    }
+                }
+            )
 
-            var valueStr = "";
-            for (var value of option.values) {
-                valueStr += `• ${value.displayName} (${value.additionalPrice} Baht) \n`;
+            for (var option of itemDetail.options) {
+
+                var valueStr = "";
+                for (var value of option.values) {
+                    valueStr += `• ${value.displayName} (${value.additionalPrice} Baht) \n`;
+                }
+
+                blockArray.push(
+                    {
+                        "type": "context",
+                        "elements": [
+                            {
+                                "type": "mrkdwn",
+                                "text": `*${option.displayName}*: \n\n ${valueStr}`
+                            }
+                        ]
+                    }
+                )
             }
 
             blockArray.push(
@@ -267,156 +360,141 @@ function checkout() {
                     "elements": [
                         {
                             "type": "mrkdwn",
-                            "text": `*${option.displayName}*: \n\n ${valueStr}`
+                            "text": `* remark * \n\n ${itemDetail.memo}`
                         }
                     ]
                 }
-            )
+            );
+
+            blockArray.push(
+                {
+                    "type": "divider"
+                }
+            );
+
         }
-
-        blockArray.push(
-            {
-                "type": "context",
-                "elements": [
-                    {
-                        "type": "mrkdwn",
-                        "text": `* remark * \n\n ${itemDetail.memo}`
-                    }
-                ]
-            }
-        );
-
-        blockArray.push(
-            {
-                "type": "divider"
-            }
-        );
-
-    }
-    var cartArr = Object.values(cartCheckout.items);
-    var totalCartPrice = cartArr.reduce(function (total, num) {
-        return total + (num.totalPrice * num.qty);
-    }, 0);
+        var cartArr = Object.values(cartCheckout.items);
+        var totalCartPrice = cartArr.reduce(function (total, num) {
+            return total + (num.totalPrice * num.qty);
+        }, 0);
 
 
-    blockArray.push({
-        "type": "context",
-        "elements": [
-            {
-                "type": "mrkdwn",
-                "text": "\n\n`Total Price : " + totalCartPrice + " Baht`\n\n"
-            }
-        ]
-    });
+        blockArray.push({
+            "type": "context",
+            "elements": [
+                {
+                    "type": "mrkdwn",
+                    "text": "\n\n`Total Price : " + totalCartPrice + " Baht`\n\n"
+                }
+            ]
+        });
 
-    blockArray.push({
-        "type": "actions",
-        "elements": [
-            {
-                "type": "button",
-                "text": {
-                    "type": "plain_text",
-                    "emoji": true,
-                    "text": "Approve"
+        blockArray.push({
+            "type": "actions",
+            "elements": [
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "emoji": true,
+                        "text": "Approve"
+                    },
+                    "style": "primary",
+                    "value": "click_me_123"
                 },
-                "style": "primary",
-                "value": "click_me_123"
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "emoji": true,
+                        "text": "Deny"
+                    },
+                    "style": "danger",
+                    "value": "click_me_123"
+                }
+            ]
+        });
+
+        // axios({
+        //     method: 'post',
+        //     url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/line/notify',
+        //     data: {
+        //         "channelID": userInfo.slack_channelId,
+        //         "imageURL": userInfo.line_pictureUrl,
+        //         "from": userInfo.line_displayName,
+        //         "amount": totalCartPrice
+        //     },
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     }
+        // }).then(function(response){
+
+        //     sendFlexMessage(userInfo.line_displayName,  cartCheckout.items);
+
+        // }).catch(function () { 
+        //     localStorage.removeItem('cart');
+        //     Swal.fire(
+        //         'กรุณาลองใหม่อีกครั้ง',
+        //         '',
+        //         'error'
+        //     )
+        // })
+
+        woocommerceAPI.createOrder({
+            status: "on-hold",
+            created_via: "CUBE Ordering System on LINE LIFF",
+            payment_method: "bacs",
+            payment_method_title: "Direct Bank Transfer",
+            customer_id: window.wooCustomerId,
+            set_paid: false,
+            billing: {
+                first_name: userInfo.line_displayName,
             },
-            {
-                "type": "button",
-                "text": {
-                    "type": "plain_text",
-                    "emoji": true,
-                    "text": "Deny"
-                },
-                "style": "danger",
-                "value": "click_me_123"
-            }
-        ]
-    });
+            // shipping: {
+            //     first_name: customer_displayName,
+            //     last_name: "",
+            //     address_1: "123 test shipping",
+            //     address_2: "",
+            //     city: "Bangkok Shipping",
+            //     state: "CNX SHIPPING",
+            //     postcode: "10269",
+            //     country: "TH"
+            // },
+            line_items: Object.values(cartCheckout.items).map(function (itemValue) {
+                var itemOptions = makeMetaDataOption(itemValue.options)
+                itemOptions.push({
+                    key: 'Additional Request',
+                    value: itemValue.memo
+                })
 
-    // axios({
-    //     method: 'post',
-    //     url: 'https://asia-east2-cube-family-delivery-dev.cloudfunctions.net/api/line/notify',
-    //     data: {
-    //         "channelID": userInfo.slack_channelId,
-    //         "imageURL": userInfo.line_pictureUrl,
-    //         "from": userInfo.line_displayName,
-    //         "amount": totalCartPrice
-    //     },
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     }
-    // }).then(function(response){
-
-    //     sendFlexMessage(userInfo.line_displayName,  cartCheckout.items);
-
-    // }).catch(function () { 
-    //     localStorage.removeItem('cart');
-    //     Swal.fire(
-    //         'กรุณาลองใหม่อีกครั้ง',
-    //         '',
-    //         'error'
-    //     )
-    // })
-
-    console.log(Object.values(cartCheckout.items))
-    woocommerceAPI.createOrder({
-        status: "on-hold",
-        created_via: "CUBE Ordering System on LINE LIFF",
-        payment_method: "bacs",
-        payment_method_title: "Direct Bank Transfer",
-        customer_id: window.wooCustomerId,
-        set_paid: false,
-        // billing: {
-        //     first_name: customer_displayName,
-        //     last_name: "",
-        //     address_1: "123 test",
-        //     address_2: "",
-        //     city: "Bangkok",
-        //     state: "CNX",
-        //     postcode: "10920",
-        //     country: "TH",
-        //     email: "aonrobotz@gmail.com",
-        //     phone: "(555) 555-5555"
-        // },
-        // shipping: {
-        //     first_name: customer_displayName,
-        //     last_name: "",
-        //     address_1: "123 test shipping",
-        //     address_2: "",
-        //     city: "Bangkok Shipping",
-        //     state: "CNX SHIPPING",
-        //     postcode: "10269",
-        //     country: "TH"
-        // },
-        line_items: Object.values(cartCheckout.items).map(function (itemValue) {
-            var itemOptions = makeMetaDataOption(itemValue.options)
-            itemOptions.push({
-                key: 'Note',
-                value: itemValue.memo
-            })
-
-            return {
-                name: itemValue.name,
-                product_id: itemValue.menuId,
-                quantity: itemValue.qty,
-                meta_data: itemOptions,
-                price: itemValue.price.toString(),
-                total: itemValue.totalPrice.toString()
-            }
-        }),
-        shipping_lines: [
-            {
-                method_id: "flat_rate",
-                method_title: "Flat Rate",
-                total: "0"
-            }
-        ]
-    }).then(function(res) {
-        sendFlexMessage(cartCheckout.items, res.id);
-    })
-
+                return {
+                    name: itemValue.name,
+                    product_id: itemValue.menuId,
+                    quantity: itemValue.qty,
+                    meta_data: itemOptions,
+                    price: itemValue.price.toString(),
+                    total: itemValue.totalPrice.toString()
+                }
+            }),
+            shipping_lines: [
+                {
+                    method_id: "flat_rate",
+                    method_title: "Flat Rate",
+                    total: "0"
+                }
+            ]
+        }).then(function(res) {
+            sendFlexMessage(cartCheckout.items, res.id);
+        })
+    }
+    catch(err) {
+        loading.hide();
+        Swal.fire(
+            'กรุณาลองใหม่อีกครั้ง',
+            '',
+            'error'
+        )
+    } 
 }
 
 function makeMetaDataOption (options) {

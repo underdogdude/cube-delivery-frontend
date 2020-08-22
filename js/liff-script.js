@@ -18,8 +18,8 @@ var lineToken = '';
 function liffInit() {
 
     if (!liff.isInClient()) {
-        window.location = "https://line.me/R/ti/p/@cubefamily7"
-        window.location = "./add-line.html"
+        // window.location = "https://line.me/R/ti/p/@cubefamily7"
+        // window.location = "./add-line.html"
     }
 
     var liffId = '1654140731-mR5YN8LL';
@@ -39,7 +39,7 @@ function liffInit() {
 
 function appInit() {
     if (!liff.isLoggedIn() && !liff.isInClient()) {
-        liff.login();
+        // liff.login();
     } else {
       liff.getProfile().then(async (profile) => {
 
@@ -49,14 +49,7 @@ function appInit() {
         customer_avatar = profile.pictureUrl;
 
         $("#avartar").attr("src", customer_avatar);
-
-        localStorage.setItem('userInfo', JSON.stringify({
-            line_userId: profile.userId,
-            line_displayName: clean_first_name(profile.displayName),
-            line_pictureUrl: profile.pictureUrl,
-            line_decodeToken: liff.getDecodedIDToken(lineToken)
-        }))
-        
+        var wooCustomerId = "";
         woocommerceAPI.searchCustomerId(profile.userId + '@line.cube.family').then(function(response) {
             if (response === false) {
                 woocommerceAPI.createCustomer({
@@ -66,11 +59,19 @@ function appInit() {
                     username: profile.userId,
                     avatar_url: profile.pictureUrl
                 }).then(function(responseC) {
-                    window.wooCustomerId = responseC
+                    wooCustomerId = responseC
                 })
             } else {
-                window.wooCustomerId = response
+                wooCustomerId = response
             }
+            alert(wooCustomerId);
+            localStorage.setItem('userInfo', JSON.stringify({
+                line_userId: profile.userId,
+                line_displayName: clean_first_name(profile.displayName),
+                line_pictureUrl: profile.pictureUrl,
+                line_decodeToken: liff.getDecodedIDToken(lineToken),
+                wooCustomerId: wooCustomerId
+            }))
         })
       });
     }
