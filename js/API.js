@@ -59,6 +59,14 @@ var woocommerceAPI = {
             return response.data
         })
     },
+    deleteOrder: function(orderID) { 
+        return (
+            axios({
+                method: 'delete',
+                url: 'https://murmuring-scrubland-05877.herokuapp.com/api/orders/' + orderID
+            },{force: true})
+        )
+    },
     searchCustomerId: function(email) {
         return axios({
             method: 'get',

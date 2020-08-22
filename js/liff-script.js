@@ -64,7 +64,6 @@ function appInit() {
             } else {
                 wooCustomerId = response
             }
-            alert(wooCustomerId);
             localStorage.setItem('userInfo', JSON.stringify({
                 line_userId: profile.userId,
                 line_displayName: clean_first_name(profile.displayName),
