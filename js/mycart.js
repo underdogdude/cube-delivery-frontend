@@ -1,3 +1,7 @@
+$( document ).ready(function() {
+    reRender();
+});
+
 var myCart = {
     showBtn: function () {
         var cartItems = cartFunction.getItem().items;
@@ -91,7 +95,6 @@ var cartLists = {
             var string = ``;
 
             for (var i in items) {
-
                 string += `
                 <div class="cartlist__item">
                     <div class="cartlist__header">
@@ -109,7 +112,7 @@ var cartLists = {
                     </div>
                     <div class="cartlist__footer">
                         <div class="d-flex flex-column">
-                            <i class="morerequest text__primary">${ items[i].memo}</i>
+                            <i class="morerequest text__primary">${ items[i].memo ? items[i].memo : ""}</i>
                             <span class="price">
                                 ${ (items[i].totalPrice * items[i].qty).toLocaleString()}
                                 บาท
@@ -160,7 +163,6 @@ var cartLists = {
             data.map((item) => {
                 // any, pending, processing, on-hold, completed, cancelled, refunded, failed and trash. 
                 var badgeHTML = "";
-                var removeHTML = "";
                 switch (item.status) {
                     case "cancelled":
                         badgeHTML += `<span class="badge fail">${item.status}</span>`
@@ -178,10 +180,6 @@ var cartLists = {
                         badgeHTML += `<span class="badge success">${item.status}</span>`
                         break;
                     default: 
-                        removeHTML = `<div class="text-danger" onclick="removeOrder('${item.id}')">
-                                        <i class="far fa-trash-alt btn__remove"></i>
-                                    </div>`;
-
                         badgeHTML += `<span class="badge pending">${item.status}</span>`
                         break;
                 }
@@ -205,7 +203,6 @@ var cartLists = {
                                 บาท
                             </span>
                         </div>
-                        ${ removeHTML }
                     </div>
                 </div>`
             });
@@ -366,7 +363,7 @@ function checkout() {
                     "elements": [
                         {
                             "type": "mrkdwn",
-                            "text": `* remark * \n\n ${itemDetail.memo}`
+                            "text": `* remark * \n\n ${itemDetail.memo ? itemDetail.memo : "" }`
                         }
                     ]
                 }
@@ -518,43 +515,46 @@ function makeMetaDataOption (options) {
     return woocommerceAddons
 }
 
-function removeOrder(orderID) { 
+// not used
+// function removeOrder(orderID) { 
 
-    swal.fire({
-        title: "ยืนยัน.",
-        text: "คุณยืนยันที่จะลบ Order นี้หรือไม่?",
-        showCancelButton: true,
-        confirmButtonColor: "#3699FF",
-        confirmButtonText: "Confirm",
-        cancelButtonText: "Back"
-        }
-    ).then(
-        function (data) {
-            loading.show();
-            if (data.isConfirmed) {
-                woocommerceAPI.deleteOrder(orderID)
-                .then((response) => {
-                    loading.hide();
-                    Swal.fire({
-                        icon: 'success',
-                        title: "Successfully!",
-                        text: "",
-                        confirmButtonText: "CONTINUE",
-                        confirmButtonColor: "#1fc5bc"
-                    }).then(() => {
-                        window.location.reload();
-                    });
-                })
-                .catch((error) => {
-                    loading.hide();
-                    Swal.fire({
-                        icon: 'error',
-                        title: "กรุณาลองใหม่อีกครั้ง!",
-                        confirmButtonText: "TRY AGAIN",
-                        confirmButtonColor: "#F64E60"
-                    });
-                });
-            }
-        }
-    )
-}
+//     swal.fire({
+//         title: "ยืนยัน.",
+//         text: "คุณยืนยันที่จะลบ Order นี้หรือไม่?",
+//         showCancelButton: true,
+//         confirmButtonColor: "#3699FF",
+//         confirmButtonText: "Confirm",
+//         cancelButtonText: "Back"
+//         }
+//     ).then(
+//         function (data) {
+//             loading.show();
+//             if (data.isConfirmed) {
+//                 woocommerceAPI.deleteOrder(orderID)
+//                 .then((response) => {
+                   
+//                     Swal.fire({
+//                         icon: 'success',
+//                         title: "Successfully!",
+//                         text: "",
+//                         confirmButtonText: "CONTINUE",
+//                         confirmButtonColor: "#1fc5bc"
+//                     }).then(() => {
+//                         window.location.reload();
+//                     });
+//                 })
+//                 .catch((error) => {
+//                     loading.hide();
+//                     Swal.fire({
+//                         icon: 'error',
+//                         title: "กรุณาลองใหม่อีกครั้ง!",
+//                         confirmButtonText: "TRY AGAIN",
+//                         confirmButtonColor: "#F64E60"
+//                     });
+//                 });
+//             }else { 
+//                 loading.hide();
+//             }
+//         }
+//     )
+// }

@@ -80,136 +80,140 @@ liffInit()
 
 
 function getOrderObject(order) { 
+    try { 
+        var bubbleBlock = []
+        var blockOrderArray = [];
+        for(var item in order) {
     
-    var bubbleBlock = []
-    var blockOrderArray = [];
-    for(var item in order) {
-
-        var itemDetail = order[item];
-
-        if (itemDetail.memo == "") itemDetail.memo = "-"
-
-        blockOrderArray.push(
-            {
-                "type": "box",
-                "layout": "horizontal",
-                "contents": [
-                    {
+            var itemDetail = order[item];
+            if (itemDetail.memo == "" || itemDetail.memo === undefined) itemDetail.memo = "-";
+    
+            blockOrderArray.push(
+                {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "text": itemDetail.name,
+                            "size": "md",
+                            "weight": "bold",
+                            "flex": 4,
+                            "wrap": true,
+                            "color": "#707070"
+                        },
+                        {
+                            "type": "separator",
+                            "margin": "xl"
+                        }
+                    ],
+                    "position": "relative"
+                },
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {
+                            "type": "image",
+                            "url": "https://cube-family-delivery.firebaseapp.com/img/logo.png",
+                            "align": "start",
+                            "size": "full"
+                        },
+                        {
+                            "type": "separator",
+                            "color": "#ffffff",
+                            "margin": "xxl"
+                        }
+                    ]
+                },
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents":  getSubOption(itemDetail)
+                },
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents":  [
+                        {
+                            "type": "separator",
+                            "color": "#ffffff",
+                            "margin": "xxl"
+                        },
+                        {
+                            "type": "separator",
+                            "margin": "xxl"
+                        },
+                        {
+                            "type": "separator",
+                            "color": "#ffffff",
+                            "margin": "xxl"
+                        },
+                        {
+                            "type": "text",
+                            "text": "Additional Requirement",
+                            "weight": "bold",
+                            "flex": 4,
+                            "wrap": true,
+                            "size": "xs",
+                            "color": "#a9a9a9"
+                        },
+                        {
+                            "type": "text",
+                            "text": itemDetail.memo,
+                            "weight": "bold",
+                            "flex": 4,
+                            "wrap": true,
+                            "size": "xs",
+                            "color": "#a9a9a9"
+                        }
+                    ]
+                }
+            );
+    
+            bubbleBlock.push({
+                "type": "bubble",
+                "size": "mega",
+                "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "margin": "xxl",
+                    "spacing": "sm",
+                    "contents": blockOrderArray
+                },
+                "footer": {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
+                      {
                         "type": "text",
-                        "text": itemDetail.name,
-                        "size": "md",
-                        "weight": "bold",
-                        "flex": 4,
-                        "wrap": true,
-                        "color": "#707070"
-                    },
-                    {
-                        "type": "separator",
-                        "margin": "xl"
-                    }
-                ],
-                "position": "relative"
-            },
-            {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                    {
-                        "type": "image",
-                        "url": "https://cube-family-delivery.firebaseapp.com/img/logo.png",
+                        "text": "จำนวน: x" + itemDetail.qty,
                         "align": "start",
-                        "size": "full"
-                    },
-                    {
-                        "type": "separator",
-                        "color": "#ffffff",
-                        "margin": "xxl"
-                    }
-                ]
-            },
-            {
-                "type": "box",
-                "layout": "vertical",
-                "contents":  getSubOption(itemDetail)
-            },
-            {
-                "type": "box",
-                "layout": "vertical",
-                "contents":  [
-                    {
-                        "type": "separator",
-                        "color": "#ffffff",
-                        "margin": "xxl"
-                    },
-                    {
-                        "type": "separator",
-                        "margin": "xxl"
-                    },
-                    {
-                        "type": "separator",
-                        "color": "#ffffff",
-                        "margin": "xxl"
-                    },
-                    {
+                        "size": "md",
+                        "wrap": true
+                      },
+                      {
                         "type": "text",
-                        "text": "Additional Requirement",
+                        "text": itemDetail.totalPrice + "บาท",
+                        "align": "end",
                         "weight": "bold",
-                        "flex": 4,
-                        "wrap": true,
-                        "size": "xs",
-                        "color": "#a9a9a9"
-                    },
-                    {
-                        "type": "text",
-                        "text": itemDetail.memo,
-                        "weight": "bold",
-                        "flex": 4,
-                        "wrap": true,
-                        "size": "xs",
-                        "color": "#a9a9a9"
-                    }
-                ]
-            }
-        );
+                        "color": "#3D6A40",
+                        "wrap": true
+                      }
+                    ]
+                }
+            })
+    
+            blockOrderArray = []
+    
+        }
+        return bubbleBlock;
 
-        bubbleBlock.push({
-            "type": "bubble",
-            "size": "mega",
-            "body": {
-                "type": "box",
-                "layout": "vertical",
-                "margin": "xxl",
-                "spacing": "sm",
-                "contents": blockOrderArray
-            },
-            "footer": {
-                "type": "box",
-                "layout": "horizontal",
-                "contents": [
-                  {
-                    "type": "text",
-                    "text": "จำนวน: x" + itemDetail.qty,
-                    "align": "start",
-                    "size": "md",
-                    "wrap": true
-                  },
-                  {
-                    "type": "text",
-                    "text": itemDetail.totalPrice + "บาท",
-                    "align": "end",
-                    "weight": "bold",
-                    "color": "#3D6A40",
-                    "wrap": true
-                  }
-                ]
-            }
-        })
+    }catch (err) {
 
-        blockOrderArray = []
-
+        console.log(err);
     }
-
-    return bubbleBlock;
+    
 }
 
 function getSubOption(itemDetail) { 
@@ -507,7 +511,7 @@ function sendFlexMessage(order, orderId) {
             
         }).catch(function(err) {
             alert(err);
-            alert('Got Something Error');
+            loading.hide();
         });
     }else { 
         alert("Please Open This Link via LINE");
