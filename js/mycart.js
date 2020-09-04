@@ -129,7 +129,7 @@ var cartLists = {
                                 step="1" 
                                 value="${items[i].qty}" 
                                 min="1"
-                                max="99"
+                                max="${items[i].maxQuantity}"
                             />
                             <button type="button" class="cic-btn cic-btn-1 cic-btn-small cic-increment"
                                 onclick="amount_btn.increase('${i}')">

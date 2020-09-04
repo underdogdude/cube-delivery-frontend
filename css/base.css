@@ -188,6 +188,14 @@ body {
     color: #fff;
 }
 
+.badge__outofstock { 
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    background: linear-gradient(45deg, #f29f49 0%, #ff8248 100%);
+    color: white;
+}
 .badge__recommend { 
     padding-left: 10px;
     padding-right: 10px;

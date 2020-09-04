@@ -59,6 +59,8 @@ function init () {
 
             get.menu2().then(res=> {
                 loading.hide();
+                // Sort show "IN-STOCK" show first.
+                res.data.sort((a, b) => (a.stock_status > b.stock_status) ? 1 : -1);
                 res.data.forEach(value => {
                     value.categories.map((item) => {
                         // Image remote https -> http
@@ -67,7 +69,7 @@ function init () {
 
                         if(value.name)
                             $(`
-                            <a class="menu__link menu__layout-hasimg" data-toggle="modal" data-target="#prodModal" data-id="${ value.id }" href="#">
+                            <a class="menu__link menu__layout-hasimg ${stock.isAvaliable(value)}" data-toggle="modal" data-target="#prodModal" data-id="${ value.id }" href="#">
                                     <div class="menu__layout-hasimg-imgsection">
                                         <div class="menu__layout-hasimg-thumbnail">
                                             <img src="${ image }" alt="">
@@ -82,9 +84,12 @@ function init () {
                                             ${value.short_description.slice(0, 144)}
                                         </span>
                                         <div class="menu__layout-footer">
-                                            <span class="price">
-                                                ${ Math.round(value.price) }บาท
-                                            </span>
+                                            <div class="d-flex justify-content-between w-100 align-items-center">
+                                                <span class="price">
+                                                    ${ Math.round(value.price) }บาท
+                                                </span>
+                                                ${stock.checkQuantity(value)} 
+                                            </div>
                                         </div>
                                     </div>
                             </a>
@@ -129,13 +134,20 @@ $('#prodModal').on('show.bs.modal', function(e) {
                 </div>
             `;
 
+            let lowQuantityWarning = "";
+            if(res.data.stock_status === "instock" && res.data.manage_stock) { 
+                if(res.data.stock_quantity < 10) { 
+                    lowQuantityWarning = `<i class="text-danger">We have <span id="max_quantity">${ res.data.stock_quantity }</span> left.</i>`
+                }
+            }
+
             var body = `
                     <div class="modal-body">
                             <div class="slick-container"> 
                                 ${image}
                             </div>
                         <div class="product__order">
-                            
+                            <h5>${stock.checkQuantity(res.data)}  ${ res.data.name }</h5> 
                             <section class="prod__desc" id="prod_desc_section">
                                 ${ isRecommend(res.data.recommended) }
                                 ${ res.data.description }
@@ -143,9 +155,9 @@ $('#prodModal').on('show.bs.modal', function(e) {
                         
                         <section class="prod__option" id="prod__option"></section>
 
-                        <section class="prod__option">
-                           
-                        <div class="custom-input-number">
+                        <section class="prod__option text-center">
+                            ${ lowQuantityWarning }
+                            <div class="custom-input-number">
                                 <button type="button" class="cin-btn cin-btn-1 cin-btn-md cin-decrement">
                                     <i class="fas fa-minus"></i>
                                 </button>
@@ -154,7 +166,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
                                     step="1" 
                                     value="1" 
                                     min="1"
-                                    max="99"
+                                    max=${res.data.stock_status === "instock" && res.data.manage_stock ? res.data.stock_quantity : "99"}
                                 />
                                 <button type="button" class="cin-btn cin-btn-1 cin-btn-md cin-increment">
                                     <i class="fas fa-plus"></i>
@@ -240,7 +252,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
 
                 // hashOptionGroupList is for check user chooice same menu with same option (md5 of optionlist)
                 var refCardItem = cart.items[`${res.data.id}-${hashOptionGroupList}`];
-
+                var max_quantity = $("#max_quantity").html() ? parseInt($("#max_quantity").html()) : 99;
                 // In the first select [refCardItem] will be undefined because it doesn't have this menu with this option yet;
                 if (refCardItem == undefined) {
                     refCardItem = {
@@ -252,6 +264,7 @@ $('#prodModal').on('show.bs.modal', function(e) {
                         "price": Math.round(res.data.price),
                         "totalPrice": Math.round(res.data.price) + totalAdditionalPrice,
                         "qty": parseInt($('#quatityInput').val()),
+                        "maxQuantity": max_quantity,
                         "options": optionGroupList,
                         "promotionId": "",
                         "imageURL": imgThumbnail,
@@ -550,7 +563,6 @@ var myCart = {
         var cartItems = JSON.parse(localStorage.getItem('cart')).items;
         var get_amount = 0;
         var get_total = 0;
-        console.log(cartItems, 'CArt ITEM');
         for (var i in cartItems){ 
             get_total += (cartItems[i].totalPrice * cartItems[i].qty);
             get_amount += cartItems[i].qty;
@@ -637,3 +649,35 @@ const sortArrayOfObjects = (arr, key) => {
         return a[key] - b[key];
     });
 };
+
+
+const stock = {
+    
+    checkQuantity: function(value) { 
+
+        if(value.manage_stock) {
+            if(value.stock_status === "instock"){
+                if(value.stock_quantity <= 5) {
+                    return `<span class="badge badge__outofstock"> ${value.stock_quantity} ชิ้นสุดท้าย </span>`;
+                }else { 
+                    return "";
+                }
+            }else{ 
+                return `<i class="text-danger">We are sold out</i>`;
+            }
+        }else { 
+            return "";
+        }
+    },
+    isAvaliable: function(value) { 
+        if(value.manage_stock) {
+            if(value.stock_status === "instock"){
+                return "";
+            }else{ 
+                return `soldout__disable`;
+            }
+        }else { 
+            return "";
+        }
+    }
+}

@@ -79,6 +79,11 @@
     color: #3d6a40;
 }
 
+.menu__link.soldout__disable { 
+    opacity: .5;
+    pointer-events: none !important;
+}
+
 .menu__link:hover,
 .menu__link:active {
     text-decoration: none;
@@ -160,7 +165,7 @@
     padding: 1rem;
 }
 .menu__modal .modal-body .product__order .prod__desc {
-    white-space: pre-line;
+    /* white-space: pre-line;  No need to use preline after fetch from WOOCOMMERCE*/ 
     position: relative;
 }
 
